@@ -45,10 +45,14 @@
   }
   // Items already on screen enter with the scene; the rest enter once as they scroll into view.
   const revealFrames = {
-    shelf: {frames:[{opacity:0,transform:'translateY(-28px) rotate(-7deg)'},{opacity:1,transform:'none'}], options:{duration:560,easing:'cubic-bezier(.34,1.36,.64,1)'}, gap:45},
     rise: {frames:[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}], options:{duration:480}, gap:60}
   };
+  // The shelf enters as one unit: its books rise a little, in reading order, the first time it is seen.
+  function revealShelf(shelf) {
+    [...shelf.children].forEach((book, index) => playMotion(book, [{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}], {duration:420, delay:index * 28}));
+  }
   function reveal(element, index) {
+    if (element.dataset.reveal === 'shelf') { revealShelf(element); return; }
     const style = revealFrames[element.dataset.reveal];
     if (style) playMotion(element, style.frames, {...style.options, delay:Math.min(index, 12) * style.gap});
   }
@@ -288,7 +292,7 @@
   document.querySelector('#now-reading-label').textContent = `지금 읽는 책 · ${nowMonth}월 · ${nowNumber}번째`;
   const stats = [[pastSelections.length,'권','함께 읽은 책'],[Object.keys(data.participants).length,'명','함께 읽는 사람'],[monthsTogether,'개월','이어 온 시간']];
   document.querySelector('#home-stats').innerHTML = stats.map(([value, unit, label]) => `<div><dt>${label}</dt><dd><span class="stat-value" data-count="${value}">${value}</span>${unit}</dd></div>`).join('');
-  document.querySelector('#home-shelf').innerHTML = pastSelections.map(book => `<li class="home-shelf-book" data-reveal="shelf">${coverFrameMarkup(book.title,book.coverKey,'span')}<span class="home-shelf-month">${escapeHTML(shortMonth(book.month))}</span></li>`).join('');
+  document.querySelector('#home-shelf').innerHTML = pastSelections.map(book => `<li class="home-shelf-book">${coverFrameMarkup(book.title,book.coverKey,'span')}<span class="home-shelf-month">${escapeHTML(shortMonth(book.month))}</span></li>`).join('');
   document.querySelector('#home-members').innerHTML = Object.entries(data.participants).map(([id, participant]) => {
     const picks = pastSelections.filter(book => book.recommenderId === id);
     const covers = picks.map(book => { const cover = data.covers[book.coverKey]; return cover ? `<img src="${escapeHTML(cover.local)}" width="28" height="40" alt="" loading="lazy">` : ''; }).join('');
