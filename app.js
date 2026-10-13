@@ -39,7 +39,7 @@
     });
   });
   document.querySelectorAll('[data-participant]').forEach(element => { element.textContent = participantName(element.dataset.participant); });
-  const coverKeys = {'나미야 잡화점의 기적':'namiya','빵충 사육 준수 사항':'breadworm','봄에 나는 없었다':'spring','히틀러의 음식을 먹는 여자들':'hitler','아이들의 집':'children','용의자 X의 헌신':'suspect-x','용의자 X의 헌신 · 영화화':'suspect-x','불편한 편의점':'convenience','영웅문':'youngwoongmoon','진격의 거인':'attack'};
+  const coverKeys = {'나미야 잡화점의 기적':'namiya','빵충 사육 준수 사항':'breadworm','봄에 나는 없었다':'spring','히틀러의 음식을 먹는 여자들':'hitler','아이들의 집':'children','용의자 X의 헌신':'suspect-x','불편한 편의점':'convenience','영웅문':'youngwoongmoon','진격의 거인':'attack'};
   function coverFrameMarkup(title, coverKey, tag = 'div') {
     const cover = data.covers[coverKey || coverKeys[title]];
     if (!cover) return `<${tag} class="cover-frame"><span class="cover-fallback">${escapeHTML(title)}<br>표지 확인 중</span></${tag}>`;
@@ -151,8 +151,12 @@
   document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => `<article class="candidate" data-work-id="${escapeHTML(candidate.workId)}"><button class="cover-trigger candidate-open" type="button" data-work-open="${escapeHTML(candidate.workId)}" aria-label="${escapeHTML(candidate.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(candidate.title,null,'span')}<span class="work-title">${escapeHTML(candidate.title)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(candidate.title)}<p class="candidate-state">${escapeHTML(candidate.state)} · ${escapeHTML(participantName('hj'))} 추천</p><p>${escapeHTML(displayText(candidate.note))}</p></article>`).join('');
   document.querySelector('#history-list').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
-    const content = `${coverFrameMarkup(book.title,book.coverKey,'span')}<h2>${escapeHTML(book.title)}</h2>`;
-    return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(book.title)} 도서 정보 · 새 창">${content}</a>` : content}</article>`;
+    const participant = data.participants[book.recommenderId];
+    const month = book.month.slice(2,4) + '.' + Number(book.month.slice(5));
+    const recommender = participant ? `<span class="history-recommender"><img src="${escapeHTML(participant.avatar)}" width="24" height="24" alt=""><span>${escapeHTML(participant.displayName)} 추천</span></span>` : '';
+    const content = `<span class="history-cover">${recommender}${coverFrameMarkup(book.title,book.coverKey,'span')}</span><h2>${escapeHTML(book.title)} <span class="history-month">(${escapeHTML(month)})</span></h2>`;
+    const label = `${book.title} · ${book.month} 선정작${participant ? ' · ' + participant.displayName + ' 추천' : ''} · 도서 정보 · 새 창`;
+    return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
   }).join('');
   document.querySelector('#history-sources').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
@@ -162,7 +166,7 @@
   const media = document.querySelector('#media');
   const context = document.querySelector('#context');
   const roleTabs = [...document.querySelectorAll('.shelf-tabs [role="tab"]')];
-  const roleNames = {all:'전체',candidate:'후보로 소개된 작품',recommendation:'토론 중 추천한 작품',mention:'이야기에 등장한 작품'};
+  const roleNames = {all:'전체',candidate:'후보로 소개된 작품',recommendation:'추천한 작품',mention:'이야기에 등장한 작품'};
   function selectRole(role, updateHash = true) {
     if (!Object.hasOwn(roleNames, role)) return;
     activeRole = role;
@@ -202,6 +206,7 @@
       const month = data.meetings[mention.meetingId]?.label;
       if (role === 'candidate') labels.add(month ? month + ' 후보' : '후보로 소개된 작품');
       if (role === 'recommendation' && mention.kind === 'discussion') labels.add(month ? month + ' 토론 추천' : '토론 추천');
+      if (role === 'recommendation' && mention.kind === 'remembered-recommendation') labels.add('추천한 작품');
       if (role === 'recommendation' && mention.kind === 'candidate-suggestion') labels.add(mention.people.length ? mention.people.map(participantName).join(', ') + ' 추천' : '후보 추천');
       if (role === 'mention') labels.add(month ? month + ' 이야기 속 언급' : '함께 나눈 작품');
     }));
@@ -228,7 +233,7 @@
       const mentions = workMentions(work);
       const text = `${work.title} ${work.creator} ${mentions.map(mention => `${displayText(mention.summary)} ${displayText(mention.detail)} ${mention.sourceLabel} ${mention.people.map(participantName).join(' ')}`).join(' ')}`;
       return (media.value === 'all' || work.media === media.value) &&
-        (activeRole === 'all' || mentions.some(mention => mention.roles.includes(activeRole) && (activeRole !== 'recommendation' || mention.kind === 'discussion'))) &&
+        (activeRole === 'all' || mentions.some(mention => mention.roles.includes(activeRole) && (activeRole !== 'recommendation' || ['discussion','remembered-recommendation'].includes(mention.kind)))) &&
         (context.value === 'all' || mentions.some(mention => mention.context === context.value)) &&
         text.toLocaleLowerCase('ko').includes(term);
     });

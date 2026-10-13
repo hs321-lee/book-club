@@ -119,12 +119,12 @@ window.BOOK_CLUB = {
       "id": "youngwoongmoon-book"
     },
     {
-      "title": "용의자 X의 헌신 · 일본 영화 (2008)",
-      "creator": "니시타니 히로시 · 2008",
+      "title": "용의자X · 한국 영화 (2012)",
+      "creator": "방은진 · 2012",
       "media": "movie",
       "mediaLabel": "영화",
       "id": "suspect-x-film-unspecified",
-      "search": "용의자 X의 헌신 2008 일본 영화",
+      "search": "용의자X 2012 한국 영화 방은진",
       "coverKey": "suspect-x-film"
     },
     {
@@ -210,6 +210,14 @@ window.BOOK_CLUB = {
       "media": "book",
       "mediaLabel": "책",
       "coverKey": "blank-page"
+    },
+    {
+      "id": "stoner-book",
+      "title": "스토너",
+      "creator": "존 윌리엄스",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "stoner"
     }
   ],
   "covers": {
@@ -295,12 +303,12 @@ window.BOOK_CLUB = {
       "label": "만화 1권 표지"
     },
     "suspect-x-film": {
-      "title": "용의자 X의 헌신 (2008)",
-      "page": "https://www.stardustpictures.co.jp/movie/yougisha-x.html",
-      "local": "./assets/posters/suspect-x-2008.webp",
-      "width": 160,
-      "height": 220,
-      "label": "일본 영화 (2008) 공식 포스터"
+      "title": "용의자X (2012)",
+      "page": "https://www.newswire.co.kr/newsRead.php?no=652416",
+      "local": "./assets/posters/suspect-x-2012.webp",
+      "width": 335,
+      "height": 480,
+      "label": "한국 영화 (2012) 공식 포스터"
     },
     "archive-farewell": {
       "title": "작별하지 않는다",
@@ -473,6 +481,16 @@ window.BOOK_CLUB = {
       "height": 850,
       "label": "영화 포스터 · 2016년 영화",
       "creator": "드니 빌뇌브"
+    },
+    "stoner": {
+      "title": "스토너",
+      "creator": "존 윌리엄스",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=51001915",
+      "local": "./assets/covers/mentions/stoner.webp",
+      "width": 480,
+      "height": 716,
+      "label": "책 표지 · 알에이치코리아 · 2015년판",
+      "isbn": "9788925554990"
     }
   },
   "mentions": [
@@ -554,7 +572,7 @@ window.BOOK_CLUB = {
       ],
       "context": "영화화 언급",
       "summary": "토론에서는 원작 소설의 영화화도 언급했습니다.",
-      "detail": "당시 언급한 영화의 정확한 판본은 확인되지 않았습니다. 카드에는 대표 영화화 작품으로 선택한 일본 2008년 영화의 공식 포스터를 표시합니다. 이 영화에 대한 별도의 추천이나 감상평으로 기록한 것은 아닙니다.",
+      "detail": "당시 영화화 언급의 정확한 판본은 확인되지 않았습니다. 카드에는 한국 영화 『용의자X』(2012)의 포스터를 표시합니다.",
       "people": [
         "sh"
       ],
@@ -697,45 +715,45 @@ window.BOOK_CLUB = {
       "workId": "lecture-book",
       "meetingId": null,
       "roles": [
-        "mention"
+        "recommendation"
       ],
-      "context": "언급",
-      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "context": "추천",
+      "summary": "모임에서 추천한 작품입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "모임에서 언급된 작품",
-      "kind": "remembered"
+      "sourceLabel": "기억해 둔 추천 작품",
+      "kind": "remembered-recommendation"
     },
     {
       "id": "shared-thinking-book",
       "workId": "thinking-book",
       "meetingId": null,
       "roles": [
-        "mention"
+        "recommendation"
       ],
-      "context": "언급",
-      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "context": "추천",
+      "summary": "모임에서 추천한 작품입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "모임에서 언급된 작품",
-      "kind": "remembered"
+      "sourceLabel": "기억해 둔 추천 작품",
+      "kind": "remembered-recommendation"
     },
     {
       "id": "shared-arrival-film",
       "workId": "arrival-film",
       "meetingId": null,
       "roles": [
-        "mention"
+        "recommendation"
       ],
-      "context": "언급",
-      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "context": "추천",
+      "summary": "모임에서 추천한 작품입니다.",
       "detail": "테드 창의 단편 Story of Your Life를 원작으로 한 영화입니다.",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "모임에서 언급된 작품",
-      "kind": "remembered"
+      "sourceLabel": "기억해 둔 추천 작품",
+      "kind": "remembered-recommendation"
     },
     {
       "id": "shared-blank-page-book",
@@ -751,6 +769,21 @@ window.BOOK_CLUB = {
       "timestamp": null,
       "sourceLabel": "모임에서 언급된 작품",
       "kind": "remembered"
+    },
+    {
+      "id": "shared-stoner-book",
+      "workId": "stoner-book",
+      "meetingId": null,
+      "roles": [
+        "recommendation"
+      ],
+      "context": "추천",
+      "summary": "『앨저넌에게 꽃을』 후보를 소개하며 인생 책으로 꼽은 작품입니다.",
+      "detail": "그만큼의 감동을 느껴 『앨저넌에게 꽃을』을 추천했다고 이야기했습니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "2025년 7월 후보 소개에서 함께 추천한 작품",
+      "kind": "remembered-recommendation"
     }
   ],
   "selections": [
@@ -805,7 +838,8 @@ window.BOOK_CLUB = {
       "avatar": "./assets/avatars/anne.svg"
     },
     "mj": {
-      "displayName": "모모님"
+      "displayName": "모모님",
+      "avatar": "./assets/avatars/momo.svg"
     }
   },
   "selectionHistory": [

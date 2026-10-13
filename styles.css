@@ -155,7 +155,7 @@ button:active { transform: translateY(1px); }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:1ms!important; transition-duration:1ms!important; scroll-behavior:auto!important; } }
 @media(prefers-reduced-motion:reduce) { .cover-trigger .cover-img,.cover-trigger:focus-visible .cover-img,.cover-trigger:hover .cover-img,.work[data-work-id]:hover .cover-img,.candidate[data-work-id]:hover .cover-img { transform:none; transition:none; } }
 
-/* The past selection shelf keeps only covers and titles in the main view. */
+/* Past selections remain a compact cover grid with month and recommender. */
 .history-intro h1 { font-size:var(--text-2xl); }
 .history-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-xl) var(--space-lg); }
 .history-book { min-width:0; }
@@ -167,3 +167,8 @@ button:active { transform: translateY(1px); }
 @media(max-width:39.99rem) { .masthead .tabs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 var(--space-xs); }.masthead .tabs button { white-space:normal; } }
 @media(min-width:40rem) { .history-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media(min-width:60rem) { .history-grid { grid-template-columns:repeat(5,minmax(0,1fr)); } }
+
+.history-cover { display:block; position:relative; padding-top:2.25rem; }
+.history-recommender { position:absolute; top:0; right:-.2rem; display:flex; align-items:center; gap:.25rem; padding:0 .2rem; min-height:1.75rem; font-size:var(--text-xs); line-height:1.2; color:var(--color-muted); background:var(--color-paper); white-space:nowrap; }
+.history-recommender img { flex:none; width:24px; height:24px; }
+.history-month { white-space:nowrap; color:var(--color-muted); font-weight:400; }

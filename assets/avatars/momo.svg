@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <title>책을 들고 귀 기울이는 모모</title>
+  <style>path,circle,ellipse,rect{stroke:#42352e;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}</style>
+  <circle cx="40" cy="40" r="38" fill="#efe8d9" stroke="none"/>
+  <path d="M20 74V64q3-14 20-14t20 14v10" fill="#9b6574"/>
+  <path d="M22 36q-8-7-1-12-1-15 13-13 10-9 20 3 14 0 8 16 7 8-3 14H23Z" fill="#59443a"/>
+  <path d="M25 30q9 0 17-10 4 9 13 10v10q0 15-15 15T25 40Z" fill="#efd0aa"/>
+  <path d="M31 36h2m14 0h2m-13 9q4 4 8 0" fill="none"/>
+  <path d="M25 62q7-4 15 0 8-4 15 0v14q-8-4-15 0-7-4-15 0Z" fill="#d7b982"/>
+  <path d="M40 62v14m-10-10h5m10 0h5m-20 4h5m10 0h5" fill="none"/>
+  <path d="M22 66q5-3 8 1t-7 5m35-6q-5-3-8 1t7 5" fill="#efd0aa"/>
+</svg>
