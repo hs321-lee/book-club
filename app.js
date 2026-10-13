@@ -88,7 +88,7 @@
     document.querySelector('#book-detail-title').textContent = work.title;
     const contexts = isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(data.topics[0].summary)}</p><p>${escapeHTML(data.topics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
     const badges = isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
-    document.querySelector('#book-detail-body').innerHTML = `<div class="book-detail-cover">${coverMarkup(work.title,work.coverKey)}</div><div class="book-detail-copy"><p class="book-detail-media">${escapeHTML(work.mediaLabel + ' · ' + work.creator)}</p><div class="work-badges">${badges}</div>${contexts}</div>`;
+    document.querySelector('#book-detail-body').innerHTML = `<div class="book-detail-cover">${coverMarkup(work.title,work.coverKey)}</div><div class="book-detail-copy"><p class="book-detail-media">${escapeHTML(work.mediaLabel + ' · ' + work.creator)}</p><div class="work-badges">${badges}</div>${contexts}${isIntro ? '' : `<a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a>`}</div>`;
     detailOpener = opener;
     detailPanel.hidden = false;
     opener.setAttribute('aria-expanded','true');
@@ -154,7 +154,7 @@
     const participant = data.participants[book.recommenderId];
     const month = book.month.slice(2,4) + '.' + Number(book.month.slice(5));
     const recommender = participant ? `<span class="history-recommender"><img src="${escapeHTML(participant.avatar)}" width="24" height="24" alt=""><span>${escapeHTML(participant.displayName)} 추천</span></span>` : '';
-    const content = `<span class="history-cover">${recommender}${coverFrameMarkup(book.title,book.coverKey,'span')}</span><h2>${escapeHTML(book.title)} <span class="history-month">(${escapeHTML(month)})</span></h2>`;
+    const content = `<span class="history-cover">${coverFrameMarkup(book.title,book.coverKey,'span')}</span><h2>${escapeHTML(book.title)}</h2><span class="history-meta"><span class="history-month">(${escapeHTML(month)})</span>${recommender}</span>`;
     const label = `${book.title} · ${book.month} 선정작${participant ? ' · ' + participant.displayName + ' 추천' : ''} · 도서 정보 · 새 창`;
     return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
   }).join('');
@@ -239,7 +239,8 @@
     });
     document.querySelector('#work-list').innerHTML = matches.map(work => {
       const mentions = workMentions(work);
-      return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(work.title,work.coverKey)}<div class="work-meta"><span>${escapeHTML(work.mediaLabel)}</span></div><div class="work-badges">${badgesFor(work, mentions)}</div><p>${escapeHTML(displayText(mentions[0]?.summary || ''))}</p><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a></article>`;
+      const summary = mentions[0]?.summary ? `<span class="work-summary">${escapeHTML(displayText(mentions[0].summary))}</span>` : '';
+      return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-copy"><span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator + ' · ' + work.mediaLabel)}</span><span class="work-badges">${badgesFor(work, mentions)}</span>${summary}<span class="cover-hint">상세 보기 →</span></span></button></article>`;
     }).join('');
     document.querySelector('#result-count').textContent = `${matches.length}개 작품 · ${roleNames[activeRole]}${term ? ' · 검색 결과' : ''}`;
     document.querySelector('#empty-state').hidden = matches.length > 0;

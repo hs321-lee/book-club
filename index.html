@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=20261014-recommendations">
-  <script src="./data.js?v=20261014-recommendations" defer></script>
-  <script src="./app.js?v=20261014-recommendations" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=20261014-layout">
+  <script src="./data.js?v=20261014-layout" defer></script>
+  <script src="./app.js?v=20261014-layout" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -71,9 +71,9 @@
       <div class="quiet-note"><h2>토론 기록은 모임 뒤에</h2><p>마리오님의 개인 발표자료를 따로 읽을 수 있습니다. 모임에서 나눈 토론 기록은 아직 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
     </section>
     <section id="works" role="tabpanel" aria-labelledby="tab-works" hidden>
-      <div class="works-intro"><p class="meeting-meta">모임에서 만난 작품을 오래 남기는 책장</p><h1>다음에 읽을 책도,<br>다시 떠올릴 이야기도.</h1><p>후보로 소개한 책과 추천한 작품,<br>이야기 속에서 떠올린 작품을 함께 모았습니다.<br>이번에 선정되지 않은 후보도 계속 남겨 둡니다.</p></div>
+      <div class="works-intro"><h1>함께 볼 작품</h1><p>읽을 후보, 추천받은 작품, 대화에서 떠오른 이야기를 모았습니다.</p></div>
       <nav class="shelf-tabs" role="tablist" aria-label="작품 모아 보기"><button id="role-all" role="tab" aria-selected="true" aria-controls="shelf-results" data-role="all">전체</button><button id="role-candidate" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="candidate">후보로 소개된 작품</button><button id="role-recommendation" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="recommendation">추천한 작품</button><button id="role-mention" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="mention">이야기에 등장한 작품</button></nav>
-      <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">작품 찾기</label><input id="search" type="search" placeholder="제목, 작가, 이야기" autocomplete="off"></div><div><label for="media">분야</label><select id="media"><option value="all">전체 분야</option><option value="book">책</option><option value="movie">영화</option><option value="anime">만화·애니</option><option value="drama">드라마</option></select></div><div><label for="context">언급한 이유</label><select id="context"><option value="all">모든 이야기</option><option value="후보 추천">후보 추천</option><option value="후보">지난 후보</option><option value="언급">언급</option><option value="함께 읽음">함께 읽음</option><option value="추천">추천</option><option value="비교">비교</option><option value="추억">추억</option><option value="영화화 언급">영화화 언급</option></select></div><button id="reset" class="outline-button" type="reset">초기화</button></form>
+      <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">작품 찾기</label><input id="search" type="search" placeholder="제목, 작가, 이야기" autocomplete="off"></div><div><label for="media">분야</label><select id="media"><option value="all">전체 분야</option><option value="book">책</option><option value="movie">영화</option><option value="anime">만화·애니</option><option value="drama">드라마</option></select></div><details class="advanced-filters"><summary>상세 필터</summary><div><label for="context">언급한 이유</label><select id="context"><option value="all">모든 이야기</option><option value="후보 추천">후보 추천</option><option value="후보">지난 후보</option><option value="언급">언급</option><option value="함께 읽음">함께 읽음</option><option value="추천">추천</option><option value="비교">비교</option><option value="추억">추억</option><option value="영화화 언급">영화화 언급</option></select></div></details><button id="reset" class="outline-button" type="reset">초기화</button></form>
       <div id="shelf-results" role="tabpanel" aria-labelledby="role-all"><p id="result-count" class="result-count" role="status" aria-live="polite"></p><div id="work-list" class="work-grid"></div><div id="empty-state" class="quiet-note" hidden><h2>아직 일치하는 작품이 없어요.</h2><p>검색어를 바꾸거나 분야와 언급 이유를 전체로 선택해 보세요. 다른 분류를 선택하거나 전체 작품으로 돌아가 보세요.</p><button class="outline-button" id="empty-reset">전체 작품 보기</button></div></div>
       <p class="source-note">후보는 도서 선정 메모와 2025년 7월 후보 소개에서, 토론 추천은 9월 15일 모임 녹음에서 정리했습니다. 기억해 둔 추천·언급 작품은 날짜와 추천자를 추정하지 않았습니다. 후보·추천·선정 이력은 각각 기록하며 한 작품이 여러 이력을 가질 수 있습니다. 표지는 출판·서점 자료에서 확인했습니다. 만화는 1권 표지를 사용합니다. 영화화 언급에는 한국 영화 『용의자X』(2012)의 포스터를 표시합니다. 당시 언급한 영화의 판본이 확인됐다는 뜻은 아닙니다.</p>
     </section>
