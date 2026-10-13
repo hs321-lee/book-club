@@ -73,7 +73,15 @@ details p { margin-top: var(--space-sm); max-width: 68ch; }
 .people-list { display: grid; gap: var(--space-xl); }
 .person { border-top: var(--rule-hair) solid var(--color-rule-strong); padding-top: var(--space-lg); }
 .person-head { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-md); }
-.person-initial { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border: var(--rule-hair) solid var(--color-rule); color: var(--color-accent); font-family: var(--font-display); font-size: var(--text-lg); }
+.person-avatar { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; color: var(--color-accent); background: var(--color-paper-2); border-radius: 50%; }
+.person-avatar svg { stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.cover-frame { aspect-ratio: 3/4; background: var(--color-paper-2); display: grid; place-items: center; padding: var(--space-xs); min-width: 0; }
+.cover-img { display: block; width: 100%; height: 100%; object-fit: contain; min-width: 0; min-height: 0; }
+.hero-cover { padding: 0; background: none; }
+.cover-fallback { padding: var(--space-lg); text-align: center; color: var(--color-muted); font-size: var(--text-sm); }
+.cover-caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-xs); color: var(--color-muted); font-size: var(--text-xs); }
+.cover-source { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-xs); white-space: nowrap; }
+.candidate-state { color: var(--color-accent); font-size: var(--text-xs); }
 .person h3 { font-size: var(--text-lg); }
 .person-tagline { font-size: var(--text-sm); color: var(--color-muted); }
 .person>p+p { margin-top: var(--space-md); }
