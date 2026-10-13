@@ -5,13 +5,52 @@
   const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const participantName = id => data.participants[id]?.displayName || '참여자';
   const displayText = value => String(value).replace(/\{(sh|hs|hj)\}/g, (_, id) => participantName(id));
+  const motionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  const runningMotion = new Map();
+  const visitedScenes = new Set();
+  function playMotion(element, frames, options = {}) {
+    runningMotion.get(element)?.cancel();
+    runningMotion.delete(element);
+    if (!element?.animate || motionPreference?.matches) return;
+    const animation = element.animate(frames, {duration:220, easing:'cubic-bezier(.16,1,.3,1)', fill:'backwards', ...options});
+    runningMotion.set(element, animation);
+    animation.finished?.then(() => { if (runningMotion.get(element) === animation) runningMotion.delete(element); }, () => { if (runningMotion.get(element) === animation) runningMotion.delete(element); });
+  }
+  motionPreference?.addEventListener?.('change', () => {
+    if (motionPreference.matches) { runningMotion.forEach(animation => animation.cancel()); runningMotion.clear(); }
+  });
+  function playScene(panel) {
+    if (visitedScenes.has(panel.id)) return;
+    visitedScenes.add(panel.id);
+    const copy = panel.querySelector('.hero-copy') || panel.querySelector('.works-intro');
+    const book = panel.querySelector('.featured-book');
+    playMotion(copy, [{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}], {duration:480});
+    playMotion(book, [{opacity:0,transform:'translateY(20px) rotate(-3deg)'},{opacity:1,transform:'none'}], {duration:580,delay:70});
+    panel.querySelectorAll('.voice-preview-item').forEach((voice,index) => playMotion(voice, [{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}], {duration:420,delay:160+index*70}));
+  }
+  function stopMotionWithin(root) {
+    runningMotion.forEach((animation, element) => {
+      if (element === root || root.contains?.(element)) { animation.cancel(); runningMotion.delete(element); }
+    });
+  }
+  document.addEventListener('focusin', event => {
+    runningMotion.forEach((animation, element) => {
+      if (element === event.target || element?.contains?.(event.target)) { animation.cancel(); runningMotion.delete(element); }
+    });
+  });
   document.querySelectorAll('[data-participant]').forEach(element => { element.textContent = participantName(element.dataset.participant); });
   const coverKeys = {'나미야 잡화점의 기적':'namiya','빵충 사육 준수 사항':'breadworm','봄에 나는 없었다':'spring','히틀러의 음식을 먹는 여자들':'hitler','아이들의 집':'children','용의자 X의 헌신':'suspect-x','용의자 X의 헌신 · 영화화':'suspect-x','불편한 편의점':'convenience','영웅문':'youngwoongmoon','진격의 거인':'attack'};
-  function coverMarkup(title, coverKey) {
+  function coverFrameMarkup(title, coverKey, tag = 'div') {
     const cover = data.covers[coverKey || coverKeys[title]];
-    if (!cover) return `<div class="cover-frame"><span class="cover-fallback">${escapeHTML(title)}<br>표지 확인 중</span></div>`;
-    const label = cover.label;
-    return `<div class="cover-frame"><img class="cover-img" src="${escapeHTML(cover.local)}" width="${cover.width}" height="${cover.height}" alt="${escapeHTML(cover.title + ' · ' + label)}" loading="lazy"><span class="cover-fallback" hidden>${escapeHTML(title)}<br>표지를 불러오지 못했어요.</span></div><p class="cover-caption"><span>${escapeHTML(label)}</span><a class="cover-source" href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer">출처 ↗</a></p>`;
+    if (!cover) return `<${tag} class="cover-frame"><span class="cover-fallback">${escapeHTML(title)}<br>표지 확인 중</span></${tag}>`;
+    return `<${tag} class="cover-frame"><img class="cover-img" src="${escapeHTML(cover.local)}" width="${cover.width}" height="${cover.height}" alt="${escapeHTML(cover.title + ' · ' + cover.label)}" loading="lazy"><span class="cover-fallback" hidden>${escapeHTML(title)}<br>표지를 불러오지 못했어요.</span></${tag}>`;
+  }
+  function coverCaptionMarkup(title, coverKey) {
+    const cover = data.covers[coverKey || coverKeys[title]];
+    return cover ? `<p class="cover-caption"><span>${escapeHTML(cover.label)}</span><a class="cover-source" href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer">출처 ↗</a></p>` : '';
+  }
+  function coverMarkup(title, coverKey) {
+    return coverFrameMarkup(title, coverKey) + coverCaptionMarkup(title, coverKey);
   }
   function handleCoverError(image) {
     image.hidden = true;
@@ -28,12 +67,57 @@
   const roleHashes = {all:'works',candidate:'works-candidates',recommendation:'works-recommendations',mention:'works-mentions'};
   const tabs = [...document.querySelectorAll('.masthead .tabs [role="tab"]')];
   const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+  const detailPanel = document.querySelector('#book-detail');
+  let detailOpener = null;
+  function closeBookDetail(returnFocus = true) {
+    if (detailPanel.hidden) return;
+    const focusWasInside = detailPanel.contains(document.activeElement);
+    detailPanel.hidden = true;
+    stopMotionWithin(detailPanel);
+    document.querySelectorAll('[data-work-open],[data-book-intro]').forEach(button => button.setAttribute('aria-expanded','false'));
+    if (returnFocus) {
+      const target = detailOpener?.isConnected ? detailOpener : document.querySelector('#main');
+      target.focus({preventScroll:true});
+      target.scrollIntoView({block:'center',behavior:motionPreference?.matches ? 'auto' : 'smooth'});
+    } else if (focusWasInside) document.querySelector('#main').focus({preventScroll:true});
+    detailOpener = null;
+  }
+  function openBookDetail(work, opener, isIntro = false) {
+    closeBookDetail(false);
+    const mentions = isIntro ? [] : workMentions(work);
+    document.querySelector('#book-detail-title').textContent = work.title;
+    const contexts = isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(data.topics[0].summary)}</p><p>${escapeHTML(data.topics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
+    const badges = isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
+    document.querySelector('#book-detail-body').innerHTML = `<div class="book-detail-cover">${coverMarkup(work.title,work.coverKey)}</div><div class="book-detail-copy"><p class="book-detail-media">${escapeHTML(work.mediaLabel + ' · ' + work.creator)}</p><div class="work-badges">${badges}</div>${contexts}</div>`;
+    detailOpener = opener;
+    detailPanel.hidden = false;
+    opener.setAttribute('aria-expanded','true');
+    playMotion(document.querySelector('#book-detail-body'),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260});
+    document.querySelector('#book-detail-title').focus({preventScroll:true});
+    detailPanel.scrollIntoView({block:'start',behavior:motionPreference?.matches ? 'auto' : 'smooth'});
+  }
+  document.querySelector('#book-detail-close').addEventListener('click', () => closeBookDetail());
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !detailPanel.hidden) { event.preventDefault(); closeBookDetail(); } });
+  document.addEventListener('click', event => {
+    const intro = event.target.closest?.('[data-book-intro]');
+    if (intro) { openBookDetail({title:'나미야 잡화점의 기적',creator:'히가시노 게이고',mediaLabel:'책',coverKey:'namiya'},intro,true); return; }
+    let opener = event.target.closest?.('[data-work-open]');
+    if (!opener && !event.target.closest?.('a,button,summary,input,select')) opener = event.target.closest?.('.work[data-work-id],.candidate[data-work-id]')?.querySelector('[data-work-open]');
+    if (!opener) return;
+    const work = data.works.find(item => item.id === opener.dataset.workOpen);
+    if (work) openBookDetail(work,opener);
+  });
   function showTab(id, updateHash = true) {
     if (!panels.some(p => p.id === id)) return;
+    const changed = panels.find(panel => !panel.hidden)?.id !== id;
+    closeBookDetail(false);
     tabs.forEach(tab => { const active = tab.dataset.tab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
-    panels.forEach(panel => { panel.hidden = panel.id !== id; });
+    panels.forEach(panel => { if (panel.id !== id) stopMotionWithin(panel); panel.hidden = panel.id !== id; });
     if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id));
     document.title = `${id === 'september' ? '9월 모임' : id === 'october' ? '10월 모임' : '함께 볼 작품'} · 책 사이`;
+    const panel = panels.find(item => item.id === id);
+    if (changed && visitedScenes.has(id)) playMotion(panel,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}]);
+    playScene(panel);
   }
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => showTab(tab.dataset.tab));
@@ -59,15 +143,16 @@
   window.addEventListener('hashchange', syncHash);
   window.addEventListener('popstate', syncHash);
   document.querySelector('.wordmark').addEventListener('click', () => showTab('september', false));
+  const voiceKeywords = {sh:'구조 · 무협',hs:'추억 · 연결',hj:'편지 · 동네'};
+  document.querySelector('#voice-preview').innerHTML = data.people.map(person => `<a class="voice-preview-item" href="#people"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(voiceKeywords[person.participantId])}</small></span></a>`).join('');
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
   document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
-  document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => `<article class="candidate">${coverMarkup(candidate.title)}<p class="candidate-state">${escapeHTML(candidate.state)} · ${escapeHTML(participantName('hj'))} 추천</p><h3>${escapeHTML(candidate.title)}</h3><p>${escapeHTML(displayText(candidate.note))}</p></article>`).join('');
+  document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => `<article class="candidate" data-work-id="${escapeHTML(candidate.workId)}"><button class="cover-trigger candidate-open" type="button" data-work-open="${escapeHTML(candidate.workId)}" aria-label="${escapeHTML(candidate.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(candidate.title,null,'span')}<span class="work-title">${escapeHTML(candidate.title)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(candidate.title)}<p class="candidate-state">${escapeHTML(candidate.state)} · ${escapeHTML(participantName('hj'))} 추천</p><p>${escapeHTML(displayText(candidate.note))}</p></article>`).join('');
   const search = document.querySelector('#search');
   const media = document.querySelector('#media');
   const context = document.querySelector('#context');
   const roleTabs = [...document.querySelectorAll('.shelf-tabs [role="tab"]')];
   const roleNames = {all:'전체',candidate:'후보로 소개된 작품',recommendation:'토론 중 추천한 작품',mention:'이야기에 등장한 작품'};
-  let searchTimer;
   function selectRole(role, updateHash = true) {
     if (!Object.hasOwn(roleNames, role)) return;
     activeRole = role;
@@ -125,6 +210,7 @@
     return `<div class="work-context"><p class="context-source">${escapeHTML(mention.sourceLabel + people + time)}</p><p>${escapeHTML(displayText(mention.summary))}</p><p>${escapeHTML(displayText(mention.detail))}</p><a class="text-link" href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(linkLabel)} <span aria-hidden="true">→</span></a></div>`;
   }
   function renderWorks() {
+    closeBookDetail(false);
     const term = search.value.trim().toLocaleLowerCase('ko');
     const uniqueWorks = [...new Map(data.works.map(work => [work.id, work])).values()];
     const matches = uniqueWorks.filter(work => {
@@ -137,13 +223,15 @@
     });
     document.querySelector('#work-list').innerHTML = matches.map(work => {
       const mentions = workMentions(work);
-      return `<article class="work" data-work-id="${escapeHTML(work.id)}">${coverMarkup(work.title, work.coverKey)}<div class="work-meta"><span>${escapeHTML(work.mediaLabel)}</span></div><h2>${escapeHTML(work.title)}</h2><p class="muted">${escapeHTML(work.creator)}</p><div class="work-badges">${badgesFor(work, mentions)}</div><p>${escapeHTML(displayText(mentions[0]?.summary || ''))}</p><details><summary>소개·추천 맥락 보기</summary>${mentions.map(mentionMarkup).join('')}</details><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a></article>`;
+      return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(work.title,work.coverKey)}<div class="work-meta"><span>${escapeHTML(work.mediaLabel)}</span></div><div class="work-badges">${badgesFor(work, mentions)}</div><p>${escapeHTML(displayText(mentions[0]?.summary || ''))}</p><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a></article>`;
     }).join('');
     document.querySelector('#result-count').textContent = `${matches.length}개 작품 · ${roleNames[activeRole]}${term ? ' · 검색 결과' : ''}`;
     document.querySelector('#empty-state').hidden = matches.length > 0;
+    playMotion(document.querySelector('#work-list'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:180});
   }
-  function resetFilters() { clearTimeout(searchTimer); search.value = ''; media.value = 'all'; context.value = 'all'; selectRole('all', false); showTab('works'); }
-  search.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(renderWorks, 180); });
+  function resetFilters() { search.value = ''; media.value = 'all'; context.value = 'all'; selectRole('all', false); showTab('works'); }
+  // The shelf is local and small: commit input synchronously so no delayed search can close a newly opened book.
+  search.addEventListener('input', renderWorks);
   media.addEventListener('change', renderWorks);
   context.addEventListener('change', renderWorks);
   document.querySelector('#filters').addEventListener('submit', event => event.preventDefault());

@@ -9,9 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=20261013-library">
-  <script src="./data.js?v=20261013-library" defer></script>
-  <script src="./app.js?v=20261013-library" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=20261013-motion">
+  <script src="./data.js?v=20261013-motion" defer></script>
+  <script src="./app.js?v=20261013-motion" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -26,16 +26,21 @@
     </nav>
   </header>
   <main id="main" class="container" tabindex="-1">
+    <section id="book-detail" class="book-detail" aria-labelledby="book-detail-title" hidden>
+      <div class="book-detail-heading"><h2 id="book-detail-title" tabindex="-1"></h2><button id="book-detail-close" class="outline-button" type="button">상세 닫기 <span aria-hidden="true">×</span></button></div>
+      <div id="book-detail-body" class="book-detail-body"></div>
+    </section>
     <section id="september" role="tabpanel" aria-labelledby="tab-september">
       <div class="meeting-hero">
         <div class="hero-copy">
           <p class="meeting-meta"><time datetime="2026-09-15">2026년 9월 15일</time><span>토론 기록</span></p>
           <h1>한 권의 책,<br>세 개의 시선.</h1>
           <p class="hero-lede">누군가는 이야기의 연결을,<br>누군가는 읽는 여유를,<br>누군가는 사라지는 동네를 떠올렸습니다.</p>
+          <div id="voice-preview" class="voice-preview" aria-label="세 사람의 독서 시선"></div>
           <a class="text-link" href="#discussion">나눈 이야기 읽기 <span aria-hidden="true">↓</span></a>
         </div>
         <figure class="featured-book">
-          <div class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/namiya.webp" width="512" height="742" alt="나미야 잡화점의 기적 책 표지 · 현대문학 무선판" fetchpriority="high"><span class="cover-fallback" hidden>나미야 잡화점의 기적<br>표지를 불러오지 못했어요.</span></div>
+          <button class="cover-trigger hero-book-button" type="button" data-book-intro="namiya" aria-label="나미야 잡화점의 기적 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/namiya.webp" width="512" height="742" alt="나미야 잡화점의 기적 책 표지 · 현대문학 무선판" fetchpriority="high"><span class="cover-fallback" hidden>나미야 잡화점의 기적<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button>
           <figcaption><strong>9월에 함께 읽은 책</strong><span>나미야 잡화점의 기적 · 히가시노 게이고</span><a class="cover-source" href="https://bnk.kpipa.or.kr/home/v3/addition/adiPromoMetaDataView/seq_20250221133024673445" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption>
         </figure>
       </div>
@@ -58,7 +63,7 @@
     <section id="october" role="tabpanel" aria-labelledby="tab-october" hidden>
       <div class="meeting-hero october-hero">
         <div class="hero-copy"><p class="meeting-meta">2026년 10월<span>모임 전</span></p><h1>다음 이야기를<br>읽는 중입니다.</h1><p class="hero-lede">이번에 함께 읽을 책은<br><strong>히틀러의 음식을 먹는 여자들</strong>입니다.</p><p class="muted">토론은 아직 열리지 않았습니다.<br>모임에서 나눈 생각은 이후에 이곳에 남깁니다.</p><a class="text-link" href="#candidates">함께 검토했던 책 보기 ↓</a></div>
-        <figure class="featured-book"><div class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사" loading="lazy"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></div><figcaption><strong>10월 선정 도서</strong><span>히틀러의 음식을 먹는 여자들</span><a class="cover-source" href="https://www.aladin.co.kr/shop/wproduct.aspx?itemid=217753819" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
+        <figure class="featured-book"><button class="cover-trigger hero-book-button" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사" loading="lazy"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button><figcaption><strong>10월 선정 도서</strong><span>히틀러의 음식을 먹는 여자들</span><a class="cover-source" href="https://www.aladin.co.kr/shop/wproduct.aspx?itemid=217753819" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
       </div>
       <section id="candidates" class="section" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading"><h2 id="candidates-title">같이 펼쳐 본 후보들</h2><p>10월 후보로 검토했던 네 권. 선택의 과정도 기록으로 남깁니다.</p></div><p class="selection-note"><span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다. 선정되지 않은 후보도 작품 책장에 계속 남겨 둡니다.</p><div id="candidate-list" class="candidate-grid"></div></section>
       <div class="quiet-note"><h2>토론 기록은 모임 뒤에</h2><p>아직 개인별 준비 글이나 토론 내용은 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
