@@ -197,20 +197,44 @@
   }
   if ('ResizeObserver' in window) new ResizeObserver(() => moveTabIndicator(true)).observe(tabList);
   document.fonts?.ready.then(() => moveTabIndicator(true));
+  // Meetings live in one tab; each month keeps its own id so #september and #october still link directly.
+  const monthTabs = [...document.querySelectorAll('.month-tabs [role="tab"]')];
+  const monthPanels = monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+  const monthTitles = Object.fromEntries(Object.values(data.meetings).filter(meeting => monthPanels.some(panel => panel.id === meeting.tab)).map(meeting => [meeting.tab, meeting.label + ' 모임']));
+  let activeMonth = monthTabs[0]?.dataset.month;
+  function showMonth(month) {
+    const changed = monthPanels.find(panel => !panel.hidden)?.id !== month;
+    monthTabs.forEach(tab => { const active = tab.dataset.month === month; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
+    monthPanels.forEach(panel => { if (panel.id !== month) stopMotionWithin(panel); panel.hidden = panel.id !== month; });
+    return changed;
+  }
   function showTab(id, updateHash = true) {
+    if (monthPanels.some(panel => panel.id === id)) { activeMonth = id; id = 'meetings'; }
     if (!panels.some(p => p.id === id)) return;
     const changed = panels.find(panel => !panel.hidden)?.id !== id;
     closeBookDetail(false);
     tabs.forEach(tab => { const active = tab.dataset.tab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
     panels.forEach(panel => { if (panel.id !== id) stopMotionWithin(panel); panel.hidden = panel.id !== id; });
-    if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id));
+    const monthChanged = id === 'meetings' && showMonth(activeMonth);
+    if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id === 'meetings' ? activeMonth : id));
     moveTabIndicator(!changed);
-    const tabTitles = {home:'홈',september:'9월 모임',october:'10월 모임',works:'함께 볼 작품',history:'지난 선정작'};
-    document.title = `${tabTitles[id]} · 책 사이`;
-    const panel = panels.find(item => item.id === id);
-    if (changed && visitedScenes.has(id)) playMotion(panel,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}]);
-    playScene(panel);
+    const tabTitles = {home:'홈',works:'함께 볼 작품',history:'지난 선정작'};
+    document.title = `${id === 'meetings' ? monthTitles[activeMonth] : tabTitles[id]} · 책 사이`;
+    const scene = id === 'meetings' ? document.getElementById(activeMonth) : panels.find(item => item.id === id);
+    if ((changed || monthChanged) && visitedScenes.has(scene.id)) playMotion(scene,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}]);
+    playScene(scene);
   }
+  monthTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => showTab(tab.dataset.month));
+    tab.addEventListener('keydown', event => {
+      let next;
+      if (event.key === 'ArrowRight') next = (index + 1) % monthTabs.length;
+      if (event.key === 'ArrowLeft') next = (index - 1 + monthTabs.length) % monthTabs.length;
+      if (event.key === 'Home') next = 0;
+      if (event.key === 'End') next = monthTabs.length - 1;
+      if (next !== undefined) { event.preventDefault(); showTab(monthTabs[next].dataset.month); monthTabs[next].focus({preventScroll:true}); }
+    });
+  });
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => showTab(tab.dataset.tab));
     tab.addEventListener('keydown', event => {
@@ -222,12 +246,12 @@
       if (next !== undefined) { event.preventDefault(); showTab(tabs[next].dataset.tab); tabs[next].focus({preventScroll:true}); }
     });
   });
-  document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { const id = button.dataset.go; showTab(id); tabs.find(tab => tab.dataset.tab === id).focus({preventScroll:true}); document.querySelector('.masthead').scrollIntoView({block:'start'}); }));
+  document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { const id = button.dataset.go; showTab(id); (monthTabs.find(tab => tab.dataset.month === id) || tabs.find(tab => tab.dataset.tab === id)).focus({preventScroll:true}); document.querySelector('.masthead').scrollIntoView({block:'start'}); }));
   function syncHash() {
     const id = location.hash.slice(1);
     const role = Object.keys(roleHashes).find(key => roleHashes[key] === id);
     if (role) { selectRole(role, false); showTab('works', false); }
-    else if (panels.some(p => p.id === id)) showTab(id, false);
+    else if ([...panels, ...monthPanels].some(p => p.id === id)) showTab(id, false);
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else showTab('home', false);

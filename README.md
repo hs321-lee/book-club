@@ -63,7 +63,7 @@ python -m http.server 8000
 
 ## 화면 동작
 
-주소에 탭이 없으면 홈을 보여 줍니다. 홈의 숫자(함께 읽은 책·멤버 수·이어 온 개월 수)와 멤버별 선정작 추천 수는 `selectionHistory`, `participants`, `meetings`에서 자동으로 계산합니다. 추천자가 확인되지 않은 선정작은 멤버 추천 수에 넣지 않습니다.
+상단 탭은 홈·모임 기록·함께 볼 작품·지난 선정작 네 개입니다. 모임 기록 안에서 달을 고르며 가장 최근 달이 먼저 열립니다. 새 달은 `index.html`의 `.month-tabs`에 버튼과 같은 id의 섹션을 추가하고 `data.js`의 `meetings`에 등록합니다. `#october`, `#september`, `#discussion`, `#candidates` 주소는 해당 달로 바로 연결됩니다. 주소에 탭이 없으면 홈을 보여 줍니다. 홈의 숫자(함께 읽은 책·멤버 수·이어 온 개월 수)와 멤버별 선정작 추천 수는 `selectionHistory`, `participants`, `meetings`에서 자동으로 계산합니다. 추천자가 확인되지 않은 선정작은 멤버 추천 수에 넣지 않습니다.
 
 색은 종이·잉크 기본 톤에 계절 포인트 색 하나를 더합니다. `tokens.css`의 `--color-season`(장식용 오렌지)과 `--color-accent`(본문 대비 기준을 맞춘 짙은 오렌지)만 바꾸면 계절 색이 바뀝니다.
 

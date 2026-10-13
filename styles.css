@@ -3,7 +3,7 @@
  * nav: N6 masthead · footer: Ft2 inline rule · H2 split 7/5 negative space
  * audience: book-club members · use: revisit a meeting · enrichment: typographic book art
  */
-@import url('./tokens.css?v=20261015-season');
+@import url('./tokens.css?v=20261015-meetings');
 * { box-sizing: border-box; }
 html { overflow-x: clip; scroll-padding-top: var(--space-lg); }
 body { margin: 0; overflow-x: clip; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.75; word-break: keep-all; }
@@ -265,3 +265,9 @@ main[tabindex="-1"]:focus,section[tabindex="-1"]:focus,h2[tabindex="-1"]:focus {
 /* The cover shared between a list and the detail view moves as one object. */
 ::view-transition-group(book-cover) { animation-duration:460ms; animation-timing-function:var(--ease-out); }
 ::view-transition-old(root),::view-transition-new(root) { animation-duration:240ms; }
+
+/* Month switcher inside the meetings tab: newest month first. */
+.month-tabs { display:flex; flex-wrap:wrap; gap:var(--space-xs); padding-top:var(--space-lg); }
+.month-tabs button { padding:var(--space-xs) var(--space-md); border:var(--rule-hair) solid var(--color-rule); border-radius:var(--radius-sm); background:none; font-size:var(--text-sm); }
+.month-tabs button[aria-selected="true"] { border-color:var(--color-season); background:var(--color-paper-2); color:var(--color-accent); font-weight:700; }
+#meetings .meeting-hero { padding-top:var(--space-xl); }
