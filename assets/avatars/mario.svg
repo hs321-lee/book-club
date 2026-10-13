@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">
+  <title>빨간 모자를 쓴 게임 친구</title>
+  <style>path,circle,ellipse{stroke:#42352e;stroke-width:1.7;stroke-linejoin:round;stroke-linecap:round}</style>
+  <circle cx="40" cy="40" r="38" fill="#efe8d9" stroke="none"/>
+  <path d="M17 74V65q3-15 23-15t23 15v9" fill="#b76152"/>
+  <path d="M28 53h7v10h10V53h7v23H28Z" fill="#627c96"/>
+  <circle cx="32" cy="65" r="2" fill="#dab96c"/><circle cx="48" cy="65" r="2" fill="#dab96c"/>
+  <ellipse cx="24" cy="36" rx="5" ry="7" fill="#ecc7a0"/><ellipse cx="56" cy="36" rx="5" ry="7" fill="#ecc7a0"/>
+  <path d="M25 28h30v11q0 18-15 18T25 39Z" fill="#ecc7a0"/>
+  <path d="M27 25v12h-4V25m30 0v12h4V25" fill="#5b4034"/>
+  <path d="M22 27q1-19 18-19t19 19Z" fill="#ad4e44"/>
+  <path d="M22 25q21-4 39 2 2 4-3 5l-35-1q-6-2-1-6Z" fill="#ad4e44"/>
+  <path d="M32 35h2m12 0h2" fill="none"/>
+  <path d="M29 42q4-5 11-1 7-4 11 1-1 7-11 5-10 2-11-5Z" fill="#5b4034"/>
+  <ellipse cx="40" cy="40" rx="7" ry="5" fill="#ecc7a0"/>
+  <path d="M20 67q7-1 8 4t-8 5m40-9q-7-1-8 4t8 5" fill="#fff0d7"/>
+</svg>
