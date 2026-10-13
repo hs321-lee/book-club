@@ -114,7 +114,8 @@
     tabs.forEach(tab => { const active = tab.dataset.tab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
     panels.forEach(panel => { if (panel.id !== id) stopMotionWithin(panel); panel.hidden = panel.id !== id; });
     if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id));
-    document.title = `${id === 'september' ? '9월 모임' : id === 'october' ? '10월 모임' : '함께 볼 작품'} · 책 사이`;
+    const tabTitles = {september:'9월 모임',october:'10월 모임',works:'함께 볼 작품',history:'지난 선정작'};
+    document.title = `${tabTitles[id]} · 책 사이`;
     const panel = panels.find(item => item.id === id);
     if (changed && visitedScenes.has(id)) playMotion(panel,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}]);
     playScene(panel);
@@ -148,6 +149,15 @@
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
   document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
   document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => `<article class="candidate" data-work-id="${escapeHTML(candidate.workId)}"><button class="cover-trigger candidate-open" type="button" data-work-open="${escapeHTML(candidate.workId)}" aria-label="${escapeHTML(candidate.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(candidate.title,null,'span')}<span class="work-title">${escapeHTML(candidate.title)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(candidate.title)}<p class="candidate-state">${escapeHTML(candidate.state)} · ${escapeHTML(participantName('hj'))} 추천</p><p>${escapeHTML(displayText(candidate.note))}</p></article>`).join('');
+  document.querySelector('#history-list').innerHTML = data.selectionHistory.map(book => {
+    const cover = data.covers[book.coverKey];
+    const content = `${coverFrameMarkup(book.title,book.coverKey,'span')}<h2>${escapeHTML(book.title)}</h2>`;
+    return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(book.title)} 도서 정보 · 새 창">${content}</a>` : content}</article>`;
+  }).join('');
+  document.querySelector('#history-sources').innerHTML = data.selectionHistory.map(book => {
+    const cover = data.covers[book.coverKey];
+    return cover ? `<li><a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer">${escapeHTML(book.title)} · ${escapeHTML(cover.label)} ↗</a></li>` : '';
+  }).join('');
   const search = document.querySelector('#search');
   const media = document.querySelector('#media');
   const context = document.querySelector('#context');
@@ -190,11 +200,10 @@
     const labels = new Set();
     mentions.forEach(mention => mention.roles.forEach(role => {
       const month = data.meetings[mention.meetingId]?.label;
-      if (!month) return;
-      if (role === 'candidate') labels.add(month + ' 후보');
-      if (role === 'recommendation' && mention.kind === 'discussion') labels.add(month + ' 토론 추천');
-      if (role === 'recommendation' && mention.kind === 'candidate-suggestion') labels.add(mention.people.map(participantName).join(', ') + ' 추천');
-      if (role === 'mention') labels.add(month + ' 이야기 속 언급');
+      if (role === 'candidate') labels.add(month ? month + ' 후보' : '후보로 소개된 작품');
+      if (role === 'recommendation' && mention.kind === 'discussion') labels.add(month ? month + ' 토론 추천' : '토론 추천');
+      if (role === 'recommendation' && mention.kind === 'candidate-suggestion') labels.add(mention.people.length ? mention.people.map(participantName).join(', ') + ' 추천' : '후보 추천');
+      if (role === 'mention') labels.add(month ? month + ' 이야기 속 언급' : '함께 나눈 작품');
     }));
     data.selections.filter(selection => selection.workId === work.id && selection.status === 'selected').forEach(selection => {
       const month = data.meetings[selection.meetingId]?.label;
@@ -204,10 +213,12 @@
   }
   function mentionMarkup(mention) {
     const meeting = data.meetings[mention.meetingId];
-    const linkLabel = meeting.state === 'before-meeting' ? meeting.label + ' 후보 메모 보기' : meeting.label + ' 토론 보기';
+    const linkLabel = meeting ? (meeting.linkLabel || (meeting.state === 'before-meeting' ? meeting.label + ' 후보 메모 보기' : meeting.label + ' 토론 보기')) : '';
     const people = mention.people.length ? ' · ' + mention.people.map(participantName).join(', ') : '';
     const time = mention.timestamp ? ' · 녹음 ' + mention.timestamp : '';
-    return `<div class="work-context"><p class="context-source">${escapeHTML(mention.sourceLabel + people + time)}</p><p>${escapeHTML(displayText(mention.summary))}</p><p>${escapeHTML(displayText(mention.detail))}</p><a class="text-link" href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(linkLabel)} <span aria-hidden="true">→</span></a></div>`;
+    const detail = mention.detail ? `<p>${escapeHTML(displayText(mention.detail))}</p>` : '';
+    const link = meeting?.section ? `<a class="text-link" href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(linkLabel)} <span aria-hidden="true">→</span></a>` : '';
+    return `<div class="work-context"><p class="context-source">${escapeHTML(mention.sourceLabel + people + time)}</p><p>${escapeHTML(displayText(mention.summary))}</p>${detail}${link}</div>`;
   }
   function renderWorks() {
     closeBookDetail(false);

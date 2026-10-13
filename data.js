@@ -154,6 +154,62 @@ window.BOOK_CLUB = {
       "creator": "정보라",
       "media": "book",
       "mediaLabel": "책"
+    },
+    {
+      "id": "algernon-book",
+      "title": "앨저넌에게 꽃을",
+      "creator": "대니얼 키스",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "archive-algernon"
+    },
+    {
+      "id": "big-sleep-book",
+      "title": "빅 슬립",
+      "creator": "레이먼드 챈들러",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "big-sleep"
+    },
+    {
+      "id": "namiya-book",
+      "title": "나미야 잡화점의 기적",
+      "creator": "히가시노 게이고",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "namiya"
+    },
+    {
+      "id": "lecture-book",
+      "title": "강의",
+      "creator": "신영복",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "lecture"
+    },
+    {
+      "id": "thinking-book",
+      "title": "생각에 관한 생각",
+      "creator": "대니얼 카너먼",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "thinking"
+    },
+    {
+      "id": "arrival-film",
+      "title": "컨택트",
+      "creator": "드니 빌뇌브 · 2016 · 원작 테드 창",
+      "media": "movie",
+      "mediaLabel": "영화",
+      "coverKey": "arrival"
+    },
+    {
+      "id": "blank-page-book",
+      "title": "백지 앞에서",
+      "creator": "최은영",
+      "media": "book",
+      "mediaLabel": "책",
+      "coverKey": "blank-page"
     }
   ],
   "covers": {
@@ -245,6 +301,178 @@ window.BOOK_CLUB = {
       "width": 160,
       "height": 220,
       "label": "일본 영화 (2008) 공식 포스터"
+    },
+    "archive-farewell": {
+      "title": "작별하지 않는다",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=278770576",
+      "local": "./assets/covers/history/do-not-say-goodbye.webp",
+      "width": 480,
+      "height": 708,
+      "label": "책 표지 · 문학동네",
+      "creator": "한강"
+    },
+    "archive-pagwa": {
+      "title": "파과",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=142244075",
+      "local": "./assets/covers/history/old-woman-with-the-knife.webp",
+      "width": 480,
+      "height": 694,
+      "label": "책 표지 · 위즈덤하우스 · 2018년판",
+      "creator": "구병모"
+    },
+    "archive-algernon": {
+      "title": "앨저넌에게 꽃을",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=269161956",
+      "local": "./assets/covers/history/flowers-for-algernon.webp",
+      "width": 480,
+      "height": 684,
+      "label": "책 표지 · 황금부엉이 · 아트 리커버 에디션",
+      "creator": "대니얼 키스"
+    },
+    "archive-wuthering": {
+      "title": "폭풍의 언덕",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=549352",
+      "local": "./assets/covers/history/wuthering-heights.webp",
+      "width": 423,
+      "height": 720,
+      "label": "책 표지 · 민음사 · 세계문학전집 118",
+      "creator": "에밀리 브론테"
+    },
+    "archive-mermaid": {
+      "title": "인어 사냥",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=302751355",
+      "local": "./assets/covers/history/mermaid-hunt.webp",
+      "width": 480,
+      "height": 705,
+      "label": "책 표지 · 해결책",
+      "creator": "차인표"
+    },
+    "archive-short-life": {
+      "title": "인생의 짧음에 관하여",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=341087993",
+      "local": "./assets/covers/history/life-is-short.webp",
+      "width": 468,
+      "height": 720,
+      "label": "책 표지 · 을유문화사 · 2024년판",
+      "creator": "딘 리클스"
+    },
+    "archive-work-joy": {
+      "title": "일의 기쁨과 슬픔",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=212921347",
+      "local": "./assets/covers/history/work-joy-and-sorrow.webp",
+      "width": 480,
+      "height": 696,
+      "label": "책 표지 · 창비 · 소설집",
+      "creator": "장류진"
+    },
+    "archive-factfulness": {
+      "title": "팩트풀니스",
+      "isbn": "9788934985068",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=184564546",
+      "local": "./assets/covers/history/factfulness.webp",
+      "width": 500,
+      "height": 762,
+      "label": "책 표지 · 김영사",
+      "creator": "한스 로슬링·올라 로슬링·안나 로슬링 뢴룬드"
+    },
+    "archive-dickens-history": {
+      "title": "찰스 디킨스의 영국사 산책",
+      "isbn": "9791189936433",
+      "page": "https://www.yes24.com/Product/Goods/122753214",
+      "local": "./assets/covers/history/dickens-history.webp",
+      "width": 594,
+      "height": 850,
+      "label": "책 표지 · 옥당북스",
+      "creator": "찰스 디킨스"
+    },
+    "archive-write-book": {
+      "title": "책 한번 써봅시다",
+      "isbn": "9791160404371",
+      "page": "https://www.yes24.com/product/goods/95714119",
+      "local": "./assets/covers/history/write-a-book.webp",
+      "width": 533,
+      "height": 850,
+      "label": "책 표지 · 한겨레출판",
+      "creator": "장강명"
+    },
+    "archive-homo-deus": {
+      "title": "호모 데우스",
+      "isbn": "9788934977841",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=100441862",
+      "local": "./assets/covers/history/homo-deus.webp",
+      "width": 500,
+      "height": 703,
+      "label": "책 표지 · 김영사",
+      "creator": "유발 하라리"
+    },
+    "archive-hail-mary": {
+      "title": "프로젝트 헤일메리",
+      "isbn": "9788925588735",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=270454373",
+      "local": "./assets/covers/history/project-hail-mary.webp",
+      "width": 500,
+      "height": 716,
+      "label": "책 표지 · 알에이치코리아(RHK)",
+      "creator": "앤디 위어"
+    },
+    "archive-judy": {
+      "title": "쥬디 할머니",
+      "isbn": "9791141615055",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=383333321",
+      "local": "./assets/covers/history/judy-grandma.webp",
+      "width": 500,
+      "height": 755,
+      "label": "책 표지 · 문학동네",
+      "creator": "박완서"
+    },
+    "big-sleep": {
+      "title": "빅 슬립",
+      "isbn": "9788956050898",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=454026",
+      "local": "./assets/covers/mentions/the-big-sleep.webp",
+      "width": 480,
+      "height": 712,
+      "label": "책 표지 · 북하우스 · 레이먼드 챈들러 선집 1 · 2004년판",
+      "creator": "레이먼드 챈들러"
+    },
+    "lecture": {
+      "title": "강의",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ISBN=8971992026",
+      "local": "./assets/covers/mentions/lecture.webp",
+      "width": 500,
+      "height": 740,
+      "label": "책 표지 · 돌베개",
+      "creator": "신영복",
+      "isbn": "9788971992029"
+    },
+    "thinking": {
+      "title": "생각에 관한 생각",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=140135544",
+      "local": "./assets/covers/mentions/thinking-fast-and-slow.webp",
+      "width": 500,
+      "height": 775,
+      "label": "책 표지 · 김영사",
+      "creator": "대니얼 카너먼",
+      "isbn": "9788934981213"
+    },
+    "blank-page": {
+      "title": "백지 앞에서",
+      "page": "https://www.aladin.co.kr/shop/wproduct.aspx?itemid=391370049",
+      "local": "./assets/covers/mentions/before-the-blank-page.webp",
+      "width": 500,
+      "height": 752,
+      "label": "책 표지 · 문학동네",
+      "creator": "최은영",
+      "isbn": "9791141603373"
+    },
+    "arrival": {
+      "title": "컨택트",
+      "page": "https://www.cinecube.co.kr/cinema/view/735",
+      "local": "./assets/posters/arrival-2016.webp",
+      "width": 593,
+      "height": 850,
+      "label": "영화 포스터 · 2016년 영화",
+      "creator": "드니 빌뇌브"
     }
   },
   "mentions": [
@@ -405,12 +633,140 @@ window.BOOK_CLUB = {
       "timestamp": null,
       "sourceLabel": "10월 후보 추천",
       "kind": "candidate-suggestion"
+    },
+    {
+      "id": "jul-candidate-algernon-book",
+      "workId": "algernon-book",
+      "meetingId": "2025-07",
+      "roles": [
+        "candidate"
+      ],
+      "context": "후보",
+      "summary": "장르소설적인 재미보다 감동과 여운이 크게 남았고, 인생 책 스토너에 견줄 만큼 감동을 느껴 추천한 후보.",
+      "detail": "그달에는 『앨저넌에게 꽃을』을 함께 읽기로 정했습니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "2025년 7월 후보 소개",
+      "kind": "candidate-record"
+    },
+    {
+      "id": "jul-candidate-big-sleep-book",
+      "workId": "big-sleep-book",
+      "meetingId": "2025-07",
+      "roles": [
+        "candidate"
+      ],
+      "context": "후보",
+      "summary": "기나긴 이별을 읽고 작가의 문체와 분위기, 주인공에 감탄해서 이번에는 빅 슬립을 읽어보고 싶어 추천한 후보.",
+      "detail": "그달에는 『앨저넌에게 꽃을』을 함께 읽기로 정했습니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "2025년 7월 후보 소개",
+      "kind": "candidate-record"
+    },
+    {
+      "id": "jul-candidate-namiya-book",
+      "workId": "namiya-book",
+      "meetingId": "2025-07",
+      "roles": [
+        "candidate"
+      ],
+      "context": "후보",
+      "summary": "용의자 X의 헌신 대신 판타지 계열로 구색을 맞추고, 유명하지만 아직 읽지 않아 읽어보고 싶어 추천한 후보.",
+      "detail": "그달에는 『앨저넌에게 꽃을』을 함께 읽기로 정했습니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "2025년 7월 후보 소개",
+      "kind": "candidate-record"
+    },
+    {
+      "id": "sep-selected-namiya",
+      "workId": "namiya-book",
+      "meetingId": "2026-09",
+      "roles": [],
+      "context": "함께 읽음",
+      "summary": "9월에 함께 읽고 토론한 책입니다.",
+      "detail": "따로 읽히던 에피소드가 나중에 연결되는 구성이 몰입을 만들었습니다. 세계가 확장되며 앞의 이야기를 다시 보게 되는 경험을 『진격의 거인』과 비교했습니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "9월 15일 토론 기록",
+      "kind": "selected-discussion"
+    },
+    {
+      "id": "shared-lecture-book",
+      "workId": "lecture-book",
+      "meetingId": null,
+      "roles": [
+        "mention"
+      ],
+      "context": "언급",
+      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "detail": "",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "모임에서 언급된 작품",
+      "kind": "remembered"
+    },
+    {
+      "id": "shared-thinking-book",
+      "workId": "thinking-book",
+      "meetingId": null,
+      "roles": [
+        "mention"
+      ],
+      "context": "언급",
+      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "detail": "",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "모임에서 언급된 작품",
+      "kind": "remembered"
+    },
+    {
+      "id": "shared-arrival-film",
+      "workId": "arrival-film",
+      "meetingId": null,
+      "roles": [
+        "mention"
+      ],
+      "context": "언급",
+      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "detail": "테드 창의 단편 Story of Your Life를 원작으로 한 영화입니다.",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "모임에서 언급된 작품",
+      "kind": "remembered"
+    },
+    {
+      "id": "shared-blank-page-book",
+      "workId": "blank-page-book",
+      "meetingId": null,
+      "roles": [
+        "mention"
+      ],
+      "context": "언급",
+      "summary": "함께 나눈 작품으로 소개했습니다.",
+      "detail": "",
+      "people": [],
+      "timestamp": null,
+      "sourceLabel": "모임에서 언급된 작품",
+      "kind": "remembered"
     }
   ],
   "selections": [
     {
       "workId": "hitler-book",
       "meetingId": "2026-10",
+      "status": "selected"
+    },
+    {
+      "workId": "algernon-book",
+      "meetingId": "2025-07",
+      "status": "selected"
+    },
+    {
+      "workId": "namiya-book",
+      "meetingId": "2026-09",
       "status": "selected"
     }
   ],
@@ -426,6 +782,13 @@ window.BOOK_CLUB = {
       "tab": "october",
       "section": "candidates",
       "state": "before-meeting"
+    },
+    "2025-07": {
+      "label": "2025년 7월",
+      "tab": "history",
+      "section": "history",
+      "state": "selection-history",
+      "linkLabel": "지난 선정작 보기"
     }
   },
   "participants": {
@@ -440,6 +803,109 @@ window.BOOK_CLUB = {
     "hj": {
       "displayName": "앤님",
       "avatar": "./assets/avatars/anne.svg"
+    },
+    "mj": {
+      "displayName": "모모님"
     }
-  }
+  },
+  "selectionHistory": [
+    {
+      "id": "farewell",
+      "month": "2025-02",
+      "title": "작별하지 않는다",
+      "recommenderId": null,
+      "coverKey": "archive-farewell"
+    },
+    {
+      "id": "short-life",
+      "month": "2025-03",
+      "title": "인생의 짧음에 관하여",
+      "recommenderId": "hj",
+      "coverKey": "archive-short-life"
+    },
+    {
+      "id": "work-joy",
+      "month": "2025-04",
+      "title": "일의 기쁨과 슬픔",
+      "recommenderId": "hs",
+      "coverKey": "archive-work-joy"
+    },
+    {
+      "id": "pagwa",
+      "month": "2025-05",
+      "title": "파과",
+      "recommenderId": "mj",
+      "coverKey": "archive-pagwa"
+    },
+    {
+      "id": "algernon",
+      "month": "2025-07",
+      "title": "앨저넌에게 꽃을",
+      "recommenderId": "sh",
+      "coverKey": "archive-algernon"
+    },
+    {
+      "id": "wuthering",
+      "month": "2025-09",
+      "title": "폭풍의 언덕",
+      "recommenderId": "hj",
+      "coverKey": "archive-wuthering"
+    },
+    {
+      "id": "mermaid",
+      "month": "2025-10",
+      "title": "인어 사냥",
+      "recommenderId": "hs",
+      "coverKey": "archive-mermaid"
+    },
+    {
+      "id": "factfulness",
+      "month": "2025-11",
+      "title": "팩트풀니스",
+      "recommenderId": "sh",
+      "coverKey": "archive-factfulness"
+    },
+    {
+      "id": "dickens-history",
+      "month": "2026-01",
+      "title": "찰스 디킨스의 영국사 산책",
+      "recommenderId": "hj",
+      "coverKey": "archive-dickens-history"
+    },
+    {
+      "id": "write-book",
+      "month": "2026-02",
+      "title": "책 한번 써봅시다",
+      "recommenderId": "hs",
+      "coverKey": "archive-write-book"
+    },
+    {
+      "id": "homo-deus",
+      "month": "2026-03",
+      "title": "호모 데우스",
+      "recommenderId": "sh",
+      "coverKey": "archive-homo-deus"
+    },
+    {
+      "id": "judy",
+      "month": "2026-07",
+      "title": "쥬디 할머니",
+      "recommenderId": "hj",
+      "coverKey": "archive-judy"
+    },
+    {
+      "id": "hail-mary",
+      "month": "2026-08",
+      "title": "프로젝트 헤일메리",
+      "recommenderId": "hs",
+      "coverKey": "archive-hail-mary"
+    },
+    {
+      "id": "namiya",
+      "month": "2026-09",
+      "title": "나미야 잡화점의 기적",
+      "recommenderId": "sh",
+      "coverKey": "namiya"
+    }
+  ]
 };
