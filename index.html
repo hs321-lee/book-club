@@ -9,18 +9,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=20261014-layout">
-  <script src="./data.js?v=20261014-layout" defer></script>
-  <script src="./app.js?v=20261014-layout" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=20261015-home">
+  <script src="./data.js?v=20261015-home" defer></script>
+  <script src="./app.js?v=20261015-home" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
   <header class="masthead container">
-    <p class="edition">함께 읽는 시간 · 2026 가을</p>
-    <a class="wordmark" href="#september" aria-label="책 사이, 9월 모임">책 사이<span class="wordmark-dot" aria-hidden="true">.</span></a>
+    <p class="edition"><span class="season-dot" aria-hidden="true"></span>함께 읽는 시간 · 2026 가을</p>
+    <a class="wordmark" href="#home" aria-label="책 사이, 홈">책 사이<span class="wordmark-dot" aria-hidden="true">.</span></a>
     <p class="mast-description">읽은 책보다 오래 남는, 나눈 이야기.</p>
     <nav class="tabs" role="tablist" aria-label="독서모임 기록">
-      <button id="tab-september" role="tab" aria-selected="true" aria-controls="september" data-tab="september">9월 모임</button>
+      <button id="tab-home" role="tab" aria-selected="true" aria-controls="home" data-tab="home">홈</button>
+      <button id="tab-september" role="tab" aria-selected="false" aria-controls="september" tabindex="-1" data-tab="september">9월 모임</button>
       <button id="tab-october" role="tab" aria-selected="false" aria-controls="october" tabindex="-1" data-tab="october">10월 모임</button>
       <button id="tab-works" role="tab" aria-selected="false" aria-controls="works" tabindex="-1" data-tab="works">함께 볼 작품</button>
       <button id="tab-history" role="tab" aria-selected="false" aria-controls="history" tabindex="-1" data-tab="history">지난 선정작</button>
@@ -31,7 +32,36 @@
       <div class="book-detail-heading"><h2 id="book-detail-title" tabindex="-1"></h2><button id="book-detail-close" class="outline-button" type="button">상세 닫기 <span aria-hidden="true">×</span></button></div>
       <div id="book-detail-body" class="book-detail-body"></div>
     </section>
-    <section id="september" role="tabpanel" aria-labelledby="tab-september">
+    <section id="home" role="tabpanel" aria-labelledby="tab-home">
+      <div class="home-hero">
+        <div class="hero-copy">
+          <p id="home-since" class="meeting-meta"></p>
+          <h1>한 달에 한 권,<br>서로의 시선을 남깁니다.</h1>
+          <p class="hero-lede">같은 책을 읽고도 다르게 남은 문장들.<br>모임에서 나눈 이야기와 함께 읽은 책을 모았습니다.</p>
+          <dl id="home-stats" class="home-stats"></dl>
+        </div>
+        <article class="now-reading" aria-labelledby="now-reading-title">
+          <p class="now-reading-label"><span class="season-dot" aria-hidden="true"></span><span id="now-reading-label"></span></p>
+          <button class="cover-trigger now-reading-cover" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span></button>
+          <div class="now-reading-copy">
+            <h2 id="now-reading-title">히틀러의 음식을 먹는 여자들</h2>
+            <p class="muted">로셀라 포스토리노 · 모임 전, 함께 읽는 중</p>
+            <button class="outline-button season-button" data-go="october">10월 모임 보기 →</button>
+          </div>
+        </article>
+      </div>
+      <section class="home-section" aria-labelledby="home-shelf-title">
+        <div class="home-section-heading"><h2 id="home-shelf-title">지금까지 함께 읽은 책</h2><button class="link-button" data-go="history">지난 선정작 전체 보기 →</button></div>
+        <ol id="home-shelf" class="home-shelf"></ol>
+      </section>
+      <section class="home-section" aria-labelledby="home-members-title">
+        <div class="home-section-heading"><h2 id="home-members-title">함께 읽는 사람들</h2></div>
+        <ul id="home-members" class="home-members"></ul>
+        <p class="source-note">추천 수는 지난 선정작 기록에서 추천자가 확인된 책만 셉니다.</p>
+      </section>
+      <aside class="next-meeting home-recent" aria-labelledby="home-recent-title"><div><span class="muted">최근 모임 · 2026년 9월 15일</span><h2 id="home-recent-title">나미야 잡화점의 기적, 세 개의 시선</h2><p>흩어진 에피소드가 만나는 순간부터 사라지는 동네의 가게까지 이야기했습니다.</p></div><button class="outline-button" data-go="september">9월 토론 기록 보기 →</button></aside>
+    </section>
+    <section id="september" role="tabpanel" aria-labelledby="tab-september" hidden>
       <div class="meeting-hero">
         <div class="hero-copy">
           <p class="meeting-meta"><time datetime="2026-09-15">2026년 9월 15일</time><span>토론 기록</span></p>
@@ -82,7 +112,7 @@
       <div id="history-list" class="history-grid"></div>
       <details class="history-credits"><summary>표지 출처</summary><ul id="history-sources"></ul></details>
     </section>
-    <noscript><p class="quiet-note">이 페이지의 모임 전환과 작품 검색은 JavaScript를 사용합니다. JavaScript를 켜면 10월 모임, 소개된 작품과 지난 선정작도 볼 수 있습니다.</p></noscript>
+    <noscript><p class="quiet-note">이 페이지의 모임 전환과 작품 검색은 JavaScript를 사용합니다. JavaScript를 켜면 9월·10월 모임, 소개된 작품과 지난 선정작도 볼 수 있습니다.</p></noscript>
   </main>
   <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 2026.09.15 모임 녹음 · 10월 후보 검토 메모</p></footer>
 </body>

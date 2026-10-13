@@ -23,10 +23,67 @@
     if (visitedScenes.has(panel.id)) return;
     visitedScenes.add(panel.id);
     const copy = panel.querySelector('.hero-copy') || panel.querySelector('.works-intro');
-    const book = panel.querySelector('.featured-book');
+    const book = panel.querySelector('.featured-book, .now-reading');
     playMotion(copy, [{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}], {duration:480});
     playMotion(book, [{opacity:0,transform:'translateY(20px) rotate(-3deg)'},{opacity:1,transform:'none'}], {duration:580,delay:70});
     panel.querySelectorAll('.voice-preview-item').forEach((voice,index) => playMotion(voice, [{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}], {duration:420,delay:160+index*70}));
+    panel.querySelectorAll('[data-count]').forEach(countUp);
+    revealWithin(panel);
+  }
+  // Counts settle on their final value; motion only replays the climb from zero.
+  function countUp(element) {
+    const target = Number(element.dataset.count);
+    element.textContent = String(target);
+    if (motionPreference?.matches || !window.requestAnimationFrame || !target) return;
+    const start = performance.now();
+    const step = now => {
+      const progress = Math.min(1, (now - start) / 900);
+      element.textContent = String(Math.round(target * (1 - Math.pow(1 - progress, 3))));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  // Items already on screen enter with the scene; the rest enter once as they scroll into view.
+  const revealFrames = {
+    shelf: {frames:[{opacity:0,transform:'translateY(-28px) rotate(-7deg)'},{opacity:1,transform:'none'}], options:{duration:560,easing:'cubic-bezier(.34,1.36,.64,1)'}, gap:45},
+    rise: {frames:[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}], options:{duration:480}, gap:60}
+  };
+  function reveal(element, index) {
+    const style = revealFrames[element.dataset.reveal];
+    if (style) playMotion(element, style.frames, {...style.options, delay:Math.min(index, 12) * style.gap});
+  }
+  const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+    entries.filter(entry => entry.isIntersecting).forEach((entry, index) => { revealObserver.unobserve(entry.target); reveal(entry.target, index); });
+  }, {rootMargin:'0px 0px 12% 0px'}) : null;
+  function revealWithin(panel) {
+    if (motionPreference?.matches) return;
+    let index = 0;
+    panel.querySelectorAll('[data-reveal]').forEach(element => {
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) reveal(element, index++);
+      else revealObserver?.observe(element);
+    });
+  }
+  // A chosen cover travels into the detail view (and back) where View Transitions exist; elsewhere the detail appears at once.
+  const canMorph = () => Boolean(document.startViewTransition) && !motionPreference?.matches;
+  function coverImageIn(root, requireLoaded = true) {
+    const image = root?.querySelector?.('img.cover-img');
+    return image && !image.hidden && (!requireLoaded || image.naturalWidth) ? image : null;
+  }
+  function morphCover(fromImage, update, findTarget) {
+    let target = null;
+    fromImage.style.viewTransitionName = 'book-cover';
+    const transition = document.startViewTransition(async () => {
+      fromImage.style.viewTransitionName = '';
+      update();
+      target = findTarget();
+      if (!target) return;
+      target.style.viewTransitionName = 'book-cover';
+      target.loading = 'eager';
+      await Promise.race([target.decode?.().catch(() => {}), new Promise(resolve => setTimeout(resolve, 300))]);
+    });
+    const clear = () => { fromImage.style.viewTransitionName = ''; if (target) target.style.viewTransitionName = ''; };
+    transition.finished.then(clear, clear);
   }
   function stopMotionWithin(root) {
     runningMotion.forEach((animation, element) => {
@@ -71,6 +128,15 @@
   let detailOpener = null;
   function closeBookDetail(returnFocus = true) {
     if (detailPanel.hidden) return;
+    if (returnFocus && canMorph()) {
+      const fromImage = coverImageIn(detailPanel.querySelector('.book-detail-cover'));
+      const opener = detailOpener?.isConnected ? detailOpener : null;
+      if (fromImage && coverImageIn(opener)) { morphCover(fromImage, () => finishClose(true, true), () => coverImageIn(opener)); return; }
+    }
+    finishClose(returnFocus, false);
+  }
+  function finishClose(returnFocus, morphing) {
+    if (detailPanel.hidden) return;
     const focusWasInside = detailPanel.contains(document.activeElement);
     detailPanel.hidden = true;
     stopMotionWithin(detailPanel);
@@ -78,11 +144,16 @@
     if (returnFocus) {
       const target = detailOpener?.isConnected ? detailOpener : document.querySelector('#main');
       target.focus({preventScroll:true});
-      target.scrollIntoView({block:'center',behavior:motionPreference?.matches ? 'auto' : 'smooth'});
+      target.scrollIntoView({block:'center',behavior:morphing || motionPreference?.matches ? 'auto' : 'smooth'});
     } else if (focusWasInside) document.querySelector('#main').focus({preventScroll:true});
     detailOpener = null;
   }
   function openBookDetail(work, opener, isIntro = false) {
+    const fromImage = canMorph() ? coverImageIn(opener) : null;
+    if (fromImage) morphCover(fromImage, () => renderBookDetail(work, opener, isIntro, true), () => coverImageIn(detailPanel.querySelector('.book-detail-cover'), false));
+    else renderBookDetail(work, opener, isIntro, false);
+  }
+  function renderBookDetail(work, opener, isIntro, morphing) {
     closeBookDetail(false);
     const mentions = isIntro ? [] : workMentions(work);
     document.querySelector('#book-detail-title').textContent = work.title;
@@ -92,9 +163,9 @@
     detailOpener = opener;
     detailPanel.hidden = false;
     opener.setAttribute('aria-expanded','true');
-    playMotion(document.querySelector('#book-detail-body'),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260});
+    if (!morphing) playMotion(document.querySelector('#book-detail-body'),[{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:260});
     document.querySelector('#book-detail-title').focus({preventScroll:true});
-    detailPanel.scrollIntoView({block:'start',behavior:motionPreference?.matches ? 'auto' : 'smooth'});
+    detailPanel.scrollIntoView({block:'start',behavior:morphing || motionPreference?.matches ? 'auto' : 'smooth'});
   }
   document.querySelector('#book-detail-close').addEventListener('click', () => closeBookDetail());
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !detailPanel.hidden) { event.preventDefault(); closeBookDetail(); } });
@@ -107,6 +178,25 @@
     const work = data.works.find(item => item.id === opener.dataset.workOpen);
     if (work) openBookDetail(work,opener);
   });
+  // One underline slides between masthead tabs; the selected tab keeps its own color and weight.
+  const tabList = document.querySelector('.masthead .tabs');
+  const tabIndicator = document.createElement('span');
+  tabIndicator.className = 'tabs-indicator';
+  tabIndicator.setAttribute('aria-hidden', 'true');
+  tabList.append(tabIndicator);
+  tabList.classList.add('has-indicator');
+  function moveTabIndicator(instant = false) {
+    const tab = tabs.find(item => item.getAttribute('aria-selected') === 'true');
+    if (!tab) return;
+    tabIndicator.classList.toggle('is-instant', instant || !tabIndicator.style.width);
+    tabIndicator.style.width = tab.offsetWidth + 'px';
+    tabIndicator.style.transform = `translateX(${tab.offsetLeft}px)`;
+    const left = tab.offsetLeft, right = left + tab.offsetWidth;
+    if (left < tabList.scrollLeft) tabList.scrollLeft = left - 16;
+    else if (right > tabList.scrollLeft + tabList.clientWidth) tabList.scrollLeft = right - tabList.clientWidth + 16;
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(() => moveTabIndicator(true)).observe(tabList);
+  document.fonts?.ready.then(() => moveTabIndicator(true));
   function showTab(id, updateHash = true) {
     if (!panels.some(p => p.id === id)) return;
     const changed = panels.find(panel => !panel.hidden)?.id !== id;
@@ -114,7 +204,8 @@
     tabs.forEach(tab => { const active = tab.dataset.tab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
     panels.forEach(panel => { if (panel.id !== id) stopMotionWithin(panel); panel.hidden = panel.id !== id; });
     if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id));
-    const tabTitles = {september:'9월 모임',october:'10월 모임',works:'함께 볼 작품',history:'지난 선정작'};
+    moveTabIndicator(!changed);
+    const tabTitles = {home:'홈',september:'9월 모임',october:'10월 모임',works:'함께 볼 작품',history:'지난 선정작'};
     document.title = `${tabTitles[id]} · 책 사이`;
     const panel = panels.find(item => item.id === id);
     if (changed && visitedScenes.has(id)) playMotion(panel,[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}]);
@@ -139,11 +230,11 @@
     else if (panels.some(p => p.id === id)) showTab(id, false);
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
-    else showTab('september', false);
+    else showTab('home', false);
   }
   window.addEventListener('hashchange', syncHash);
   window.addEventListener('popstate', syncHash);
-  document.querySelector('.wordmark').addEventListener('click', () => showTab('september', false));
+  document.querySelector('.wordmark').addEventListener('click', () => showTab('home', false));
   const voiceKeywords = {sh:'구조 · 무협',hs:'추억 · 연결',hj:'편지 · 동네'};
   document.querySelector('#voice-preview').innerHTML = data.people.map(person => `<a class="voice-preview-item" href="#people"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(voiceKeywords[person.participantId])}</small></span></a>`).join('');
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
@@ -156,11 +247,28 @@
     const recommender = participant ? `<span class="history-recommender"><img src="${escapeHTML(participant.avatar)}" width="24" height="24" alt=""><span>${escapeHTML(participant.displayName)} 추천</span></span>` : '';
     const content = `<span class="history-cover">${coverFrameMarkup(book.title,book.coverKey,'span')}</span><h2>${escapeHTML(book.title)}</h2><span class="history-meta"><span class="history-month">(${escapeHTML(month)})</span>${recommender}</span>`;
     const label = `${book.title} · ${book.month} 선정작${participant ? ' · ' + participant.displayName + ' 추천' : ''} · 도서 정보 · 새 창`;
-    return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
+    return `<article class="history-book" data-reveal="rise">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
   }).join('');
   document.querySelector('#history-sources').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
     return cover ? `<li><a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer">${escapeHTML(book.title)} · ${escapeHTML(cover.label)} ↗</a></li>` : '';
+  }).join('');
+  const pastSelections = data.selectionHistory;
+  const currentMeetingId = Object.keys(data.meetings).find(key => data.meetings[key].state === 'before-meeting');
+  const shortMonth = month => month.slice(2,4) + '.' + Number(month.slice(5));
+  const [firstYear, firstMonth] = pastSelections[0].month.split('-').map(Number);
+  const [nowYear, nowMonth] = (currentMeetingId || pastSelections.at(-1).month).split('-').map(Number);
+  const monthsTogether = (nowYear - firstYear) * 12 + (nowMonth - firstMonth);
+  const nowNumber = pastSelections.length + (currentMeetingId ? 1 : 0);
+  document.querySelector('#home-since').innerHTML = `<time datetime="${escapeHTML(pastSelections[0].month)}">${firstYear}년 ${firstMonth}월부터</time><span>${nowNumber}번째 책을 읽는 중</span>`;
+  document.querySelector('#now-reading-label').textContent = `지금 읽는 책 · ${nowMonth}월 · ${nowNumber}번째`;
+  const stats = [[pastSelections.length,'권','함께 읽은 책'],[Object.keys(data.participants).length,'명','함께 읽는 사람'],[monthsTogether,'개월','이어 온 시간']];
+  document.querySelector('#home-stats').innerHTML = stats.map(([value, unit, label]) => `<div><dt>${label}</dt><dd><span class="stat-value" data-count="${value}">${value}</span>${unit}</dd></div>`).join('');
+  document.querySelector('#home-shelf').innerHTML = pastSelections.map(book => `<li class="home-shelf-book" data-reveal="shelf">${coverFrameMarkup(book.title,book.coverKey,'span')}<span class="home-shelf-month">${escapeHTML(shortMonth(book.month))}</span></li>`).join('');
+  document.querySelector('#home-members').innerHTML = Object.entries(data.participants).map(([id, participant]) => {
+    const picks = pastSelections.filter(book => book.recommenderId === id);
+    const covers = picks.map(book => { const cover = data.covers[book.coverKey]; return cover ? `<img src="${escapeHTML(cover.local)}" width="28" height="40" alt="" loading="lazy">` : ''; }).join('');
+    return `<li class="home-member" data-reveal="rise"><img class="home-member-avatar" src="${escapeHTML(participant.avatar)}" width="56" height="56" alt=""><div><h3>${escapeHTML(participant.displayName)}</h3><p class="muted">선정작 추천 ${picks.length}권</p><span class="home-member-picks" aria-hidden="true">${covers}</span></div></li>`;
   }).join('');
   const search = document.querySelector('#search');
   const media = document.querySelector('#media');
