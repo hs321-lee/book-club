@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="한 권을 읽고, 서로의 시선을 남깁니다. 9월의 나미야 잡화점의 기적 토론과 10월의 독서 준비, 모임에서 소개된 작품을 모았습니다.">
+  <meta name="theme-color" content="#f6f2e9">
+  <title>책 사이 · 독서모임</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./data.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="masthead container">
+    <p class="edition">함께 읽는 시간 · 2026 가을</p>
+    <a class="wordmark" href="#september" aria-label="책 사이, 9월 모임">책 사이<span class="wordmark-dot" aria-hidden="true">.</span></a>
+    <p class="mast-description">읽은 책보다 오래 남는, 나눈 이야기.</p>
+    <nav class="tabs" role="tablist" aria-label="독서모임 기록">
+      <button id="tab-september" role="tab" aria-selected="true" aria-controls="september" data-tab="september">9월 모임</button>
+      <button id="tab-october" role="tab" aria-selected="false" aria-controls="october" tabindex="-1" data-tab="october">10월 모임</button>
+      <button id="tab-works" role="tab" aria-selected="false" aria-controls="works" tabindex="-1" data-tab="works">함께 볼 작품</button>
+    </nav>
+  </header>
+  <main id="main" class="container" tabindex="-1">
+    <section id="september" role="tabpanel" aria-labelledby="tab-september">
+      <div class="meeting-hero">
+        <div class="hero-copy">
+          <p class="meeting-meta"><time datetime="2026-09-15">2026년 9월 15일</time><span>토론 기록</span></p>
+          <h1>한 권의 책,<br>세 개의 시선.</h1>
+          <p class="hero-lede">누군가는 이야기의 연결을,<br>누군가는 읽는 여유를,<br>누군가는 사라지는 동네를 떠올렸습니다.</p>
+          <a class="text-link" href="#discussion">나눈 이야기 읽기 <span aria-hidden="true">↓</span></a>
+        </div>
+        <figure class="featured-book">
+          <div class="book-art namiya" role="img" aria-label="나미야 잡화점의 기적 제목으로 만든 장식 이미지. 실제 책 표지가 아닙니다.">
+            <span class="art-author">히가시노 게이고</span><span class="art-title">나미야<br>잡화점의<br>기적</span><span class="art-rule" aria-hidden="true"></span><span class="art-caption">서로 다른 시간이 만나는 곳</span>
+          </div>
+          <figcaption><strong>9월에 함께 읽은 책</strong><span>나미야 잡화점의 기적 · 히가시노 게이고</span><small>표지 대신 제목으로 구성한 이미지입니다.</small></figcaption>
+        </figure>
+      </div>
+      <section class="meeting-summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">읽고 나서, 대화는 이렇게 흘렀습니다.</h2>
+        <p>술술 읽히는 소설이라는 첫인상에서 시작해, 흩어진 에피소드가 만나는 순간과 교훈을 전하는 방식까지 이야기했습니다. 책 속 잡화점은 어느새 우리 동네의 가게와 오래된 편지를 떠올리게 했습니다.</p>
+        <div class="quick-links"><a href="#discussion">주제별 토론</a><a href="#people">세 사람의 생각</a><button class="link-button" data-go="works">소개된 작품 보기 ↗</button></div>
+      </section>
+      <section id="discussion" class="section" aria-labelledby="discussion-title">
+        <div class="section-heading"><h2 id="discussion-title">우리가 나눈 이야기</h2><p>결론보다, 서로 다르게 읽은 지점을 남겼습니다.</p></div>
+        <div id="topics" class="topic-list"></div>
+      </section>
+      <section id="people" class="section" aria-labelledby="people-title">
+        <div class="section-heading"><h2 id="people-title">세 사람의 생각</h2><p>모임 녹음에서 각자의 이야기를 다시 엮었습니다.</p></div>
+        <div id="people-list" class="people-list"></div>
+        <p class="source-note">각 글은 9월 15일 토론 녹음의 발언을 요약한 기록입니다. 직접 인용문이나 모임 전 작성한 독서노트는 아닙니다.</p>
+      </section>
+      <aside class="next-meeting"><div><span class="muted">이어서 읽기</span><h2>10월에는 다른 질문을 만납니다.</h2><p>선정한 책과 함께 검토했던 후보를 모았습니다.</p></div><button class="outline-button" data-go="october">10월 모임 보기 →</button></aside>
+    </section>
+    <section id="october" role="tabpanel" aria-labelledby="tab-october" hidden>
+      <div class="meeting-hero october-hero">
+        <div class="hero-copy"><p class="meeting-meta">2026년 10월<span>모임 전</span></p><h1>다음 이야기를<br>읽는 중입니다.</h1><p class="hero-lede">이번에 함께 읽을 책은<br><strong>히틀러의 음식을 먹는 여자들</strong>입니다.</p><p class="muted">토론은 아직 열리지 않았습니다.<br>모임에서 나눈 생각은 이후에 이곳에 남깁니다.</p><a class="text-link" href="#candidates">함께 검토했던 책 보기 ↓</a></div>
+        <figure class="featured-book"><div class="book-art hitler" role="img" aria-label="히틀러의 음식을 먹는 여자들 제목으로 만든 장식 이미지. 실제 책 표지가 아닙니다."><span class="art-author">10월에 함께 읽을 책</span><span class="art-title">히틀러의<br>음식을 먹는<br>여자들</span><span class="art-rule" aria-hidden="true"></span><span class="art-caption">선정 완료 · 모임 전</span></div><figcaption><strong>10월 선정 도서</strong><span>히틀러의 음식을 먹는 여자들</span><small>표지 대신 제목으로 구성한 이미지입니다.</small></figcaption></figure>
+      </div>
+      <section id="candidates" class="section" aria-labelledby="candidates-title"><div class="section-heading"><h2 id="candidates-title">같이 펼쳐 본 후보들</h2><p>10월 후보로 검토했던 네 권. 선택의 과정도 기록으로 남깁니다.</p></div><p class="selection-note">연휴와 여행 사이에 읽기 좋은 책을 찾았습니다. 『나미야 잡화점의 기적』에서 이어지는 정서와, 재미있게 몰입할 수 있는 이야기를 함께 고려했습니다. 아래 설명은 선정 과정의 메모이며, 모임의 투표 결과나 토론 요약이 아닙니다.</p><div id="candidate-list" class="candidate-grid"></div></section>
+      <div class="quiet-note"><h2>토론 기록은 모임 뒤에</h2><p>아직 개인별 준비 글이나 토론 내용은 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
+    </section>
+    <section id="works" role="tabpanel" aria-labelledby="tab-works" hidden>
+      <div class="works-intro"><p class="meeting-meta">9월 모임에서 꺼낸 작품들</p><h1>책 밖으로 이어진<br>이야기.</h1><p>추천하고 싶었던 책, 비교하며 떠올린 작품,<br>오래전 읽었던 이야기까지 한곳에 모았습니다.</p></div>
+      <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">작품 찾기</label><input id="search" type="search" placeholder="제목, 작가, 이야기" autocomplete="off"></div><div><label for="media">분야</label><select id="media"><option value="all">전체 분야</option><option value="book">책</option><option value="movie">영화</option><option value="anime">만화·애니</option><option value="drama">드라마</option></select></div><div><label for="context">언급한 이유</label><select id="context"><option value="all">모든 이야기</option><option value="추천">추천</option><option value="비교">비교</option><option value="추억">추억</option><option value="영화화 언급">영화화 언급</option></select></div><button id="reset" class="outline-button" type="reset">초기화</button></form>
+      <p id="result-count" class="result-count" role="status" aria-live="polite"></p><div id="work-list" class="work-grid"></div><div id="empty-state" class="quiet-note" hidden><h2>아직 일치하는 작품이 없어요.</h2><p>검색어를 바꾸거나 분야와 언급 이유를 전체로 선택해 보세요. 제목이 정확하지 않은 영화·드라마는 확인 후 추가합니다.</p><button class="outline-button" id="empty-reset">전체 작품 보기</button></div>
+      <p class="source-note">9월 15일 녹음에서 작품명과 언급 맥락을 확인한 항목입니다. 『용의자 X의 헌신』 영화는 정확한 판본이 특정되지 않아 원작과의 관계만 기록했습니다. 작품 이미지와 검색 링크는 모임 기록을 읽는 데 도움을 주기 위한 것입니다.</p>
+    </section>
+    <noscript><p class="quiet-note">이 페이지의 모임 전환과 작품 검색은 JavaScript를 사용합니다. JavaScript를 켜면 10월 모임과 소개된 작품도 볼 수 있습니다.</p></noscript>
+  </main>
+  <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 2026.09.15 모임 녹음 · 10월 후보 검토 메모</p></footer>
+</body>
+</html>
