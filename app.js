@@ -22,13 +22,7 @@
   function playScene(panel) {
     if (visitedScenes.has(panel.id)) return;
     visitedScenes.add(panel.id);
-    const copy = panel.querySelector('.hero-copy') || panel.querySelector('.works-intro');
-    const book = panel.querySelector('.featured-book, .now-reading');
-    playMotion(copy, [{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'none'}], {duration:480});
-    playMotion(book, [{opacity:0,transform:'translateY(20px) rotate(-3deg)'},{opacity:1,transform:'none'}], {duration:580,delay:70});
-    panel.querySelectorAll('.voice-preview-item').forEach((voice,index) => playMotion(voice, [{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'none'}], {duration:420,delay:160+index*70}));
     panel.querySelectorAll('[data-count]').forEach(countUp);
-    revealWithin(panel);
   }
   // Counts settle on their final value; motion only replays the climb from zero.
   function countUp(element) {
@@ -43,30 +37,48 @@
     };
     requestAnimationFrame(step);
   }
-  // Items already on screen enter with the scene; the rest enter once as they scroll into view.
-  const revealFrames = {
-    rise: {frames:[{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}], options:{duration:480}, gap:60}
-  };
-  // The shelf enters as one unit: its books rise a little, in reading order, the first time it is seen.
-  function revealShelf(shelf) {
-    [...shelf.children].forEach((book, index) => playMotion(book, [{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}], {duration:420, delay:index * 28}));
+  // Scroll reveal: titles, copy and cards rise 26px into place the first time they enter the viewport.
+  // Cards in one group follow each other by 80ms, and each group restarts its own count.
+  const revealRoot = document.documentElement;
+  const REVEAL_STEP_MS = 80, REVEAL_MAX_STEPS = 8;
+  function settleReveal(element) {
+    element.removeAttribute('data-reveal');
+    element.classList.remove('is-revealed');
+    element.style.removeProperty('--reveal-delay');
   }
-  function reveal(element, index) {
-    if (element.dataset.reveal === 'shelf') { revealShelf(element); return; }
-    const style = revealFrames[element.dataset.reveal];
-    if (style) playMotion(element, style.frames, {...style.options, delay:Math.min(index, 12) * style.gap});
+  function showReveal(element, delay = 0) {
+    if (!element.hasAttribute('data-reveal') || element.classList.contains('is-revealed')) return;
+    revealObserver?.unobserve(element);
+    element.style.setProperty('--reveal-delay', delay + 'ms');
+    element.classList.add('is-revealed');
+    setTimeout(() => settleReveal(element), 800 + delay + 100);
   }
-  const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
-    entries.filter(entry => entry.isIntersecting).forEach((entry, index) => { revealObserver.unobserve(entry.target); reveal(entry.target, index); });
-  }, {rootMargin:'0px 0px 12% 0px'}) : null;
-  function revealWithin(panel) {
-    if (motionPreference?.matches) return;
-    let index = 0;
-    panel.querySelectorAll('[data-reveal]').forEach(element => {
-      const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) reveal(element, index++);
-      else revealObserver?.observe(element);
+  const revealObserver = revealRoot.classList.contains('reveal-on') ? new IntersectionObserver(entries => {
+    const groups = new Map();
+    entries.filter(entry => entry.isIntersecting).forEach(entry => {
+      const group = entry.target.parentElement?.hasAttribute('data-reveal-group') ? entry.target.parentElement : entry.target;
+      if (!groups.has(group)) groups.set(group, []);
+      groups.get(group).push(entry.target);
     });
+    groups.forEach((items, group) => {
+      // A horizontal shelf enters as one row, including covers still scrolled off to the side.
+      if (group.dataset.revealGroup === 'together') items = [...group.children].filter(child => child.hasAttribute('data-reveal'));
+      items.sort((a, b) => a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+      items.forEach((item, index) => showReveal(item, Math.min(index, REVEAL_MAX_STEPS) * REVEAL_STEP_MS));
+    });
+  }, {rootMargin:'0px 0px -8% 0px'}) : null;
+  function revealEverything() {
+    revealRoot.classList.remove('reveal-on');
+    revealObserver?.disconnect();
+    document.querySelectorAll('[data-reveal]').forEach(settleReveal);
+  }
+  function startReveal() {
+    document.querySelectorAll('[data-reveal-group]').forEach(group => [...group.children].forEach(child => child.setAttribute('data-reveal', '')));
+    if (!revealObserver) { document.querySelectorAll('[data-reveal]').forEach(settleReveal); return; }
+    document.querySelectorAll('[data-reveal]').forEach(element => revealObserver.observe(element));
+    // Keyboard focus never lands on something still invisible.
+    document.addEventListener('focusin', event => { const hidden = event.target.closest?.('[data-reveal]'); if (hidden) showReveal(hidden); });
+    motionPreference?.addEventListener?.('change', () => { if (motionPreference.matches) revealEverything(); });
   }
   // A chosen cover travels into the detail view (and back) where View Transitions exist; elsewhere the detail appears at once.
   const canMorph = () => Boolean(document.startViewTransition) && !motionPreference?.matches;
@@ -126,7 +138,7 @@
   });
   let activeRole = 'all';
   const roleHashes = {all:'works',candidate:'works-candidates',recommendation:'works-recommendations',mention:'works-mentions'};
-  const tabs = [...document.querySelectorAll('.masthead .tabs [role="tab"]')];
+  const tabs = [...document.querySelectorAll('.menu-bar .tabs [role="tab"]')];
   const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
   const detailPanel = document.querySelector('#book-detail');
   let detailOpener = null;
@@ -182,8 +194,8 @@
     const work = data.works.find(item => item.id === opener.dataset.workOpen);
     if (work) openBookDetail(work,opener);
   });
-  // One underline slides between masthead tabs; the selected tab keeps its own color and weight.
-  const tabList = document.querySelector('.masthead .tabs');
+  // One underline slides between menu tabs; the selected tab keeps its own color and weight.
+  const tabList = document.querySelector('.menu-bar .tabs');
   const tabIndicator = document.createElement('span');
   tabIndicator.className = 'tabs-indicator';
   tabIndicator.setAttribute('aria-hidden', 'true');
@@ -275,7 +287,7 @@
     const recommender = participant ? `<span class="history-recommender"><img src="${escapeHTML(participant.avatar)}" width="24" height="24" alt=""><span>${escapeHTML(participant.displayName)} 추천</span></span>` : '';
     const content = `<span class="history-cover">${coverFrameMarkup(book.title,book.coverKey,'span')}</span><h2>${escapeHTML(book.title)}</h2><span class="history-meta"><span class="history-month">(${escapeHTML(month)})</span>${recommender}</span>`;
     const label = `${book.title} · ${book.month} 선정작${participant ? ' · ' + participant.displayName + ' 추천' : ''} · 도서 정보 · 새 창`;
-    return `<article class="history-book" data-reveal="rise">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
+    return `<article class="history-book">${cover ? `<a href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(label)}">${content}</a>` : content}</article>`;
   }).join('');
   document.querySelector('#history-sources').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
@@ -296,7 +308,7 @@
   document.querySelector('#home-members').innerHTML = Object.entries(data.participants).map(([id, participant]) => {
     const picks = pastSelections.filter(book => book.recommenderId === id);
     const covers = picks.map(book => { const cover = data.covers[book.coverKey]; return cover ? `<img src="${escapeHTML(cover.local)}" width="28" height="40" alt="" loading="lazy">` : ''; }).join('');
-    return `<li class="home-member" data-reveal="rise"><img class="home-member-avatar" src="${escapeHTML(participant.avatar)}" width="56" height="56" alt=""><div><h3>${escapeHTML(participant.displayName)}</h3><p class="muted">선정작 추천 ${picks.length}권</p><span class="home-member-picks" aria-hidden="true">${covers}</span></div></li>`;
+    return `<li class="home-member"><img class="home-member-avatar" src="${escapeHTML(participant.avatar)}" width="56" height="56" alt=""><div><h3>${escapeHTML(participant.displayName)}</h3><p class="muted">선정작 추천 ${picks.length}권</p><span class="home-member-picks" aria-hidden="true">${covers}</span></div></li>`;
   }).join('');
   const search = document.querySelector('#search');
   const media = document.querySelector('#media');
@@ -391,5 +403,10 @@
   document.querySelector('#filters').addEventListener('reset', event => { event.preventDefault(); resetFilters(); });
   document.querySelector('#empty-reset').addEventListener('click', () => { resetFilters(); search.focus({preventScroll:true}); });
   renderWorks();
+  // The menu bar stays at the top; it gains a paper background and shadow once it is actually stuck.
+  const menuBar = document.querySelector('.menu-bar');
+  if ('IntersectionObserver' in window) new IntersectionObserver(([entry]) => menuBar.classList.toggle('is-stuck', !entry.isIntersecting)).observe(document.querySelector('.menu-sentinel'));
+  startReveal();
+  window.bookClubReady = true;
   syncHash();
 })();
