@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=20261014-records2">
+  <link rel="stylesheet" href="./styles.css?v=20261014-records3">
   <script>
     // Hide reveal targets before first paint; app.js marks itself ready, otherwise content is shown again.
     if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -17,8 +17,8 @@
       setTimeout(() => { if (!window.bookClubReady) document.documentElement.classList.remove('reveal-on'); }, 3000);
     }
   </script>
-  <script src="./data.js?v=20261014-records2" defer></script>
-  <script src="./app.js?v=20261014-records2" defer></script>
+  <script src="./data.js?v=20261014-records3" defer></script>
+  <script src="./app.js?v=20261014-records3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -158,7 +158,7 @@
         <figure class="featured-book" data-reveal><button class="cover-trigger hero-book-button" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사" loading="lazy"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button><figcaption><strong>10월 선정 도서</strong><span>히틀러의 음식을 먹는 여자들</span><a class="cover-source" href="https://www.aladin.co.kr/shop/wproduct.aspx?itemid=217753819" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
       </div>
       <aside class="next-meeting" data-reveal aria-labelledby="mario-presentation-title"><div><span class="muted">모임 전 개인 발표자료</span><h2 id="mario-presentation-title">마리오님의 읽다가 멈춘 지점들</h2><p>인물의 이름에서 시작해, 로자의 회고와 우리 삶의 전환점까지.</p></div><a class="outline-button" href="./mario/2026-10/">마리오님 발표 보기 →</a></aside>
-      <section id="candidates" class="section" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading" data-reveal><h2 id="candidates-title">같이 펼쳐 본 후보들</h2><p>10월 후보로 검토했던 네 권. 선택의 과정도 기록으로 남깁니다.</p></div><p class="selection-note" data-reveal><span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다. 선정되지 않은 후보도 작품 책장에 계속 남겨 둡니다.</p><div id="candidate-list" data-reveal-group class="candidate-grid"></div></section>
+      <section id="candidates" class="section record-candidates" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading" data-reveal><h2 id="candidates-title">함께 검토했던 책</h2><p>2026년 10월 모임의 후보 네 권입니다. <span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다.</p></div><ul id="candidate-list" class="record-candidate-shelf" data-reveal-group></ul></section>
       <div class="quiet-note" data-reveal><h2>토론 기록은 모임 뒤에</h2><p>마리오님의 개인 발표자료를 따로 읽을 수 있습니다. 모임에서 나눈 토론 기록은 아직 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
     </section>
     <section id="meeting-archive" role="tabpanel" aria-labelledby="month-archive" hidden>

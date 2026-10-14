@@ -3,7 +3,7 @@
  * nav: N6 masthead · footer: Ft2 inline rule · H2 split 7/5 negative space
  * audience: book-club members · use: revisit a meeting · enrichment: typographic book art
  */
-@import url('./tokens.css?v=20261014-records2');
+@import url('./tokens.css?v=20261014-records3');
 * { box-sizing: border-box; }
 html { overflow-x: clip; scroll-padding-top: 4.75rem; }
 body { margin: 0; overflow-x: clip; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.75; word-break: keep-all; }
