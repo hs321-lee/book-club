@@ -216,16 +216,19 @@
   document.fonts?.ready.then(() => moveTabIndicator(true));
   // Meetings live in one tab; each month keeps its own id so #september and #october still link directly.
   const monthTabs = [...document.querySelectorAll('.month-tabs [role="tab"]')];
-  const monthPanels = monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+  const monthPanels = [...monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls'))), document.getElementById('october'), document.getElementById('meeting-archive')];
   const monthTitles = Object.fromEntries(Object.values(data.meetings).filter(meeting => monthPanels.some(panel => panel.id === meeting.tab)).map(meeting => [meeting.tab, meeting.label + ' 모임']));
-  let activeMonth = monthTabs[0]?.dataset.month;
+  Object.assign(monthTitles, {'september':'2026년 9월 토론 기록','first-meeting':'1회 토론 기록','october':'10월 준비','meeting-archive':'후보 아카이브'});
+  let activeMonth = 'september';
   function showMonth(month) {
     const changed = monthPanels.find(panel => !panel.hidden)?.id !== month;
     monthTabs.forEach(tab => { const active = tab.dataset.month === month; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
     monthPanels.forEach(panel => { if (panel.id !== month) stopMotionWithin(panel); panel.hidden = panel.id !== month; });
+    document.querySelector('#record-entry').hidden = !['september', 'first-meeting'].includes(month);
     return changed;
   }
   function showTab(id, updateHash = true) {
+    if (id === 'meetings' && !['september', 'first-meeting'].includes(activeMonth)) activeMonth = 'september';
     if (monthPanels.some(panel => panel.id === id)) { activeMonth = id; id = 'meetings'; }
     if (!panels.some(p => p.id === id)) return;
     const changed = panels.find(panel => !panel.hidden)?.id !== id;
@@ -263,12 +266,15 @@
       if (next !== undefined) { event.preventDefault(); showTab(tabs[next].dataset.tab); tabs[next].focus({preventScroll:true}); }
     });
   });
-  document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { const id = button.dataset.go; showTab(id); (monthTabs.find(tab => tab.dataset.month === id) || tabs.find(tab => tab.dataset.tab === id)).focus({preventScroll:true}); document.querySelector('.masthead').scrollIntoView({block:'start'}); }));
+  document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { const id = button.dataset.go; showTab(id); (monthTabs.find(tab => tab.dataset.month === id) || tabs.find(tab => tab.dataset.tab === id) || tabs.find(tab => tab.dataset.tab === 'meetings')).focus({preventScroll:true}); document.querySelector('.masthead').scrollIntoView({block:'start'}); }));
   function syncHash() {
     const id = location.hash.slice(1);
     const role = Object.keys(roleHashes).find(key => roleHashes[key] === id);
     if (role) { selectRole(role, false); showTab('works', false); }
     else if ([...panels, ...monthPanels].some(p => p.id === id)) showTab(id, false);
+    else if (id === 'previous') showTab('meeting-archive', false);
+    else if (id.startsWith('archive-') && data.candidateMeetings.some(meeting => meeting.meetingId === id.slice(8))) { showTab('meeting-archive', false); document.getElementById('candidates-' + id.slice(8))?.scrollIntoView({block:'start'}); }
+    else if (['first-voices', 'first-sh', 'first-hs', 'first-hj'].includes(id)) { showTab('first-meeting', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (data.candidateMeetings.some(meeting => meeting.section === id)) { showTab('meeting-archive', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
