@@ -136,8 +136,6 @@
   document.querySelectorAll('img.cover-img').forEach(image => {
     if (image.complete && image.naturalWidth === 0) handleCoverError(image);
   });
-  let activeRole = 'all';
-  const roleHashes = {all:'works',candidate:'works-candidates',recommendation:'works-recommendations',mention:'works-mentions'};
   const tabs = [...document.querySelectorAll('.menu-bar .tabs [role="tab"]')];
   const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
   const detailPanel = document.querySelector('#book-detail');
@@ -236,7 +234,7 @@
     tabs.forEach(tab => { const active = tab.dataset.tab === id; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
     panels.forEach(panel => { if (panel.id !== id) stopMotionWithin(panel); panel.hidden = panel.id !== id; });
     const monthChanged = id === 'meetings' && showMonth(activeMonth);
-    if (updateHash) history.pushState(null, '', '#' + (id === 'works' ? roleHashes[activeRole] : id === 'meetings' ? activeMonth : id));
+    if (updateHash) history.pushState(null, '', '#' + (id === 'meetings' ? activeMonth : id));
     moveTabIndicator(!changed);
     const tabTitles = {home:'홈',works:'함께 볼 작품',history:'지난 선정작'};
     document.title = `${id === 'meetings' ? monthTitles[activeMonth] : tabTitles[id]} · 책 사이`;
@@ -269,8 +267,9 @@
   document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => { const id = button.dataset.go; showTab(id); (monthTabs.find(tab => tab.dataset.month === id) || tabs.find(tab => tab.dataset.tab === id) || tabs.find(tab => tab.dataset.tab === 'meetings')).focus({preventScroll:true}); document.querySelector('.masthead').scrollIntoView({block:'start'}); }));
   function syncHash() {
     const id = location.hash.slice(1);
-    const role = Object.keys(roleHashes).find(key => roleHashes[key] === id);
-    if (role) { selectRole(role, false); showTab('works', false); }
+    // Keep shared links working after moving candidate browsing into meeting records.
+    if (id === 'works-candidates') showTab('meeting-archive', false);
+    else if (['works-recommendations', 'works-mentions'].includes(id)) showTab('works', false);
     else if ([...panels, ...monthPanels].some(p => p.id === id)) showTab(id, false);
     else if (id === 'previous') showTab('meeting-archive', false);
     else if (id.startsWith('archive-') && data.candidateMeetings.some(meeting => meeting.meetingId === id.slice(8))) { showTab('meeting-archive', false); document.getElementById('candidates-' + id.slice(8))?.scrollIntoView({block:'start'}); }
@@ -288,37 +287,34 @@
   document.querySelector('#voice-preview').innerHTML = data.people.map(person => `<a class="voice-preview-item" href="#people"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(voiceKeywords[person.participantId])}</small></span></a>`).join('');
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
   document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
-  // October uses the same small cover shelf as every other meeting record.
-  document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => {
-    const work = data.works.find(item => item.id === candidate.workId);
-    const selected = candidate.state.includes('선정') ? '<span class="work-badge">선정</span>' : '';
-    return `<li><button class="record-candidate-open" type="button" data-work-open="${escapeHTML(candidate.workId)}" aria-label="${escapeHTML(candidate.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(candidate.title, work?.coverKey, 'span')}<strong>${escapeHTML(candidate.title)}</strong><span class="muted">${escapeHTML(work?.creator || '')}</span></button>${selected}</li>`;
-  }).join('');
-  // Each meeting record lists the books its meeting weighed, straight from candidateMeetings.
+  function candidateShelfColumns(count) { return count <= 3 ? Math.max(1, count) : Math.ceil(count / 2); }
+  function candidateCardMarkup(id, selectedId) {
+    const work = data.works.find(item => item.id === id);
+    if (!work) return '';
+    const selected = id === selectedId ? '<span class="work-badge">선정작</span>' : '';
+    return `<li><button class="record-candidate-open" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<strong>${escapeHTML(work.title)}</strong><span class="muted">${escapeHTML(work.creator)}</span></button>${selected}</li>`;
+  }
+  function populateCandidateShelf(shelf, ids, selectedId) {
+    shelf.style.setProperty('--shelf-columns', candidateShelfColumns(ids.length));
+    shelf.innerHTML = ids.map(id => candidateCardMarkup(id, selectedId)).join('');
+  }
+  const octoberSelection = data.candidates.find(candidate => candidate.state.includes('선정'));
+  populateCandidateShelf(document.querySelector('#candidate-list'), data.candidates.map(candidate => candidate.workId), octoberSelection?.workId);
+  // The current and archived records share one cover shelf and the original candidate order.
   document.querySelectorAll('[data-candidate-shelf]').forEach(shelf => {
     const meeting = data.candidateMeetings.find(item => item.meetingId === shelf.dataset.candidateShelf);
     const section = shelf.closest('[data-candidate-section]');
     if (section) section.hidden = !meeting;
-    if (!meeting) return;
-    shelf.innerHTML = meeting.workIds.map(id => {
-      const work = data.works.find(item => item.id === id);
-      if (!work) return '';
-      const selected = id === meeting.selectedWorkId ? '<span class="work-badge">선정</span>' : '';
-      return `<li><button class="record-candidate-open" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<strong>${escapeHTML(work.title)}</strong><span class="muted">${escapeHTML(work.creator)}</span></button>${selected}</li>`;
-    }).join('');
+    if (meeting) populateCandidateShelf(shelf, meeting.workIds, meeting.selectedWorkId);
   });
   const archivedMeetings = [...data.candidateMeetings].reverse();
   document.querySelector('#archive-meeting-nav').innerHTML = archivedMeetings.map(meeting => `<a href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(Number(meeting.meetingId.slice(0,4)) + '년 ' + Number(meeting.meetingId.slice(5)) + '월')}</a>`).join('');
   document.querySelector('#archive-meeting-list').innerHTML = archivedMeetings.map(meeting => {
     const selected = data.works.find(work => work.id === meeting.selectedWorkId);
     const year = meeting.meetingId.slice(0,4), month = Number(meeting.meetingId.slice(5));
-    const books = meeting.workIds.map(id => {
-      const work = data.works.find(item => item.id === id);
-      const selection = id === meeting.selectedWorkId ? '<span class="work-badge">선정</span>' : '';
-      return `<li><button class="archive-candidate-open" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail"><span>${escapeHTML(work.title)} ${selection}</span><span class="muted">${escapeHTML(work.creator)}</span></button></li>`;
-    }).join('');
+    const books = meeting.workIds.map(id => candidateCardMarkup(id, meeting.selectedWorkId)).join('');
     const discussion = meeting.discussionHref ? `<a class="text-link" href="${escapeHTML(meeting.discussionHref)}">토론 기록 읽기 →</a>` : '';
-    return `<section id="${escapeHTML(meeting.section)}" class="archive-meeting section" tabindex="-1" aria-labelledby="${escapeHTML(meeting.section)}-title"><div class="section-heading"><p class="meeting-meta"><time datetime="${escapeHTML(meeting.meetingId)}">${year}년 ${month}월</time><span>후보 ${meeting.workIds.length}권</span></p><h2 id="${escapeHTML(meeting.section)}-title">${escapeHTML(selected.title)}</h2>${discussion}</div><ul class="archive-candidates">${books}</ul></section>`;
+    return `<section id="${escapeHTML(meeting.section)}" class="archive-meeting section" tabindex="-1" aria-labelledby="${escapeHTML(meeting.section)}-title"><div class="section-heading"><p class="meeting-meta"><time datetime="${escapeHTML(meeting.meetingId)}">${year}년 ${month}월</time><span>후보 ${meeting.workIds.length}권</span></p><h2 id="${escapeHTML(meeting.section)}-title">${escapeHTML(selected.title)}</h2>${discussion}</div><h3 class="archive-shelf-title">함께 검토했던 책</h3><ul class="record-candidate-shelf" style="--shelf-columns:${candidateShelfColumns(meeting.workIds.length)}">${books}</ul></section>`;
   }).join('');
   document.querySelector('#history-list').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
@@ -353,28 +349,6 @@
   }).join('');
   const search = document.querySelector('#search');
   const media = document.querySelector('#media');
-  const context = document.querySelector('#context');
-  const roleTabs = [...document.querySelectorAll('.shelf-tabs [role="tab"]')];
-  const roleNames = {all:'전체',candidate:'후보로 소개된 작품',recommendation:'추천한 작품',mention:'이야기에 등장한 작품'};
-  function selectRole(role, updateHash = true) {
-    if (!Object.hasOwn(roleNames, role)) return;
-    activeRole = role;
-    roleTabs.forEach(tab => { const active = tab.dataset.role === role; tab.setAttribute('aria-selected', String(active)); tab.tabIndex = active ? 0 : -1; });
-    document.querySelector('#shelf-results').setAttribute('aria-labelledby', 'role-' + role);
-    if (updateHash) history.pushState(null, '', '#' + roleHashes[role]);
-    renderWorks();
-  }
-  roleTabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => selectRole(tab.dataset.role));
-    tab.addEventListener('keydown', event => {
-      let next;
-      if (event.key === 'ArrowRight') next = (index + 1) % roleTabs.length;
-      if (event.key === 'ArrowLeft') next = (index - 1 + roleTabs.length) % roleTabs.length;
-      if (event.key === 'Home') next = 0;
-      if (event.key === 'End') next = roleTabs.length - 1;
-      if (next !== undefined) { event.preventDefault(); selectRole(roleTabs[next].dataset.role); roleTabs[next].focus({preventScroll:true}); }
-    });
-  });
   document.addEventListener('click', event => {
     const link = event.target.closest?.('a[data-meeting-link]');
     if (!link) return;
@@ -427,32 +401,43 @@
     const link = section ? `<a class="text-link" href="#${escapeHTML(section)}" data-meeting-link>${escapeHTML(candidateLabel)} <span aria-hidden="true">→</span></a>` : '';
     return `<div class="work-context"><p class="context-source">${escapeHTML(mention.sourceLabel + people + time)}</p><p>${escapeHTML(displayText(mention.summary))}</p>${detail}${link}</div>`;
   }
+  function recommendationMentions(work) {
+    return workMentions(work).filter(mention => mention.roles.includes('recommendation') && ['discussion', 'remembered-recommendation'].includes(mention.kind));
+  }
+  function recommendationMonth(mention) {
+    if (/^\d{4}-(0[1-9]|1[0-2])$/.test(mention.meetingId || '')) return mention.meetingId;
+    // A source may state its month even when meetingId was left unrecorded.
+    const sourceMonth = mention.sourceLabel.match(/^(\d{4})년\s+(0?[1-9]|1[0-2])월(?:\s|$)/);
+    return sourceMonth ? sourceMonth[1] + '-' + sourceMonth[2].padStart(2, '0') : '';
+  }
+  function latestRecommendationMonth(work) {
+    // Use recommendation context only, never publication dates or candidate suggestions.
+    return recommendationMentions(work).map(recommendationMonth).filter(Boolean).sort().at(-1) || '';
+  }
   function renderWorks() {
     closeBookDetail(false);
     const term = search.value.trim().toLocaleLowerCase('ko');
     const uniqueWorks = [...new Map(data.works.map(work => [work.id, work])).values()];
     const matches = uniqueWorks.filter(work => {
-      const mentions = workMentions(work);
+      const mentions = recommendationMentions(work);
       const text = `${work.title} ${work.creator} ${mentions.map(mention => `${displayText(mention.summary)} ${displayText(mention.detail)} ${mention.sourceLabel} ${mention.people.map(participantName).join(' ')}`).join(' ')}`;
-      return (media.value === 'all' || work.media === media.value) &&
-        (activeRole === 'all' || mentions.some(mention => mention.roles.includes(activeRole) && (activeRole !== 'recommendation' || ['discussion','remembered-recommendation'].includes(mention.kind)))) &&
-        (context.value === 'all' || mentions.some(mention => mention.context === context.value)) &&
-        text.toLocaleLowerCase('ko').includes(term);
-    });
+      return mentions.length > 0 && (media.value === 'all' || work.media === media.value) && text.toLocaleLowerCase('ko').includes(term);
+    }).sort((a, b) => latestRecommendationMonth(b).localeCompare(latestRecommendationMonth(a)));
     document.querySelector('#work-list').innerHTML = matches.map(work => {
-      const mentions = workMentions(work);
+      const mentions = recommendationMentions(work);
       const summary = mentions[0]?.summary ? `<span class="work-summary">${escapeHTML(displayText(mentions[0].summary))}</span>` : '';
-      return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-copy"><span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator + ' · ' + work.mediaLabel)}</span><span class="work-badges">${badgesFor(work, mentions)}</span>${summary}<span class="cover-hint">상세 보기 →</span></span></button></article>`;
+      const month = latestRecommendationMonth(work);
+      const date = month ? `<span class="work-date">${Number(month.slice(0,4))}.${Number(month.slice(5))} 추천</span>` : '';
+      return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-copy"><span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator + ' · ' + work.mediaLabel)}</span>${date}<span class="work-badges">${badgesFor(work, mentions)}</span>${summary}<span class="cover-hint">상세 보기 →</span></span></button></article>`;
     }).join('');
-    document.querySelector('#result-count').textContent = `${matches.length}개 작품 · ${roleNames[activeRole]}${term ? ' · 검색 결과' : ''}`;
+    document.querySelector('#result-count').textContent = `${matches.length}개 추천 작품${term ? ' · 검색 결과' : ''}`;
     document.querySelector('#empty-state').hidden = matches.length > 0;
     playMotion(document.querySelector('#work-list'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:180});
   }
-  function resetFilters() { search.value = ''; media.value = 'all'; context.value = 'all'; selectRole('all', false); showTab('works'); }
+  function resetFilters() { search.value = ''; media.value = 'all'; renderWorks(); showTab('works'); }
   // The shelf is local and small: commit input synchronously so no delayed search can close a newly opened book.
   search.addEventListener('input', renderWorks);
   media.addEventListener('change', renderWorks);
-  context.addEventListener('change', renderWorks);
   document.querySelector('#filters').addEventListener('submit', event => event.preventDefault());
   document.querySelector('#filters').addEventListener('reset', event => { event.preventDefault(); resetFilters(); });
   document.querySelector('#empty-reset').addEventListener('click', () => { resetFilters(); search.focus({preventScroll:true}); });

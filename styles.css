@@ -203,7 +203,7 @@ button:active { transform: translateY(1px); }
 @media(min-width:52rem) {
   .work-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .work-open { grid-template-columns:120px minmax(0,1fr); min-height:200px; }
-  #works .filters { grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr) auto; align-items:start; }
+  #works .filters { grid-template-columns:minmax(0,2fr) minmax(0,1fr) auto; align-items:start; }
   #works .search-field { grid-column:auto; }
   #works .advanced-filters { grid-column:auto; padding-top:1.8rem; }
   #works .filters #reset { margin-top:1.7rem; }
@@ -278,11 +278,6 @@ main[tabindex="-1"]:focus,section[tabindex="-1"]:focus,h2[tabindex="-1"]:focus {
 .archive-meeting .section-heading { display:block; }
 .archive-meeting .section-heading h2 { margin-top:var(--space-xs); }
 .archive-meeting .section-heading .text-link { display:inline-block; margin-top:var(--space-sm); }
-.archive-candidates { display:grid; gap:var(--space-xs) var(--space-xl); list-style:none; padding:0; margin:var(--space-lg) 0 0; }
-.archive-candidates li { min-width:0; }
-.archive-candidate-open { display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-2xs); width:100%; padding:var(--space-sm) 0; border:0; border-bottom:var(--rule-hair) solid var(--color-rule); background:none; text-align:left; white-space:normal; }
-.archive-candidate-open .muted { font-size:var(--text-xs); }
-.archive-candidate-open .work-badge { margin-left:var(--space-xs); }
 .history-book>a.history-discussion-link { margin-top:var(--space-xs); font-size:var(--text-xs); text-decoration:underline; }
 .archive-discussion-link { margin-block:var(--space-md); }
 .archive-reading { max-width:54rem; padding-block:var(--space-xl); }
@@ -294,7 +289,6 @@ main[tabindex="-1"]:focus,section[tabindex="-1"]:focus,h2[tabindex="-1"]:focus {
 .archive-voice h2 { margin-bottom:var(--space-lg); font-family:var(--font-body); font-size:var(--text-xl); }
 .archive-voice p { margin-top:var(--space-lg); font-size:clamp(1rem,1.7vw,1.125rem); line-height:1.95; overflow-wrap:break-word; }
 .archive-return { display:inline-block; margin-top:var(--space-2xl); }
-@media(min-width:40rem) { .archive-candidates { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 #meetings .meeting-hero { padding-top:var(--space-xl); }
 
 /* Sticky menu: transparent over the header, paper and a soft shadow once it holds the top edge. */
@@ -316,7 +310,7 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 @media(prefers-reduced-motion:reduce) { .reveal-on [data-reveal] { opacity:1 !important; transform:none !important; transition:none !important; } }
 
 /* Meeting records: older records reuse the September layout; candidate covers sit in a small shelf. */
-.record-candidate-shelf { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-xl) var(--space-lg); list-style:none; margin:0; padding:0; }
+.record-candidate-shelf { display:grid; width:100%; max-width:calc(var(--shelf-columns,3) * 170px + (var(--shelf-columns,3) - 1) * var(--space-lg)); grid-template-columns:repeat(min(2,var(--shelf-columns,3)),minmax(0,1fr)); gap:var(--space-xl) var(--space-lg); list-style:none; margin:0; padding:0; }
 .record-candidate-shelf li { min-width:0; }
 .record-candidate-open { display:block; min-width:0; width:100%; border:0; padding:0; background:none; text-align:start; text-decoration:none; white-space:normal; }
 .record-candidate-open .cover-frame { padding:var(--space-xs); }
@@ -324,10 +318,10 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 .record-candidate-open .muted { display:block; margin-top:var(--space-2xs); font-size:var(--text-xs); }
 .record-candidate-shelf .work-badge { display:inline-block; margin-top:var(--space-xs); }
 @media(min-width:40rem) {
-  .record-candidate-shelf { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .record-candidate-shelf { grid-template-columns:repeat(min(3,var(--shelf-columns,3)),minmax(0,1fr)); }
 }
 @media(min-width:60rem) {
-  .record-candidate-shelf { grid-template-columns:repeat(6,minmax(0,1fr)); }
+  .record-candidate-shelf { grid-template-columns:repeat(var(--shelf-columns,3),minmax(0,1fr)); }
 }
 
 /* 지난 기록: discussion records as wide cards, then candidates by month. */
@@ -341,3 +335,6 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 .archive-record-go { color:var(--color-accent); font-size:var(--text-lg); }
 .archive-candidates-heading { margin-top:var(--space-3xl); }
 @media(min-width:40rem) { .archive-record-list { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+.work-date { display:block; margin-top:var(--space-2xs); color:var(--color-muted); font-size:var(--text-xs); }
+.archive-shelf-title { margin-block:var(--space-lg); font-size:var(--text-base); }
