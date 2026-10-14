@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
-  <link rel="stylesheet" href="./styles.css?v=20261015-reveal">
+  <link rel="stylesheet" href="./styles.css?v=20261014-history">
   <script>
     // Hide reveal targets before first paint; app.js marks itself ready, otherwise content is shown again.
     if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -17,8 +17,8 @@
       setTimeout(() => { if (!window.bookClubReady) document.documentElement.classList.remove('reveal-on'); }, 3000);
     }
   </script>
-  <script src="./data.js?v=20261015-reveal" defer></script>
-  <script src="./app.js?v=20261015-reveal" defer></script>
+  <script src="./data.js?v=20261014-history" defer></script>
+  <script src="./app.js?v=20261014-history" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -74,6 +74,7 @@
       <nav class="month-tabs" role="tablist" aria-label="모임 달 선택">
         <button id="month-october" role="tab" aria-selected="true" aria-controls="october" data-month="october">2026년 10월</button>
         <button id="month-september" role="tab" aria-selected="false" aria-controls="september" tabindex="-1" data-month="september">2026년 9월</button>
+        <button id="month-archive" role="tab" aria-selected="false" aria-controls="meeting-archive" tabindex="-1" data-month="meeting-archive">이전 모임</button>
       </nav>
     <section id="september" role="tabpanel" aria-labelledby="month-september" hidden>
       <div class="meeting-hero" data-reveal-group>
@@ -114,13 +115,18 @@
       <section id="candidates" class="section" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading" data-reveal><h2 id="candidates-title">같이 펼쳐 본 후보들</h2><p>10월 후보로 검토했던 네 권. 선택의 과정도 기록으로 남깁니다.</p></div><p class="selection-note" data-reveal><span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다. 선정되지 않은 후보도 작품 책장에 계속 남겨 둡니다.</p><div id="candidate-list" data-reveal-group class="candidate-grid"></div></section>
       <div class="quiet-note" data-reveal><h2>토론 기록은 모임 뒤에</h2><p>마리오님의 개인 발표자료를 따로 읽을 수 있습니다. 모임에서 나눈 토론 기록은 아직 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
     </section>
+    <section id="meeting-archive" role="tabpanel" aria-labelledby="month-archive" hidden>
+      <div class="works-intro archive-intro"><h1>이전 모임</h1><p>각 모임에서 함께 검토했던 후보와 선정한 책을 남겼습니다.</p></div>
+      <nav id="archive-meeting-nav" class="archive-meeting-nav" aria-label="이전 모임 선택"></nav>
+      <div id="archive-meeting-list"></div>
+    </section>
     </section>
     <section id="works" role="tabpanel" aria-labelledby="tab-works" hidden>
       <div class="works-intro" data-reveal><h1>함께 볼 작품</h1><p>읽을 후보, 추천받은 작품, 대화에서 떠오른 이야기를 모았습니다.</p></div>
       <nav class="shelf-tabs" role="tablist" aria-label="작품 모아 보기"><button id="role-all" role="tab" aria-selected="true" aria-controls="shelf-results" data-role="all">전체</button><button id="role-candidate" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="candidate">후보로 소개된 작품</button><button id="role-recommendation" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="recommendation">추천한 작품</button><button id="role-mention" role="tab" aria-selected="false" aria-controls="shelf-results" tabindex="-1" data-role="mention">이야기에 등장한 작품</button></nav>
       <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">작품 찾기</label><input id="search" type="search" placeholder="제목, 작가, 이야기" autocomplete="off"></div><div><label for="media">분야</label><select id="media"><option value="all">전체 분야</option><option value="book">책</option><option value="movie">영화</option><option value="anime">만화·애니</option><option value="drama">드라마</option></select></div><details class="advanced-filters"><summary>상세 필터</summary><div><label for="context">언급한 이유</label><select id="context"><option value="all">모든 이야기</option><option value="후보 추천">후보 추천</option><option value="후보">지난 후보</option><option value="언급">언급</option><option value="함께 읽음">함께 읽음</option><option value="추천">추천</option><option value="비교">비교</option><option value="추억">추억</option><option value="영화화 언급">영화화 언급</option></select></div></details><button id="reset" class="outline-button" type="reset">초기화</button></form>
       <div id="shelf-results" role="tabpanel" aria-labelledby="role-all"><p id="result-count" class="result-count" role="status" aria-live="polite"></p><div id="work-list" class="work-grid"></div><div id="empty-state" class="quiet-note" hidden><h2>아직 일치하는 작품이 없어요.</h2><p>검색어를 바꾸거나 분야와 언급 이유를 전체로 선택해 보세요. 다른 분류를 선택하거나 전체 작품으로 돌아가 보세요.</p><button class="outline-button" id="empty-reset">전체 작품 보기</button></div></div>
-      <p class="source-note" data-reveal>후보는 도서 선정 메모와 2025년 7월 후보 소개에서, 토론 추천은 9월 15일 모임 녹음에서 정리했습니다. 기억해 둔 추천·언급 작품은 날짜와 추천자를 추정하지 않았습니다. 후보·추천·선정 이력은 각각 기록하며 한 작품이 여러 이력을 가질 수 있습니다. 표지는 출판·서점 자료에서 확인했습니다. 만화는 1권 표지를 사용합니다. 영화화 언급에는 한국 영화 『용의자X』(2012)의 포스터를 표시합니다. 당시 언급한 영화의 판본이 확인됐다는 뜻은 아닙니다.</p>
+      <p class="source-note" data-reveal>후보는 회차별 후보 목록, 2025년 7월 후보 소개와 10월 후보 검토 메모에서, 토론 추천은 9월 15일 모임 녹음에서 정리했습니다. 후보 목록에 추천자가 적혀 있지 않은 경우는 추정하지 않았습니다. 기억해 둔 추천·언급 작품은 날짜와 추천자를 추정하지 않았습니다. 후보·추천·선정 이력은 각각 기록하며 한 작품이 여러 이력을 가질 수 있습니다. 표지는 출판·서점 자료에서 확인했습니다. 만화는 1권 표지를 사용합니다. 영화화 언급에는 한국 영화 『용의자X』(2012)의 포스터를 표시합니다. 당시 언급한 영화의 판본이 확인됐다는 뜻은 아닙니다.</p>
     </section>
     <section id="history" tabindex="-1" role="tabpanel" aria-labelledby="tab-history" hidden>
       <div class="works-intro history-intro" data-reveal><h1>지난 선정작</h1></div>
@@ -129,6 +135,6 @@
     </section>
     <noscript><p class="quiet-note">이 페이지의 모임 전환과 작품 검색은 JavaScript를 사용합니다. JavaScript를 켜면 모임 기록, 소개된 작품과 지난 선정작도 볼 수 있습니다.</p></noscript>
   </main>
-  <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 2026.09.15 모임 녹음 · 10월 후보 검토 메모</p></footer>
+  <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 회차별 후보 목록 · 1회 토론 정리글 · 2026.09.15 모임 녹음 · 10월 후보 검토 메모</p></footer>
 </body>
 </html>
