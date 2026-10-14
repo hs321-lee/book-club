@@ -217,9 +217,9 @@
   // Meetings live in one tab; each month keeps its own id so #september and #october still link directly.
   const monthTabs = [...document.querySelectorAll('.month-tabs [role="tab"]')];
   // Newest months first; older records open from 지난 기록 and keep that tab selected.
-  const monthPanels = [...monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls'))), document.getElementById('first-meeting')];
-  const monthTitles = {october:'2026년 10월 모임', september:'2026년 9월 모임', 'meeting-archive':'지난 기록', 'first-meeting':'2025년 3월 토론 기록'};
-  const archiveViews = ['first-meeting'];
+  const monthPanels = [...monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls'))), document.getElementById('first-meeting'), document.getElementById('record-2025-02')];
+  const monthTitles = {october:'2026년 10월 모임', september:'2026년 9월 모임', 'meeting-archive':'지난 기록', 'first-meeting':'2025년 3월 토론 기록', 'record-2025-02':'2025년 2월 토론 기록'};
+  const archiveViews = ['first-meeting', 'record-2025-02'];
   let activeMonth = monthTabs[0]?.dataset.month;
   function showMonth(month) {
     const changed = monthPanels.find(panel => !panel.hidden)?.id !== month;
@@ -274,6 +274,7 @@
     else if ([...panels, ...monthPanels].some(p => p.id === id)) showTab(id, false);
     else if (id === 'previous') showTab('meeting-archive', false);
     else if (id.startsWith('archive-') && data.candidateMeetings.some(meeting => meeting.meetingId === id.slice(8))) { showTab('meeting-archive', false); document.getElementById('candidates-' + id.slice(8))?.scrollIntoView({block:'start'}); }
+    else if (id === 'record-2025-02-voices') { showTab('record-2025-02', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['first-voices', 'first-sh', 'first-hs', 'first-hj', 'first-candidates'].includes(id)) { showTab('first-meeting', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
@@ -288,6 +289,19 @@
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
   document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
   document.querySelector('#candidate-list').innerHTML = data.candidates.map(candidate => `<article class="candidate" data-work-id="${escapeHTML(candidate.workId)}"><button class="cover-trigger candidate-open" type="button" data-work-open="${escapeHTML(candidate.workId)}" aria-label="${escapeHTML(candidate.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(candidate.title,null,'span')}<span class="work-title">${escapeHTML(candidate.title)}</span><span class="cover-hint">소개·추천 맥락 보기 →</span></button>${coverCaptionMarkup(candidate.title)}<p class="candidate-state">${escapeHTML(candidate.state)} · ${escapeHTML(participantName('hj'))} 추천</p><p>${escapeHTML(displayText(candidate.note))}</p></article>`).join('');
+  // Each meeting record lists the books its meeting weighed, straight from candidateMeetings.
+  document.querySelectorAll('[data-candidate-shelf]').forEach(shelf => {
+    const meeting = data.candidateMeetings.find(item => item.meetingId === shelf.dataset.candidateShelf);
+    const section = shelf.closest('[data-candidate-section]');
+    if (section) section.hidden = !meeting;
+    if (!meeting) return;
+    shelf.innerHTML = meeting.workIds.map(id => {
+      const work = data.works.find(item => item.id === id);
+      if (!work) return '';
+      const selected = id === meeting.selectedWorkId ? '<span class="work-badge">선정</span>' : '';
+      return `<li><button class="record-candidate-open" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<strong>${escapeHTML(work.title)}</strong><span class="muted">${escapeHTML(work.creator)}</span></button>${selected}</li>`;
+    }).join('');
+  });
   const archivedMeetings = [...data.candidateMeetings].reverse();
   document.querySelector('#archive-meeting-nav').innerHTML = archivedMeetings.map(meeting => `<a href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(Number(meeting.meetingId.slice(0,4)) + '년 ' + Number(meeting.meetingId.slice(5)) + '월')}</a>`).join('');
   document.querySelector('#archive-meeting-list').innerHTML = archivedMeetings.map(meeting => {

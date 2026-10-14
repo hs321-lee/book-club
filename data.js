@@ -1057,7 +1057,7 @@ window.BOOK_CLUB = {
       "local": "./assets/covers/candidates/odyssey.webp",
       "width": 576,
       "height": 850,
-      "label": "책 표지 · 숲, 천병희 번역, 개정판",
+      "label": "책 표지 · 숲, 천병희 번역 · 영화 〈오디세이〉 원작 표지",
       "creator": "호메로스",
       "isbn": "9788991290150"
     }
