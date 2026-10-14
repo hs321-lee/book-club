@@ -288,6 +288,9 @@
   document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
   document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
   function candidateShelfColumns(count) { return count <= 3 ? Math.max(1, count) : Math.ceil(count / 2); }
+  function selectedFirstCandidateIds(ids, selectedId) {
+    return [...ids.filter(id => id === selectedId), ...ids.filter(id => id !== selectedId)];
+  }
   function candidateCardMarkup(id, selectedId) {
     const work = data.works.find(item => item.id === id);
     if (!work) return '';
@@ -296,11 +299,11 @@
   }
   function populateCandidateShelf(shelf, ids, selectedId) {
     shelf.style.setProperty('--shelf-columns', candidateShelfColumns(ids.length));
-    shelf.innerHTML = ids.map(id => candidateCardMarkup(id, selectedId)).join('');
+    shelf.innerHTML = selectedFirstCandidateIds(ids, selectedId).map(id => candidateCardMarkup(id, selectedId)).join('');
   }
   const octoberSelection = data.candidates.find(candidate => candidate.state.includes('선정'));
   populateCandidateShelf(document.querySelector('#candidate-list'), data.candidates.map(candidate => candidate.workId), octoberSelection?.workId);
-  // The current and archived records share one cover shelf and the original candidate order.
+  // Put the selected book first while preserving the order of the other candidates.
   document.querySelectorAll('[data-candidate-shelf]').forEach(shelf => {
     const meeting = data.candidateMeetings.find(item => item.meetingId === shelf.dataset.candidateShelf);
     const section = shelf.closest('[data-candidate-section]');
@@ -312,7 +315,7 @@
   document.querySelector('#archive-meeting-list').innerHTML = archivedMeetings.map(meeting => {
     const selected = data.works.find(work => work.id === meeting.selectedWorkId);
     const year = meeting.meetingId.slice(0,4), month = Number(meeting.meetingId.slice(5));
-    const books = meeting.workIds.map(id => candidateCardMarkup(id, meeting.selectedWorkId)).join('');
+    const books = selectedFirstCandidateIds(meeting.workIds, meeting.selectedWorkId).map(id => candidateCardMarkup(id, meeting.selectedWorkId)).join('');
     const discussion = meeting.discussionHref ? `<a class="text-link" href="${escapeHTML(meeting.discussionHref)}">토론 기록 읽기 →</a>` : '';
     return `<section id="${escapeHTML(meeting.section)}" class="archive-meeting section" tabindex="-1" aria-labelledby="${escapeHTML(meeting.section)}-title"><div class="section-heading"><p class="meeting-meta"><time datetime="${escapeHTML(meeting.meetingId)}">${year}년 ${month}월</time><span>후보 ${meeting.workIds.length}권</span></p><h2 id="${escapeHTML(meeting.section)}-title">${escapeHTML(selected.title)}</h2>${discussion}</div><h3 class="archive-shelf-title">함께 검토했던 책</h3><ul class="record-candidate-shelf" style="--shelf-columns:${candidateShelfColumns(meeting.workIds.length)}">${books}</ul></section>`;
   }).join('');
