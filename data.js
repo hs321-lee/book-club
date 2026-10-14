@@ -250,7 +250,7 @@ window.BOOK_CLUB = {
       "media": "book",
       "mediaLabel": "책",
       "coverKey": "archive-short-life",
-      "discussionHref": "./meetings/2025-03/"
+      "discussionHref": "#first-meeting"
     },
     {
       "id": "contradictions-book",
@@ -1362,11 +1362,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1378,11 +1378,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1394,11 +1394,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1410,11 +1410,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1426,11 +1426,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1442,11 +1442,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "1회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 3월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "1회 후보 목록",
+      "sourceLabel": "2025년 3월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-03"
     },
@@ -1458,11 +1458,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1474,11 +1474,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1490,11 +1490,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1506,11 +1506,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1522,11 +1522,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1538,11 +1538,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1554,11 +1554,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1570,11 +1570,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "2회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 4월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "2회 후보 목록",
+      "sourceLabel": "2025년 4월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-04"
     },
@@ -1586,11 +1586,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "5회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "5회 후보 목록",
+      "sourceLabel": "2025년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-09"
     },
@@ -1602,11 +1602,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "5회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "5회 후보 목록",
+      "sourceLabel": "2025년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-09"
     },
@@ -1618,11 +1618,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "5회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "5회 후보 목록",
+      "sourceLabel": "2025년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-09"
     },
@@ -1634,11 +1634,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "5회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "5회 후보 목록",
+      "sourceLabel": "2025년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-09"
     },
@@ -1650,11 +1650,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "6회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 10월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "6회 후보 목록",
+      "sourceLabel": "2025년 10월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-10"
     },
@@ -1666,11 +1666,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "6회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 10월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "6회 후보 목록",
+      "sourceLabel": "2025년 10월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-10"
     },
@@ -1682,11 +1682,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "6회 모임의 후보로 검토한 책입니다.",
+      "summary": "2025년 10월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "6회 후보 목록",
+      "sourceLabel": "2025년 10월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2025-10"
     },
@@ -1698,11 +1698,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "8회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 1월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "8회 후보 목록",
+      "sourceLabel": "2026년 1월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-01"
     },
@@ -1714,11 +1714,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "8회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 1월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "8회 후보 목록",
+      "sourceLabel": "2026년 1월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-01"
     },
@@ -1730,11 +1730,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "8회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 1월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "8회 후보 목록",
+      "sourceLabel": "2026년 1월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-01"
     },
@@ -1746,11 +1746,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "8회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 1월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "8회 후보 목록",
+      "sourceLabel": "2026년 1월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-01"
     },
@@ -1762,11 +1762,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "9회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 2월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "9회 후보 목록",
+      "sourceLabel": "2026년 2월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-02"
     },
@@ -1778,11 +1778,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "9회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 2월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "9회 후보 목록",
+      "sourceLabel": "2026년 2월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-02"
     },
@@ -1794,11 +1794,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "9회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 2월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "9회 후보 목록",
+      "sourceLabel": "2026년 2월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-02"
     },
@@ -1810,11 +1810,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "11회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 7월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "11회 후보 목록",
+      "sourceLabel": "2026년 7월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-07"
     },
@@ -1826,11 +1826,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "11회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 7월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "11회 후보 목록",
+      "sourceLabel": "2026년 7월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-07"
     },
@@ -1842,11 +1842,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "11회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 7월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "11회 후보 목록",
+      "sourceLabel": "2026년 7월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-07"
     },
@@ -1858,11 +1858,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "11회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 7월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "11회 후보 목록",
+      "sourceLabel": "2026년 7월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-07"
     },
@@ -1874,11 +1874,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "12회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 8월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "12회 후보 목록",
+      "sourceLabel": "2026년 8월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-08"
     },
@@ -1890,11 +1890,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "12회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 8월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "12회 후보 목록",
+      "sourceLabel": "2026년 8월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-08"
     },
@@ -1906,11 +1906,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "12회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 8월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "12회 후보 목록",
+      "sourceLabel": "2026년 8월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-08"
     },
@@ -1922,11 +1922,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "13회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "13회 후보 목록",
+      "sourceLabel": "2026년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-09"
     },
@@ -1938,11 +1938,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "13회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "13회 후보 목록",
+      "sourceLabel": "2026년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-09"
     },
@@ -1954,11 +1954,11 @@ window.BOOK_CLUB = {
         "candidate"
       ],
       "context": "후보",
-      "summary": "13회 모임의 후보로 검토한 책입니다.",
+      "summary": "2026년 9월 모임의 후보로 검토한 책입니다.",
       "detail": "",
       "people": [],
       "timestamp": null,
-      "sourceLabel": "13회 후보 목록",
+      "sourceLabel": "2026년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-09"
     }
@@ -2039,7 +2039,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2025-07",
       "state": "candidate-history",
-      "linkLabel": "4회 후보 목록 보기",
+      "linkLabel": "2025년 7월 후보 목록 보기",
       "candidateSection": "candidates-2025-07"
     },
     "2025-03": {
@@ -2047,7 +2047,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2025-03",
       "state": "candidate-history",
-      "linkLabel": "1회 후보 목록 보기",
+      "linkLabel": "2025년 3월 후보 목록 보기",
       "candidateSection": "candidates-2025-03"
     },
     "2025-04": {
@@ -2055,7 +2055,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2025-04",
       "state": "candidate-history",
-      "linkLabel": "2회 후보 목록 보기",
+      "linkLabel": "2025년 4월 후보 목록 보기",
       "candidateSection": "candidates-2025-04"
     },
     "2025-09": {
@@ -2063,7 +2063,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2025-09",
       "state": "candidate-history",
-      "linkLabel": "5회 후보 목록 보기",
+      "linkLabel": "2025년 9월 후보 목록 보기",
       "candidateSection": "candidates-2025-09"
     },
     "2025-10": {
@@ -2071,7 +2071,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2025-10",
       "state": "candidate-history",
-      "linkLabel": "6회 후보 목록 보기",
+      "linkLabel": "2025년 10월 후보 목록 보기",
       "candidateSection": "candidates-2025-10"
     },
     "2026-01": {
@@ -2079,7 +2079,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2026-01",
       "state": "candidate-history",
-      "linkLabel": "8회 후보 목록 보기",
+      "linkLabel": "2026년 1월 후보 목록 보기",
       "candidateSection": "candidates-2026-01"
     },
     "2026-02": {
@@ -2087,7 +2087,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2026-02",
       "state": "candidate-history",
-      "linkLabel": "9회 후보 목록 보기",
+      "linkLabel": "2026년 2월 후보 목록 보기",
       "candidateSection": "candidates-2026-02"
     },
     "2026-07": {
@@ -2095,7 +2095,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2026-07",
       "state": "candidate-history",
-      "linkLabel": "11회 후보 목록 보기",
+      "linkLabel": "2026년 7월 후보 목록 보기",
       "candidateSection": "candidates-2026-07"
     },
     "2026-08": {
@@ -2103,7 +2103,7 @@ window.BOOK_CLUB = {
       "tab": "meeting-archive",
       "section": "candidates-2026-08",
       "state": "candidate-history",
-      "linkLabel": "12회 후보 목록 보기",
+      "linkLabel": "2026년 8월 후보 목록 보기",
       "candidateSection": "candidates-2026-08"
     },
     "archive": {
@@ -2144,7 +2144,7 @@ window.BOOK_CLUB = {
       "title": "인생의 짧음에 관하여",
       "recommenderId": "hj",
       "coverKey": "archive-short-life",
-      "discussionHref": "./meetings/2025-03/"
+      "discussionHref": "#first-meeting"
     },
     {
       "id": "work-joy",
@@ -2252,7 +2252,7 @@ window.BOOK_CLUB = {
         "notes-underground-book"
       ],
       "selectedWorkId": "short-life-book",
-      "discussionHref": "./meetings/2025-03/"
+      "discussionHref": "#first-meeting"
     },
     {
       "number": 2,
