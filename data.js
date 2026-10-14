@@ -1053,13 +1053,17 @@ window.BOOK_CLUB = {
     },
     "candidate-odyssey": {
       "title": "오뒷세이아",
-      "page": "https://www.yes24.com/product/goods/2148271",
-      "local": "./assets/covers/candidates/odyssey.webp",
-      "width": 576,
+      "page": "https://www.yes24.com/Product/Goods/194511329",
+      "local": "./assets/covers/candidates/odyssey-kim-heon.webp",
+      "width": 573,
       "height": 850,
-      "label": "책 표지 · 숲, 천병희 번역 · 영화 〈오디세이〉 원작 표지",
+      "label": "책 표지 · 을유문화사, 김헌 번역 · 2026년 8월 10일 출간",
       "creator": "호메로스",
-      "isbn": "9788991290150"
+      "translator": "김헌",
+      "publisher": "을유문화사",
+      "publishedAt": "2026-08-10",
+      "pages": 760,
+      "isbn": "9788932476469"
     }
   },
   "mentions": [
