@@ -282,6 +282,12 @@
   }
   window.addEventListener('hashchange', syncHash);
   window.addEventListener('popstate', syncHash);
+  document.querySelector('.skip-link').addEventListener('click', event => {
+    event.preventDefault();
+    const main = document.querySelector('#main');
+    main.focus({preventScroll:true});
+    main.scrollIntoView({block:'start'});
+  });
   document.querySelector('.wordmark').addEventListener('click', () => showTab('home', false));
   const voiceKeywords = {sh:'구조 · 무협',hs:'추억 · 연결',hj:'편지 · 동네'};
   document.querySelector('#voice-preview').innerHTML = data.people.map(person => `<a class="voice-preview-item" href="#people"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(voiceKeywords[person.participantId])}</small></span></a>`).join('');
