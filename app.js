@@ -273,7 +273,7 @@
     else if ([...panels, ...monthPanels].some(p => p.id === id)) showTab(id, false);
     else if (id === 'previous') showTab('meeting-archive', false);
     else if (id.startsWith('archive-') && data.candidateMeetings.some(meeting => meeting.meetingId === id.slice(8))) { showTab('meeting-archive', false); document.getElementById('candidates-' + id.slice(8))?.scrollIntoView({block:'start'}); }
-    else if (id === 'record-2025-02-voices') { showTab('record-2025-02', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
+    else if (id.startsWith('record-2025-02-')) { showTab('record-2025-02', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['first-voices', 'first-sh', 'first-hs', 'first-hj', 'first-candidates'].includes(id)) { showTab('first-meeting', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
