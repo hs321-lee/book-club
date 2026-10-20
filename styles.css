@@ -338,3 +338,4 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 
 .work-date { display:block; margin-top:var(--space-2xs); color:var(--color-muted); font-size:var(--text-xs); }
 .archive-shelf-title { margin-block:var(--space-lg); font-size:var(--text-base); }
+.selection-only-note { margin-bottom:var(--space-md); color:var(--color-muted); font-size:var(--text-sm); }

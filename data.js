@@ -2244,6 +2244,15 @@ window.BOOK_CLUB = {
   ],
   "candidateMeetings": [
     {
+      "meetingId": "2025-02",
+      "section": "candidates-2025-02",
+      "workIds": [],
+      "selectedWorkId": null,
+      "selectionId": "farewell",
+      "note": "후보 없이 이 책으로 첫 모임을 시작했습니다.",
+      "discussionHref": "#record-2025-02"
+    },
+    {
       "number": 1,
       "meetingId": "2025-03",
       "section": "candidates-2025-03",
@@ -2273,6 +2282,14 @@ window.BOOK_CLUB = {
         "wealth-humanities-book"
       ],
       "selectedWorkId": "work-joy-book"
+    },
+    {
+      "meetingId": "2025-05",
+      "section": "candidates-2025-05",
+      "workIds": [],
+      "selectedWorkId": null,
+      "selectionId": "pagwa",
+      "note": "이 달의 후보 기록은 남아 있지 않습니다."
     },
     {
       "number": 4,

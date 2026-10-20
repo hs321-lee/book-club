@@ -297,6 +297,13 @@
     const selected = id === selectedId ? '<span class="work-badge">선정작</span>' : '';
     return `<li><button class="record-candidate-open" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<strong>${escapeHTML(work.title)}</strong><span class="muted">${escapeHTML(work.creator)}</span></button>${selected}</li>`;
   }
+  // Months that began without candidates show only the selected book, from the selection history.
+  function selectionOnlyBook(meeting) { return data.selectionHistory.find(book => book.id === meeting.selectionId); }
+  function selectionCardMarkup(book) {
+    const cover = data.covers[book.coverKey];
+    const inner = `${coverFrameMarkup(book.title, book.coverKey, 'span')}<strong>${escapeHTML(book.title)}</strong><span class="muted">${escapeHTML(cover?.creator || '')}</span>`;
+    return `<li>${cover ? `<a class="record-candidate-open" href="${escapeHTML(cover.page)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(book.title)} 도서 정보 · 새 창">${inner}</a>` : `<span class="record-candidate-open">${inner}</span>`}<span class="work-badge">선정작</span></li>`;
+  }
   function populateCandidateShelf(shelf, ids, selectedId) {
     shelf.style.setProperty('--shelf-columns', candidateShelfColumns(ids.length));
     shelf.innerHTML = selectedFirstCandidateIds(ids, selectedId).map(id => candidateCardMarkup(id, selectedId)).join('');
@@ -308,16 +315,22 @@
     const meeting = data.candidateMeetings.find(item => item.meetingId === shelf.dataset.candidateShelf);
     const section = shelf.closest('[data-candidate-section]');
     if (section) section.hidden = !meeting;
-    if (meeting) populateCandidateShelf(shelf, meeting.workIds, meeting.selectedWorkId);
+    if (meeting && !meeting.workIds.length) {
+      // The selected book is already the record's hero, so only the note is shown.
+      shelf.hidden = true;
+      shelf.insertAdjacentHTML('beforebegin', `<p class="selection-only-note">${escapeHTML(meeting.note || '')}</p>`);
+    } else if (meeting) populateCandidateShelf(shelf, meeting.workIds, meeting.selectedWorkId);
   });
   const archivedMeetings = [...data.candidateMeetings].reverse();
   document.querySelector('#archive-meeting-nav').innerHTML = archivedMeetings.map(meeting => `<a href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(Number(meeting.meetingId.slice(0,4)) + '년 ' + Number(meeting.meetingId.slice(5)) + '월')}</a>`).join('');
   document.querySelector('#archive-meeting-list').innerHTML = archivedMeetings.map(meeting => {
-    const selected = data.works.find(work => work.id === meeting.selectedWorkId);
+    const selectionOnly = !meeting.workIds.length;
+    const selected = selectionOnly ? selectionOnlyBook(meeting) : data.works.find(work => work.id === meeting.selectedWorkId);
     const year = meeting.meetingId.slice(0,4), month = Number(meeting.meetingId.slice(5));
-    const books = selectedFirstCandidateIds(meeting.workIds, meeting.selectedWorkId).map(id => candidateCardMarkup(id, meeting.selectedWorkId)).join('');
+    const books = selectionOnly ? selectionCardMarkup(selected) : selectedFirstCandidateIds(meeting.workIds, meeting.selectedWorkId).map(id => candidateCardMarkup(id, meeting.selectedWorkId)).join('');
+    const shelfTitle = selectionOnly ? `<h3 class="archive-shelf-title">함께 읽은 책</h3><p class="selection-only-note">${escapeHTML(meeting.note || '')}</p>` : '<h3 class="archive-shelf-title">함께 검토했던 책</h3>';
     const discussion = meeting.discussionHref ? `<a class="text-link" href="${escapeHTML(meeting.discussionHref)}">토론 기록 읽기 →</a>` : '';
-    return `<section id="${escapeHTML(meeting.section)}" class="archive-meeting section" tabindex="-1" aria-labelledby="${escapeHTML(meeting.section)}-title"><div class="section-heading"><p class="meeting-meta"><time datetime="${escapeHTML(meeting.meetingId)}">${year}년 ${month}월</time><span>후보 ${meeting.workIds.length}권</span></p><h2 id="${escapeHTML(meeting.section)}-title">${escapeHTML(selected.title)}</h2>${discussion}</div><h3 class="archive-shelf-title">함께 검토했던 책</h3><ul class="record-candidate-shelf" style="--shelf-columns:${candidateShelfColumns(meeting.workIds.length)}">${books}</ul></section>`;
+    return `<section id="${escapeHTML(meeting.section)}" class="archive-meeting section" tabindex="-1" aria-labelledby="${escapeHTML(meeting.section)}-title"><div class="section-heading"><p class="meeting-meta"><time datetime="${escapeHTML(meeting.meetingId)}">${year}년 ${month}월</time><span>${selectionOnly ? '선정작' : `후보 ${meeting.workIds.length}권`}</span></p><h2 id="${escapeHTML(meeting.section)}-title">${escapeHTML(selected.title)}</h2>${discussion}</div>${shelfTitle}<ul class="record-candidate-shelf" style="--shelf-columns:${candidateShelfColumns(Math.max(meeting.workIds.length, 1))}">${books}</ul></section>`;
   }).join('');
   document.querySelector('#history-list').innerHTML = data.selectionHistory.map(book => {
     const cover = data.covers[book.coverKey];
