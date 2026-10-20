@@ -507,6 +507,38 @@ window.BOOK_CLUB = {
       "media": "book",
       "mediaLabel": "책",
       "coverKey": "candidate-odyssey"
+    },
+    {
+      "id": "myth-philosophy-book",
+      "title": "신화, 인류 최고의 철학",
+      "creator": "나카자와 신이치",
+      "media": "book",
+      "mediaLabel": "책",
+      "search": "신화, 인류 최고의 철학 나카자와 신이치"
+    },
+    {
+      "id": "about-pain-book",
+      "title": "고통에 관하여",
+      "creator": "정보라",
+      "media": "book",
+      "mediaLabel": "책",
+      "search": "고통에 관하여 정보라"
+    },
+    {
+      "id": "white-book",
+      "title": "흰",
+      "creator": "한강",
+      "media": "book",
+      "mediaLabel": "책",
+      "search": "흰 한강 소설"
+    },
+    {
+      "id": "boy-comes-book",
+      "title": "소년이 온다",
+      "creator": "한강",
+      "media": "book",
+      "mediaLabel": "책",
+      "search": "소년이 온다 한강"
     }
   ],
   "covers": {
@@ -1965,6 +1997,80 @@ window.BOOK_CLUB = {
       "sourceLabel": "2026년 9월 후보 목록",
       "kind": "candidate-record",
       "section": "candidates-2026-09"
+    },
+    {
+      "meetingId": "2025-02",
+      "timestamp": null,
+      "sourceLabel": "2025년 2월 12일 모임 기록",
+      "kind": "discussion",
+      "section": "record-2025-02",
+      "id": "feb-myth-philosophy-book",
+      "workId": "myth-philosophy-book",
+      "roles": [
+        "recommendation",
+        "mention"
+      ],
+      "context": "추천",
+      "people": [
+        "sh"
+      ],
+      "summary": "{sh}이 콩이 여러 문화에서 귀신을 쫓는 주술적 의미를 지닌다는 점을 설명하며 참고 도서로 소개했습니다.",
+      "detail": "작품 속 콩죽을 산 자와 죽은 자를 잇는 매개로 읽는 해석의 바탕이 됐습니다."
+    },
+    {
+      "meetingId": "2025-02",
+      "timestamp": null,
+      "sourceLabel": "2025년 2월 12일 모임 기록",
+      "kind": "discussion",
+      "section": "record-2025-02",
+      "id": "feb-about-pain-book",
+      "workId": "about-pain-book",
+      "roles": [
+        "recommendation"
+      ],
+      "context": "추천",
+      "people": [
+        "hj"
+      ],
+      "summary": "타인의 고통에 공감하려면 그에 견줄 만한 고통을 지나야 한다는 생각을 나누며 {hj}이 소개한 책입니다.",
+      "detail": "『작별하지 않는다』와 비슷한 주제의식을 가진 작품으로 소개됐습니다."
+    },
+    {
+      "meetingId": "2025-02",
+      "timestamp": null,
+      "sourceLabel": "2025년 2월 12일 모임 기록",
+      "kind": "discussion",
+      "section": "record-2025-02-discussion",
+      "id": "feb-white-book",
+      "workId": "white-book",
+      "roles": [
+        "recommendation"
+      ],
+      "context": "추천",
+      "people": [
+        "sh"
+      ],
+      "summary": "소설 속 눈이 모든 것을 감추고 삶과 죽음을 주관하는 것 같다는 이야기에 이어, {sh}이 함께 읽어 볼 책으로 추천했습니다.",
+      "detail": "같은 작가의 작품입니다."
+    },
+    {
+      "meetingId": "2025-02",
+      "timestamp": null,
+      "sourceLabel": "2025년 2월 12일 모임 기록",
+      "kind": "discussion",
+      "section": "record-2025-02-discussion",
+      "id": "feb-boy-comes-book",
+      "workId": "boy-comes-book",
+      "roles": [
+        "recommendation",
+        "mention"
+      ],
+      "context": "비교",
+      "people": [
+        "sh"
+      ],
+      "summary": "같은 작가의 전작으로 함께 이야기했습니다. 주인공을 중심으로 곧게 서술하는 이 작품과, 관찰자의 시점과 혼란스러운 상황 설정이 두드러지는 『작별하지 않는다』를 비교했습니다.",
+      "detail": "좋고 나쁨을 가린 비교가 아니라 서술 방식의 차이를 짚은 이야기였습니다."
     }
   ],
   "selections": [
@@ -2114,6 +2220,12 @@ window.BOOK_CLUB = {
       "label": "이전",
       "tab": "meeting-archive",
       "state": "archive"
+    },
+    "2025-02": {
+      "label": "2025년 2월",
+      "tab": "record-2025-02",
+      "section": "record-2025-02-discussion",
+      "state": "completed"
     }
   },
   "participants": {
