@@ -2326,6 +2326,14 @@ window.BOOK_CLUB = {
       "selectedWorkId": "mermaid-book"
     },
     {
+      "meetingId": "2025-11",
+      "section": "candidates-2025-11",
+      "workIds": [],
+      "selectedWorkId": null,
+      "selectionId": "factfulness",
+      "note": "이 달의 후보 기록은 남아 있지 않습니다."
+    },
+    {
       "number": 8,
       "meetingId": "2026-01",
       "section": "candidates-2026-01",
@@ -2347,6 +2355,14 @@ window.BOOK_CLUB = {
         "write-book-book"
       ],
       "selectedWorkId": "write-book-book"
+    },
+    {
+      "meetingId": "2026-03",
+      "section": "candidates-2026-03",
+      "workIds": [],
+      "selectedWorkId": null,
+      "selectionId": "homo-deus",
+      "note": "이 달의 후보 기록은 남아 있지 않습니다."
     },
     {
       "number": 11,
