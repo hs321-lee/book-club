@@ -514,7 +514,8 @@ window.BOOK_CLUB = {
       "creator": "나카자와 신이치",
       "media": "book",
       "mediaLabel": "책",
-      "search": "신화, 인류 최고의 철학 나카자와 신이치"
+      "search": "신화, 인류 최고의 철학 나카자와 신이치",
+      "coverKey": "myth-philosophy"
     },
     {
       "id": "about-pain-book",
@@ -522,7 +523,8 @@ window.BOOK_CLUB = {
       "creator": "정보라",
       "media": "book",
       "mediaLabel": "책",
-      "search": "고통에 관하여 정보라"
+      "search": "고통에 관하여 정보라",
+      "coverKey": "about-pain"
     },
     {
       "id": "white-book",
@@ -530,7 +532,8 @@ window.BOOK_CLUB = {
       "creator": "한강",
       "media": "book",
       "mediaLabel": "책",
-      "search": "흰 한강 소설"
+      "search": "흰 한강 소설",
+      "coverKey": "white"
     },
     {
       "id": "boy-comes-book",
@@ -538,7 +541,8 @@ window.BOOK_CLUB = {
       "creator": "한강",
       "media": "book",
       "mediaLabel": "책",
-      "search": "소년이 온다 한강"
+      "search": "소년이 온다 한강",
+      "coverKey": "boy-comes"
     }
   ],
   "covers": {
@@ -812,6 +816,46 @@ window.BOOK_CLUB = {
       "height": 716,
       "label": "책 표지 · 알에이치코리아 · 2015년판",
       "isbn": "9788925554990"
+    },
+    "myth-philosophy": {
+      "title": "신화, 인류 최고의 철학",
+      "creator": "나카자와 신이치",
+      "page": "https://www.yes24.com/product/goods/327601",
+      "local": "./assets/covers/mentions/myth-philosophy.webp",
+      "width": 511,
+      "height": 850,
+      "label": "책 표지 · 동아시아, 김옥희 번역",
+      "isbn": "9788988165256"
+    },
+    "about-pain": {
+      "title": "고통에 관하여",
+      "creator": "정보라",
+      "page": "https://www.yes24.com/product/goods/122129305",
+      "local": "./assets/covers/mentions/about-pain.webp",
+      "width": 533,
+      "height": 850,
+      "label": "책 표지 · 다산책방 · 2023년판",
+      "isbn": "9791130698205"
+    },
+    "white": {
+      "title": "흰",
+      "creator": "한강",
+      "page": "https://www.yes24.com/product/goods/60524285",
+      "local": "./assets/covers/mentions/white.webp",
+      "width": 570,
+      "height": 850,
+      "label": "책 표지 · 문학동네 · 2018년 개정판",
+      "isbn": "9788954651134"
+    },
+    "boy-comes": {
+      "title": "소년이 온다",
+      "creator": "한강",
+      "page": "https://www.yes24.com/product/goods/13137546",
+      "local": "./assets/covers/mentions/boy-comes.webp",
+      "width": 586,
+      "height": 850,
+      "label": "책 표지 · 창비 · 2014년판",
+      "isbn": "9788936434120"
     },
     "candidate-anxiety-society": {
       "title": "불안사회",
