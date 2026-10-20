@@ -2294,7 +2294,8 @@ window.BOOK_CLUB = {
       "month": "2025-02",
       "title": "작별하지 않는다",
       "recommenderId": null,
-      "coverKey": "archive-farewell"
+      "coverKey": "archive-farewell",
+      "discussionHref": "#record-2025-02"
     },
     {
       "id": "short-life",
@@ -2386,7 +2387,8 @@ window.BOOK_CLUB = {
       "month": "2026-09",
       "title": "나미야 잡화점의 기적",
       "recommenderId": "sh",
-      "coverKey": "namiya"
+      "coverKey": "namiya",
+      "discussionHref": "#september"
     },
     {
       "id": "hitler",
