@@ -2051,10 +2051,9 @@ window.BOOK_CLUB = {
       "id": "feb-myth-philosophy-book",
       "workId": "myth-philosophy-book",
       "roles": [
-        "recommendation",
         "mention"
       ],
-      "context": "추천",
+      "context": "참고",
       "people": [
         "sh"
       ],
@@ -2106,7 +2105,6 @@ window.BOOK_CLUB = {
       "id": "feb-boy-comes-book",
       "workId": "boy-comes-book",
       "roles": [
-        "recommendation",
         "mention"
       ],
       "context": "비교",

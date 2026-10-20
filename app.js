@@ -417,36 +417,40 @@
     const link = section ? `<a class="text-link" href="#${escapeHTML(section)}" data-meeting-link>${escapeHTML(candidateLabel)} <span aria-hidden="true">→</span></a>` : '';
     return `<div class="work-context"><p class="context-source">${escapeHTML(mention.sourceLabel + people + time)}</p><p>${escapeHTML(displayText(mention.summary))}</p>${detail}${link}</div>`;
   }
-  function recommendationMentions(work) {
-    return workMentions(work).filter(mention => mention.roles.includes('recommendation') && ['discussion', 'remembered-recommendation'].includes(mention.kind));
+  // The shelf holds works recommended or brought up in conversation; candidates and the book read together stay in meeting records.
+  function shelfMentions(work) {
+    return workMentions(work).filter(mention => ['discussion', 'remembered-recommendation', 'remembered'].includes(mention.kind) && (mention.roles.includes('recommendation') || mention.roles.includes('mention')));
   }
+  function shelfLabel(mention) { return mention.roles.includes('recommendation') ? '추천' : (mention.context || '언급'); }
   function recommendationMonth(mention) {
     if (/^\d{4}-(0[1-9]|1[0-2])$/.test(mention.meetingId || '')) return mention.meetingId;
     // A source may state its month even when meetingId was left unrecorded.
     const sourceMonth = mention.sourceLabel.match(/^(\d{4})년\s+(0?[1-9]|1[0-2])월(?:\s|$)/);
     return sourceMonth ? sourceMonth[1] + '-' + sourceMonth[2].padStart(2, '0') : '';
   }
-  function latestRecommendationMonth(work) {
-    // Use recommendation context only, never publication dates or candidate suggestions.
-    return recommendationMentions(work).map(recommendationMonth).filter(Boolean).sort().at(-1) || '';
+  function latestShelfMention(work) {
+    // Order by when the work came up in a meeting, never by publication dates or candidate suggestions.
+    return shelfMentions(work).map(mention => ({mention, month:recommendationMonth(mention)})).sort((a, b) => a.month.localeCompare(b.month) || Number(a.mention.roles.includes('recommendation')) - Number(b.mention.roles.includes('recommendation'))).at(-1);
   }
+  function latestShelfMonth(work) { return latestShelfMention(work)?.month || ''; }
   function renderWorks() {
     closeBookDetail(false);
     const term = search.value.trim().toLocaleLowerCase('ko');
     const uniqueWorks = [...new Map(data.works.map(work => [work.id, work])).values()];
     const matches = uniqueWorks.filter(work => {
-      const mentions = recommendationMentions(work);
+      const mentions = shelfMentions(work);
       const text = `${work.title} ${work.creator} ${mentions.map(mention => `${displayText(mention.summary)} ${displayText(mention.detail)} ${mention.sourceLabel} ${mention.people.map(participantName).join(' ')}`).join(' ')}`;
       return mentions.length > 0 && (media.value === 'all' || work.media === media.value) && text.toLocaleLowerCase('ko').includes(term);
-    }).sort((a, b) => latestRecommendationMonth(b).localeCompare(latestRecommendationMonth(a)));
+    }).sort((a, b) => latestShelfMonth(b).localeCompare(latestShelfMonth(a)));
     document.querySelector('#work-list').innerHTML = matches.map(work => {
-      const mentions = recommendationMentions(work);
-      const summary = mentions[0]?.summary ? `<span class="work-summary">${escapeHTML(displayText(mentions[0].summary))}</span>` : '';
-      const month = latestRecommendationMonth(work);
-      const date = month ? `<span class="work-date">${Number(month.slice(0,4))}.${Number(month.slice(5))} 추천</span>` : '';
+      const mentions = shelfMentions(work);
+      const latest = latestShelfMention(work);
+      const summary = latest?.mention.summary ? `<span class="work-summary">${escapeHTML(displayText(latest.mention.summary))}</span>` : '';
+      const month = latest?.month;
+      const date = latest ? `<span class="work-date">${month ? `${Number(month.slice(0,4))}.${Number(month.slice(5))} ` : ''}${escapeHTML(shelfLabel(latest.mention))}</span>` : '';
       return `<article class="work" data-work-id="${escapeHTML(work.id)}"><button class="cover-trigger work-open" type="button" data-work-open="${escapeHTML(work.id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title,work.coverKey,'span')}<span class="work-copy"><span class="work-title">${escapeHTML(work.title)}</span><span class="work-author">${escapeHTML(work.creator + ' · ' + work.mediaLabel)}</span>${date}<span class="work-badges">${badgesFor(work, mentions)}</span>${summary}<span class="cover-hint">상세 보기 →</span></span></button></article>`;
     }).join('');
-    document.querySelector('#result-count').textContent = `${matches.length}개 추천 작품${term ? ' · 검색 결과' : ''}`;
+    document.querySelector('#result-count').textContent = `${matches.length}개 작품${term ? ' · 검색 결과' : ''}`;
     document.querySelector('#empty-state').hidden = matches.length > 0;
     playMotion(document.querySelector('#work-list'),[{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:180});
   }
