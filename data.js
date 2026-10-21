@@ -597,17 +597,41 @@ window.BOOK_CLUB = {
       "creator": "스티븐 스필버그 · 1993",
       "media": "movie",
       "mediaLabel": "영화",
-      "search": "쉰들러 리스트 1993 영화 스티븐 스필버그"
+      "search": "쉰들러 리스트 1993 영화 스티븐 스필버그",
+      "coverKey": "schindlers-list"
     },
     {
       "id": "looking-glass-book",
       "title": "거울 나라의 앨리스",
       "creator": "루이스 캐럴",
       "media": "book",
-      "mediaLabel": "책"
+      "mediaLabel": "책",
+      "coverKey": "through-the-looking-glass"
     }
   ],
   "covers": {
+    "schindlers-list": {
+      "title": "쉰들러 리스트",
+      "page": "https://www.universalpicturesathome.com/movies/schindlers-list",
+      "local": "./assets/posters/schindlers-list-1993.webp",
+      "width": 800,
+      "height": 1200,
+      "label": "공식 디지털 포스터 · 1993년 영화 · Universal Pictures",
+      "creator": "스티븐 스필버그"
+    },
+    "through-the-looking-glass": {
+      "title": "거울 나라의 앨리스",
+      "page": "https://www.yes24.com/product/goods/2810569",
+      "local": "./assets/covers/mentions/through-the-looking-glass.webp",
+      "width": 313,
+      "height": 400,
+      "label": "책 표지 · 웅진주니어, 김석희 번역 · 2008년판",
+      "creator": "루이스 캐럴",
+      "translator": "김석희",
+      "publisher": "웅진주니어",
+      "publishedAt": "2008-01-07",
+      "isbn": "9788901074351"
+    },
     "namiya": {
       "title": "나미야 잡화점의 기적",
       "isbn": "9791167901484",
