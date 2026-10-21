@@ -309,6 +309,30 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 .reveal-on [data-reveal]:not(.is-revealed) { opacity:0; transform:translateY(26px); }
 @media(prefers-reduced-motion:reduce) { .reveal-on [data-reveal] { opacity:1 !important; transform:none !important; transition:none !important; } }
 
+/* Filee-inspired media depth: covers settle as their own row enters, while text stays still.
+   Progressive CSS enhancement: no observer, scroll interception, or hidden-content state. */
+@keyframes cover-scroll-arrive {
+  from { transform:translateY(24px) rotate(-1deg) scale(.97); }
+  to { transform:translateY(0) rotate(0) scale(1); }
+}
+@keyframes cover-scroll-arrive-small {
+  from { transform:translateY(12px) scale(.985); }
+  to { transform:translateY(0) scale(1); }
+}
+@supports (animation-timeline:view()) {
+  @media(prefers-reduced-motion:no-preference) {
+    :is(.home-hero,.meeting-hero) .hero-cover {
+      animation:cover-scroll-arrive linear both;
+      animation-timeline:view();
+      animation-range:entry 0% contain 40%;
+      transform-origin:50% 80%;
+    }
+  }
+  @media(max-width:39.99rem) and (prefers-reduced-motion:no-preference) {
+    :is(.home-hero,.meeting-hero) .hero-cover { animation-name:cover-scroll-arrive-small; }
+  }
+}
+
 /* Meeting records: older records reuse the September layout; candidate covers sit in a small shelf. */
 .record-candidate-shelf { display:grid; width:100%; max-width:calc(var(--shelf-columns,3) * 170px + (var(--shelf-columns,3) - 1) * var(--space-lg)); grid-template-columns:repeat(min(2,var(--shelf-columns,3)),minmax(0,1fr)); gap:var(--space-xl) var(--space-lg); list-style:none; margin:0; padding:0; }
 .record-candidate-shelf li { min-width:0; }
