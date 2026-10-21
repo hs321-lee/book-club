@@ -71,7 +71,8 @@ function loadApp(hash = '#home') {
 for (const [title, href, panel] of [
   ['작별하지 않는다', '#record-2025-02', 'record-2025-02'],
   ['인생의 짧음에 관하여', '#first-meeting', 'first-meeting'],
-  ['나미야 잡화점의 기적', '#september', 'september']
+  ['나미야 잡화점의 기적', '#september', 'september'],
+  ['히틀러의 음식을 먹는 여자들', '#october', 'october']
 ]) {
   test(`${title}: selected-book card links to its discussion`, () => {
     const app = loadApp('#history');
@@ -94,5 +95,15 @@ for (const hash of ['#home', '#works', '#history', '#october', '#september', '#f
     assert.equal(selectedTab.getAttribute('aria-selected'), 'true');
     assert.equal(app.document.activeElement, app.elements.get('#main'));
     assert.equal(app.elements.get('#main').scrolled, true);
+  });
+}
+
+for (const hash of ['#october-discussion', '#october-people', '#candidates']) {
+  test(`${hash} opens the October record`, () => {
+    const app = loadApp(hash);
+    assert.equal(app.elements.get('#meetings').hidden, false);
+    assert.equal(app.elements.get('#october').hidden, false);
+    assert.equal(app.elements.get('#september').hidden, true);
+    assert.equal(app.elements.get(hash).scrolled, true);
   });
 }
