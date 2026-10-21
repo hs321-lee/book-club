@@ -171,7 +171,8 @@
     closeBookDetail(false);
     const mentions = isIntro ? [] : workMentions(work);
     document.querySelector('#book-detail-title').textContent = work.title;
-    const contexts = isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(data.topics[0].summary)}</p><p>${escapeHTML(data.topics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
+    const septemberTopics = data.records['2026-09'].topics;
+    const contexts = isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(septemberTopics[0].summary)}</p><p>${escapeHTML(septemberTopics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
     const badges = isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
     const discussionLink = work.discussionHref ? `<p class="archive-discussion-link"><a class="text-link" href="${escapeHTML(work.discussionHref)}">토론 기록 읽기 →</a></p>` : '';
     document.querySelector('#book-detail-body').innerHTML = `<div class="book-detail-cover">${coverMarkup(work.title,work.coverKey)}</div><div class="book-detail-copy"><p class="book-detail-media">${escapeHTML(work.mediaLabel + ' · ' + work.creator)}</p><div class="work-badges">${badges}</div>${contexts}${discussionLink}${isIntro ? '' : `<a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a>`}</div>`;
@@ -276,7 +277,7 @@
     else if (id.startsWith('record-2025-02-')) { showTab('record-2025-02', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['first-voices', 'first-sh', 'first-hs', 'first-hj', 'first-candidates'].includes(id)) { showTab('first-meeting', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
-    else if (id === 'candidates') { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
+    else if (['candidates', 'october-discussion', 'october-people', 'october-summary-title'].includes(id)) { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (data.candidateMeetings.some(meeting => meeting.section === id)) { showTab('meeting-archive', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else showTab('home', false);
   }
@@ -289,10 +290,16 @@
     main.scrollIntoView({block:'start'});
   });
   document.querySelector('.wordmark').addEventListener('click', () => showTab('home', false));
-  const voiceKeywords = {sh:'구조 · 무협',hs:'추억 · 연결',hj:'편지 · 동네'};
-  document.querySelector('#voice-preview').innerHTML = data.people.map(person => `<a class="voice-preview-item" href="#people"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(voiceKeywords[person.participantId])}</small></span></a>`).join('');
-  document.querySelector('#topics').innerHTML = data.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join('');
-  document.querySelector('#people-list').innerHTML = data.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('');
+  // Recorded months share one layout: data-record names the month, data-record-part the piece it holds.
+  const recordParts = {
+    voices: (record, element) => record.people.map(person => `<a class="voice-preview-item" href="${escapeHTML(element.dataset.peopleHref)}"><img src="${escapeHTML(data.participants[person.participantId].avatar)}" width="48" height="48" alt=""><span><strong>${escapeHTML(participantName(person.participantId))}</strong><small>${escapeHTML(person.keywords)}</small></span></a>`).join(''),
+    topics: record => record.topics.map(topic => `<article class="topic"><div class="topic-header"><h3>${escapeHTML(topic.title)}</h3><span class="timestamp">${escapeHTML(topic.time)}</span></div><p>${escapeHTML(topic.summary)}</p><details${topic.spoiler ? ' class="spoiler"' : ''}><summary>${topic.spoiler ? '스포일러 포함 · 펼쳐 읽기' : '대화 맥락 더 읽기'}</summary><p>${escapeHTML(topic.more)}</p></details></article>`).join(''),
+    people: record => record.people.map(person => `<article class="person"><div class="person-head"><span class="person-avatar" aria-hidden="true"><img class="person-character" src="${escapeHTML(data.participants[person.participantId].avatar)}" alt="" width="64" height="64"></span><div><h3>${escapeHTML(participantName(person.participantId))}</h3><p class="person-tagline">${escapeHTML(person.tagline)}</p></div></div>${person.paragraphs.map(p => `<p>${escapeHTML(displayText(p))}</p>`).join('')}<details><summary>공유한 생각 더 읽기</summary><p>${escapeHTML(displayText(person.more))}</p></details><span class="timestamp">녹음 ${escapeHTML(person.time)}</span></article>`).join('')
+  };
+  document.querySelectorAll('[data-record-part]').forEach(element => {
+    const record = data.records[element.dataset.record];
+    if (record) element.innerHTML = recordParts[element.dataset.recordPart](record, element);
+  });
   function candidateShelfColumns(count) { return count <= 3 ? Math.max(1, count) : Math.ceil(count / 2); }
   function selectedFirstCandidateIds(ids, selectedId) {
     return [...ids.filter(id => id === selectedId), ...ids.filter(id => id !== selectedId)];
@@ -314,8 +321,6 @@
     shelf.style.setProperty('--shelf-columns', candidateShelfColumns(ids.length));
     shelf.innerHTML = selectedFirstCandidateIds(ids, selectedId).map(id => candidateCardMarkup(id, selectedId)).join('');
   }
-  const octoberSelection = data.candidates.find(candidate => candidate.state.includes('선정'));
-  populateCandidateShelf(document.querySelector('#candidate-list'), data.candidates.map(candidate => candidate.workId), octoberSelection?.workId);
   // Put the selected book first while preserving the order of the other candidates.
   document.querySelectorAll('[data-candidate-shelf]').forEach(shelf => {
     const meeting = data.candidateMeetings.find(item => item.meetingId === shelf.dataset.candidateShelf);
@@ -359,8 +364,9 @@
   const [nowYear, nowMonth] = (currentMeetingId || pastSelections.at(-1).month).split('-').map(Number);
   const monthsTogether = (nowYear - firstYear) * 12 + (nowMonth - firstMonth);
   const nowNumber = pastSelections.length + (currentMeetingId ? 1 : 0);
-  document.querySelector('#home-since').innerHTML = `<time datetime="${escapeHTML(pastSelections[0].month)}">${firstYear}년 ${firstMonth}월부터</time><span>${nowNumber}번째 책을 읽는 중</span>`;
-  document.querySelector('#now-reading-label').textContent = `지금 읽는 책 · ${nowMonth}월 · ${nowNumber}번째`;
+  // Between meetings, before the next book is chosen, the home card shows the book read most recently.
+  document.querySelector('#home-since').innerHTML = `<time datetime="${escapeHTML(pastSelections[0].month)}">${firstYear}년 ${firstMonth}월부터</time><span>${currentMeetingId ? `${nowNumber}번째 책을 읽는 중` : `${nowNumber}권을 함께 읽었습니다`}</span>`;
+  document.querySelector('#now-reading-label').textContent = `${currentMeetingId ? '지금 읽는 책' : '최근에 함께 읽은 책'} · ${nowMonth}월 · ${nowNumber}번째`;
   const stats = [[pastSelections.length,'권','함께 읽은 책'],[Object.keys(data.participants).length,'명','함께 읽는 사람'],[monthsTogether,'개월','이어 온 시간']];
   document.querySelector('#home-stats').innerHTML = stats.map(([value, unit, label]) => `<div><dt>${label}</dt><dd><span class="stat-value" data-count="${value}">${value}</span>${unit}</dd></div>`).join('');
   document.querySelector('#home-shelf').innerHTML = pastSelections.map(book => `<li class="home-shelf-book">${coverFrameMarkup(book.title,book.coverKey,'span')}<span class="home-shelf-month">${escapeHTML(shortMonth(book.month))}</span></li>`).join('');

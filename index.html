@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="한 권을 읽고, 서로의 시선을 남깁니다. 9월의 나미야 잡화점의 기적 토론과 10월의 독서 준비, 모임에서 소개된 작품을 모았습니다.">
+  <meta name="description" content="한 권을 읽고, 서로의 시선을 남깁니다. 10월의 히틀러의 음식을 먹는 여자들, 9월의 나미야 잡화점의 기적 토론과 모임에서 소개된 작품을 모았습니다.">
   <meta name="theme-color" content="#f6f2e9">
   <title>책 사이 · 독서모임</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,8 +17,8 @@
       setTimeout(() => { if (!window.bookClubReady) document.documentElement.classList.remove('reveal-on'); }, 3000);
     }
   </script>
-  <script src="./data.js?v=20261021-navigation-fixes" defer></script>
-  <script src="./app.js?v=20261021-navigation-fixes" defer></script>
+  <script src="./data.js?v=20261021-october-record" defer></script>
+  <script src="./app.js?v=20261021-october-record" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 건너뛰기</a>
@@ -54,8 +54,8 @@
           <button class="cover-trigger now-reading-cover" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span></button>
           <div class="now-reading-copy">
             <h2 id="now-reading-title">히틀러의 음식을 먹는 여자들</h2>
-            <p class="muted">로셀라 포스토리노 · 모임 전, 함께 읽는 중</p>
-            <button class="outline-button season-button" data-go="october">10월 모임 보기 →</button>
+            <p class="muted">로셀라 포스토리노 · 10월 21일 모임에서 함께 이야기했습니다</p>
+            <button class="outline-button season-button" data-go="october">10월 토론 기록 보기 →</button>
           </div>
         </article>
       </div>
@@ -68,7 +68,7 @@
         <ul id="home-members" data-reveal-group class="home-members"></ul>
         <p class="source-note" data-reveal>추천 수는 지난 선정작 기록에서 추천자가 확인된 책만 셉니다.</p>
       </section>
-      <aside class="next-meeting home-recent" data-reveal aria-labelledby="home-recent-title"><div><span class="muted">최근 모임 · 2026년 9월 15일</span><h2 id="home-recent-title">나미야 잡화점의 기적, 세 개의 시선</h2><p>흩어진 에피소드가 만나는 순간부터 사라지는 동네의 가게까지 이야기했습니다.</p></div><button class="outline-button" data-go="september">9월 토론 기록 보기 →</button></aside>
+      <aside class="next-meeting home-recent" data-reveal aria-labelledby="home-recent-title"><div><span class="muted">다음 모임 · 2026년 11월 25일 수요일 예정</span><h2 id="home-recent-title">11월의 책은 곧 알려 드릴게요.</h2><p>함께 읽을 책은 정해지는 대로 공지합니다. 그동안 모임에서 이야기한 책과 영화를 둘러보세요.</p></div><button class="outline-button" data-go="works">함께 볼 작품 보기 →</button></aside>
     </section>
     <section id="meetings" role="tabpanel" aria-labelledby="tab-meetings" hidden>
       <nav class="month-tabs" role="tablist" aria-label="모임 선택">
@@ -82,7 +82,7 @@
           <p class="meeting-meta"><time datetime="2026-09-15">2026년 9월 15일</time><span>토론 기록</span></p>
           <h1>한 권의 책,<br>세 개의 시선.</h1>
           <p class="hero-lede">누군가는 이야기의 연결을,<br>누군가는 읽는 여유를,<br>누군가는 사라지는 동네를 떠올렸습니다.</p>
-          <div id="voice-preview" class="voice-preview" aria-label="세 사람의 독서 시선"></div>
+          <div id="voice-preview" class="voice-preview" aria-label="세 사람의 독서 시선" data-record="2026-09" data-record-part="voices" data-people-href="#people"></div>
           <a class="text-link" href="#discussion">나눈 이야기 읽기 <span aria-hidden="true">↓</span></a>
         </div>
         <figure class="featured-book" data-reveal>
@@ -97,15 +97,15 @@
       </section>
       <section id="discussion" class="section" tabindex="-1" aria-labelledby="discussion-title">
         <div class="section-heading" data-reveal><h2 id="discussion-title">우리가 나눈 이야기</h2><p>결론보다, 서로 다르게 읽은 지점을 남겼습니다.</p></div>
-        <div id="topics" data-reveal-group class="topic-list"></div>
+        <div id="topics" data-reveal-group class="topic-list" data-record="2026-09" data-record-part="topics"></div>
       </section>
       <section id="people" class="section" aria-labelledby="people-title">
         <div class="section-heading" data-reveal><h2 id="people-title">세 사람의 생각</h2><p>모임 녹음에서 각자의 이야기를 다시 엮었습니다.</p></div>
-        <div id="people-list" data-reveal-group class="people-list"></div>
+        <div id="people-list" data-reveal-group class="people-list" data-record="2026-09" data-record-part="people"></div>
         <p class="source-note" data-reveal>각 글은 9월 15일 토론 녹음의 발언을 요약한 기록입니다. 직접 인용문이나 모임 전 작성한 독서노트는 아닙니다.</p>
       </section>
       <section class="section record-candidates" aria-labelledby="september-candidate-title"><div class="section-heading" data-reveal><h2 id="september-candidate-title">함께 검토했던 책</h2><p>2026년 9월 모임의 후보 세 권입니다.</p></div><ul class="record-candidate-shelf" data-reveal-group data-candidate-shelf="2026-09"></ul></section>
-      <aside class="next-meeting" data-reveal><div><span class="muted">이어서 읽기</span><h2>10월에는 다른 질문을 만납니다.</h2><p>선정한 책과 함께 검토했던 후보를 모았습니다.</p></div><button class="outline-button" data-go="october">10월 모임 보기 →</button></aside>
+      <aside class="next-meeting" data-reveal><div><span class="muted">이어서 읽기</span><h2>10월에는 다른 질문을 만납니다.</h2><p>로자의 식탁에서 각자의 전환점까지 나눈 이야기를 모았습니다.</p></div><button class="outline-button" data-go="october">10월 토론 기록 보기 →</button></aside>
     </section>
 <section id="first-meeting" role="tabpanel" aria-labelledby="month-archive" hidden>
       <p class="record-back"><button class="link-button" data-go="meeting-archive">← 지난 기록</button></p>
@@ -167,13 +167,33 @@
       <section class="section record-candidates" aria-labelledby="record-2025-02-candidate-title" data-candidate-section="2025-02"><div class="section-heading" data-reveal><h2 id="record-2025-02-candidate-title">함께 검토했던 책</h2></div><ul class="record-candidate-shelf" data-reveal-group data-candidate-shelf="2025-02"></ul></section>
     </section>
     <section id="october" role="tabpanel" aria-labelledby="month-october">
-      <div class="meeting-hero october-hero" data-reveal-group>
-        <div class="hero-copy" data-reveal><p class="meeting-meta">2026년 10월<span>모임 전</span></p><h1 id="october-title">다음 이야기를<br>읽는 중입니다.</h1><p class="hero-lede">이번에 함께 읽을 책은<br><strong>히틀러의 음식을 먹는 여자들</strong>입니다.</p><p class="muted">토론은 아직 열리지 않았습니다.<br>모임에서 나눈 생각은 이후에 이곳에 남깁니다.</p><a class="text-link" href="#candidates">함께 검토했던 책 보기 ↓</a></div>
-        <figure class="featured-book" data-reveal><button class="cover-trigger hero-book-button" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사" loading="lazy"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button><figcaption><strong>10월 선정 도서</strong><span>히틀러의 음식을 먹는 여자들</span><a class="cover-source" href="https://www.aladin.co.kr/shop/wproduct.aspx?itemid=217753819" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
+      <div class="meeting-hero" data-reveal-group>
+        <div class="hero-copy" data-reveal>
+          <p class="meeting-meta"><time datetime="2026-10-21">2026년 10월 21일</time><span>토론 기록</span></p>
+          <h1 id="october-title">그 식탁에서,<br>각자의 전환점으로.</h1>
+          <p class="hero-lede">누군가는 반전과 헷갈리는 이름을,<br>누군가는 함께 겪지 못한 시간을,<br>누군가는 침묵하는 사람의 책임을 이야기했습니다.</p>
+          <div class="voice-preview" aria-label="세 사람의 독서 시선" data-record="2026-10" data-record-part="voices" data-people-href="#october-people"></div>
+          <a class="text-link" href="#october-discussion">나눈 이야기 읽기 <span aria-hidden="true">↓</span></a>
+        </div>
+        <figure class="featured-book" data-reveal><button class="cover-trigger hero-book-button" type="button" data-work-open="hitler-book" aria-label="히틀러의 음식을 먹는 여자들 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/hitler.webp" width="500" height="723" alt="히틀러의 음식을 먹는 여자들 책 표지 · 문예출판사" loading="lazy"><span class="cover-fallback" hidden>히틀러의 음식을 먹는 여자들<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button><figcaption><strong>10월에 함께 읽은 책</strong><span>히틀러의 음식을 먹는 여자들 · 로셀라 포스토리노</span><a class="cover-source" href="https://www.aladin.co.kr/shop/wproduct.aspx?itemid=217753819" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
       </div>
+      <section class="meeting-summary" data-reveal aria-labelledby="october-summary-title">
+        <h2 id="october-summary-title">읽고 나서, 대화는 이렇게 흘렀습니다.</h2>
+        <p>반전을 기다리며 읽은 1부와 헷갈리는 이름에서 시작해, 로자의 삶이 꺾인 순간을 각자의 전환점으로 옮겨 보았습니다. 함께 겪지 못한 시간이 바꾼 관계, 침묵도 책임이라는 아버지의 말, 사람들이 전체주의에 끌린 이유까지 이야기가 이어졌습니다.</p>
+        <div class="quick-links"><a href="#october-discussion">주제별 토론</a><a href="#october-people">세 사람의 생각</a><button class="link-button" data-go="works">함께 볼 작품 보기 ↗</button></div>
+      </section>
+      <section id="october-discussion" class="section" tabindex="-1" aria-labelledby="october-discussion-title">
+        <div class="section-heading" data-reveal><h2 id="october-discussion-title">우리가 나눈 이야기</h2><p>결론보다, 서로 다르게 읽은 지점을 남겼습니다.</p></div>
+        <div data-reveal-group class="topic-list" data-record="2026-10" data-record-part="topics"></div>
+      </section>
+      <section id="october-people" class="section" aria-labelledby="october-people-title">
+        <div class="section-heading" data-reveal><h2 id="october-people-title">세 사람의 생각</h2><p>모임 녹음에서 각자의 이야기를 나눈 순서대로 다시 엮었습니다.</p></div>
+        <div data-reveal-group class="people-list" data-record="2026-10" data-record-part="people"></div>
+        <p class="source-note" data-reveal>각 글은 10월 21일 토론 녹음의 발언을 요약한 기록입니다. 직접 인용문이나 모임 전 작성한 독서노트는 아닙니다.</p>
+      </section>
       <aside class="next-meeting" data-reveal aria-labelledby="mario-presentation-title"><div><span class="muted">모임 전 개인 발표자료</span><h2 id="mario-presentation-title">마리오님의 읽다가 멈춘 지점들</h2><p>인물의 이름에서 시작해, 로자의 회고와 우리 삶의 전환점까지.</p></div><a class="outline-button" href="./mario/2026-10/">마리오님 발표 보기 →</a></aside>
-      <section id="candidates" class="section record-candidates" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading" data-reveal><h2 id="candidates-title">함께 검토했던 책</h2><p>2026년 10월 모임의 후보 네 권입니다. <span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다.</p></div><ul id="candidate-list" class="record-candidate-shelf" data-reveal-group></ul></section>
-      <div class="quiet-note" data-reveal><h2>토론 기록은 모임 뒤에</h2><p>마리오님의 개인 발표자료를 따로 읽을 수 있습니다. 모임에서 나눈 토론 기록은 아직 등록되지 않았습니다. 모임 일시는 확인 후 안내합니다.</p></div>
+      <section id="candidates" class="section record-candidates" tabindex="-1" aria-labelledby="candidates-title"><div class="section-heading" data-reveal><h2 id="candidates-title">함께 검토했던 책</h2><p>2026년 10월 모임의 후보 네 권입니다. <span data-participant="hj"></span>이 소개한 네 권 중 『히틀러의 음식을 먹는 여자들』을 함께 읽기로 정했습니다.</p></div><ul class="record-candidate-shelf" data-reveal-group data-candidate-shelf="2026-10"></ul></section>
+      <aside class="next-meeting" data-reveal><div><span class="muted">이어서 읽기</span><h2>11월에는 넷째 주 수요일에 만납니다.</h2><p>11월 25일로 잡았고, 함께 읽을 책은 정해지는 대로 알려 드립니다.</p></div><button class="outline-button" data-go="september">9월 토론 기록 보기 →</button></aside>
     </section>
     <section id="meeting-archive" role="tabpanel" aria-labelledby="month-archive" hidden>
       <div class="works-intro archive-intro" data-reveal><h1 id="archive-title">지난 기록</h1><p>지난 모임의 토론 기록과 후보를 달별로 모았습니다.</p></div>
@@ -193,7 +213,7 @@
       <div class="works-intro" data-reveal><h1>함께 볼 작품</h1><p>모임에서 추천하거나 대화에 나온 책과 영화입니다. 카드마다 추천·비교·추억·참고처럼 실제로 이야기된 맥락을 표시합니다. 최근 이야기한 작품부터 보여 주며, 시점이 남아 있지 않은 작품은 뒤에 모았습니다.</p><a class="text-link" href="#meeting-archive">당시 후보작은 모임 기록에서 보기 →</a></div>
       <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">작품 찾기</label><input id="search" type="search" placeholder="제목, 작가, 나눈 이야기" autocomplete="off"></div><div><label for="media">분야</label><select id="media"><option value="all">전체 분야</option><option value="book">책</option><option value="movie">영화</option><option value="anime">만화·애니</option></select></div><button id="reset" class="outline-button" type="reset">초기화</button></form>
       <div id="shelf-results"><p id="result-count" class="result-count" role="status" aria-live="polite"></p><div id="work-list" class="work-grid"></div><div id="empty-state" class="quiet-note" hidden><h2>아직 일치하는 작품이 없어요.</h2><p>검색어를 바꾸거나 분야를 전체로 선택해 보세요.</p><button class="outline-button" id="empty-reset">작품 전체 보기</button></div></div>
-      <p class="source-note" data-reveal>2026년 9월 작품은 9월 15일 모임 녹음, 2025년 2월 작품은 2월 12일 모임 기록에서 정리했습니다. 기억해 둔 추천 작품의 날짜와 추천자는 추정하지 않았습니다. 비교·추억·참고로 언급된 작품도 그 맥락을 밝혀 함께 담습니다. 후보로만 소개된 작품은 모임 기록에서 봅니다. 후보 이력과 별도 추천 이력이 함께 있는 작품은 양쪽에서 볼 수 있습니다. 표지는 출판·서점 자료에서 확인했습니다.</p>
+      <p class="source-note" data-reveal>2026년 10월 작품은 10월 21일 모임 녹음, 2026년 9월 작품은 9월 15일 모임 녹음, 2025년 2월 작품은 2월 12일 모임 기록에서 정리했습니다. 기억해 둔 추천 작품의 날짜와 추천자는 추정하지 않았습니다. 비교·추억·참고로 언급된 작품도 그 맥락을 밝혀 함께 담습니다. 후보로만 소개된 작품은 모임 기록에서 봅니다. 후보 이력과 별도 추천 이력이 함께 있는 작품은 양쪽에서 볼 수 있습니다. 표지는 출판·서점 자료에서 확인했습니다.</p>
     </section>
     <section id="history" tabindex="-1" role="tabpanel" aria-labelledby="tab-history" hidden>
       <div class="works-intro history-intro" data-reveal><h1>지난 선정작</h1></div>
@@ -202,6 +222,6 @@
     </section>
     <noscript><p class="quiet-note">이 페이지의 모임 전환과 작품 검색은 JavaScript를 사용합니다. JavaScript를 켜면 모임 기록, 소개된 작품과 지난 선정작도 볼 수 있습니다.</p></noscript>
   </main>
-  <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 달별 후보 목록 · 2025년 3월 후기 정리글 · 2026.09.15 모임 녹음 · 10월 후보 검토 메모</p></footer>
+  <footer class="container footer"><p>책 사이 · 함께 읽고, 이야기하고, 남깁니다.</p><p>기록 출처: 달별 후보 목록 · 2025년 3월 후기 정리글 · 2026.09.15 · 2026.10.21 모임 녹음 · 10월 후보 검토 메모</p></footer>
 </body>
 </html>
