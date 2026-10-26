@@ -6,12 +6,14 @@ const vm = require('node:vm');
 
 // Run the real scripts against a small DOM/event fixture without browser dependencies.
 // Layout, browser focus behavior and rendering still need browser verification.
-function loadApp(hash = '#home') {
+async function loadApp(hash = '#home', candidateLoadFails = false) {
   const root = join(__dirname, '..');
-  const html = readFileSync(join(root, 'index.html'), 'utf8');
+  const candidateScript = readFileSync(join(root, 'november-data.js'), 'utf8');
+  const candidateMarkup = candidateScript.match(/insertAdjacentHTML\('afterend', `([\s\S]*?)`\)/)[1];
+  const html = readFileSync(join(root, 'index.html'), 'utf8') + (candidateLoadFails ? '' : candidateMarkup + '<button id="month-november" role="tab" aria-selected="true" aria-controls="november" data-month="november"></button>');
   const elements = new Map();
   const listeners = new Map();
-  const location = { hash };
+  const location = { hash, href: 'http://localhost/' };
   const document = { activeElement: null };
   const attributes = text => Object.fromEntries([...text.matchAll(/([\w-]+)(?:="([^"]*)")?/g)].map(match => [match[1], match[2] ?? '']));
   function element(attrs = {}) {
@@ -26,7 +28,7 @@ function loadApp(hash = '#home') {
       hasAttribute: key => key in attrs, removeAttribute: key => { delete attrs[key]; },
       addEventListener(type, fn) { if (!handlers.has(type)) handlers.set(type, []); handlers.get(type).push(fn); },
       querySelectorAll: () => [], querySelector: () => null, closest: () => null,
-      contains: () => false, append() {},
+      contains: () => false, append() {}, remove() {},
       focus() { document.activeElement = node; },
       scrollIntoView() { node.scrolled = true; },
       click() {
@@ -56,16 +58,34 @@ function loadApp(hash = '#home') {
   document.getElementById = id => elements.get('#' + id) || null;
   document.querySelectorAll = selector => selector === '.menu-bar .tabs [role="tab"]' ? tabs : selector === '.month-tabs [role="tab"]' ? months : [];
   document.createElement = () => element();
-  document.addEventListener = () => {};
+  document.head = { append(script) {
+    if (candidateLoadFails) { script.onerror(); return; }
+    const additions = JSON.parse(candidateScript.match(/const additions = ([\s\S]*?);\n  for/)[1]);
+    const data = window.BOOK_CLUB;
+    for (const key of ['works', 'candidateMeetings']) data[key].push(...additions[key]);
+    Object.assign(data.covers, additions.covers);
+    Object.assign(data.meetings, additions.meetings);
+    script.onload();
+  } };
+  const documentHandlers = new Map();
+  document.addEventListener = (type, handler) => {
+    if (!documentHandlers.has(type)) documentHandlers.set(type, []);
+    documentHandlers.get(type).push(handler);
+  };
   const window = {
     matchMedia: () => ({ matches: true, addEventListener() {} }),
     addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); }
   };
   const history = { pushState(_state, _title, next) { location.hash = next; } };
-  const context = vm.createContext({ window, document, location, history });
+  const context = vm.createContext({ window, document, location, history, URL });
   vm.runInContext(readFileSync(join(root, 'data.js'), 'utf8'), context);
-  vm.runInContext(readFileSync(join(root, 'app.js'), 'utf8'), context);
-  return { document, location, elements, tabs, anchor: href => element({ href }) };
+  await vm.runInContext(readFileSync(join(root, 'app.js'), 'utf8'), context);
+  return { document, location, elements, tabs, anchor: href => element({ href }), openCandidate(id) {
+    const opener = element();
+    opener.dataset.workOpen = id;
+    const event = { target: { closest: selector => selector === '[data-work-open]' ? opener : null } };
+    for (const handler of documentHandlers.get('click') || []) handler(event);
+  } };
 }
 
 for (const [title, href, panel] of [
@@ -74,8 +94,8 @@ for (const [title, href, panel] of [
   ['나미야 잡화점의 기적', '#september', 'september'],
   ['히틀러의 음식을 먹는 여자들', '#october', 'october']
 ]) {
-  test(`${title}: selected-book card links to its discussion`, () => {
-    const app = loadApp('#history');
+  test(`${title}: selected-book card links to its discussion`, async () => {
+    const app = await loadApp('#history');
     const card = app.elements.get('#history-list').innerHTML.split('<article class="history-book">').find(markup => markup.includes(`<h2>${title}</h2>`));
     assert.ok(card?.includes(`class="history-discussion-link" href="${href}"`), 'discussion link is rendered in the matching book card');
     app.anchor(href).click();
@@ -85,8 +105,8 @@ for (const [title, href, panel] of [
 }
 
 for (const hash of ['#home', '#works', '#history', '#october', '#september', '#first-meeting', '#record-2025-02']) {
-  test(`skip link preserves ${hash} and focuses the main content`, () => {
-    const app = loadApp(hash);
+  test(`skip link preserves ${hash} and focuses the main content`, async () => {
+    const app = await loadApp(hash);
     const title = app.document.title;
     const selectedTab = app.tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
     app.elements.get('.skip-link').click();
@@ -99,11 +119,47 @@ for (const hash of ['#home', '#works', '#history', '#october', '#september', '#f
 }
 
 for (const hash of ['#october-discussion', '#october-people', '#candidates']) {
-  test(`${hash} opens the October record`, () => {
-    const app = loadApp(hash);
+  test(`${hash} opens the October record`, async () => {
+    const app = await loadApp(hash);
     assert.equal(app.elements.get('#meetings').hidden, false);
     assert.equal(app.elements.get('#october').hidden, false);
     assert.equal(app.elements.get('#september').hidden, true);
     assert.equal(app.elements.get(hash).scrolled, true);
+  });
+}
+
+for (const hash of ['#november', '#november-candidates']) {
+  test(`${hash} opens November candidates without marking a book as selected`, async () => {
+    const app = await loadApp(hash);
+    assert.equal(app.elements.get('#meetings').hidden, false);
+    assert.equal(app.elements.get('#november').hidden, false);
+    assert.equal(app.elements.get('#october').hidden, true);
+    assert.equal(app.elements.get('#month-november').getAttribute('aria-selected'), 'true');
+    assert.match(app.elements.get('#now-reading-label').textContent, /최근에 함께 읽은 책 · 10월 · 15번째/);
+    assert.doesNotMatch(app.elements.get('#archive-meeting-list').innerHTML, /2026년 11월/);
+    assert.doesNotMatch(app.elements.get('#work-list').innerHTML, /cities-book|kokoro-book|cocktail-book/);
+  });
+}
+
+test('candidate script failure preserves the existing home and October pages', async () => {
+  const app = await loadApp('#october', true);
+  assert.equal(app.elements.get('#meetings').hidden, false);
+  assert.equal(app.elements.get('#october').hidden, false);
+  assert.match(app.elements.get('#now-reading-label').textContent, /최근에 함께 읽은 책 · 10월 · 15번째/);
+});
+
+for (const [id, title, question] of [
+  ['cities-book', '도시는 무엇으로 사는가', '내가 좋아하는 동네는 무엇 때문에 좋은가?'],
+  ['kokoro-book', '마음', '솔직한 고백은 누구를 위한 행동일까?'],
+  ['cocktail-book', '칵테일, 러브, 좀비', '가장 마음에 남거나 불편했던 이야기는 무엇인가?']
+]) {
+  test(`${title}: candidate detail reads the public book profile without participant history`, async () => {
+    const app = await loadApp('#november');
+    app.openCandidate(id);
+    assert.equal(app.elements.get('#book-detail').hidden, false);
+    assert.equal(app.elements.get('#book-detail-title').textContent, title);
+    assert.ok(app.elements.get('#book-detail-body').innerHTML.includes(question));
+    assert.match(app.elements.get('#book-detail-body').innerHTML, /추천 이유/);
+    assert.match(app.elements.get('#book-detail-body').innerHTML, /마리오님 추천/);
   });
 }

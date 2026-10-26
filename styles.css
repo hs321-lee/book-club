@@ -363,3 +363,31 @@ body::before { content:''; position:fixed; inset:-10vh -10vw; z-index:-1; pointe
 .work-date { display:block; margin-top:var(--space-2xs); color:var(--color-muted); font-size:var(--text-xs); }
 .archive-shelf-title { margin-block:var(--space-lg); font-size:var(--text-base); }
 .selection-only-note { margin-bottom:var(--space-md); color:var(--color-muted); font-size:var(--text-sm); }
+
+/* Upcoming candidates share equal weight; the chosen book remains separate. */
+.november-intro { padding-block:var(--space-xl) var(--space-lg); }
+.november-intro h1 { margin-top:var(--space-sm); font-size:clamp(2rem,4.3vw,3.5rem); }
+.november-intro .hero-lede { margin-top:var(--space-lg); }
+.november-intro>.muted { margin-top:var(--space-md); font-size:var(--text-sm); }
+.november-candidates { margin-top:var(--space-lg); padding-top:var(--space-lg); }
+.november-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:var(--space-xl); list-style:none; margin:0; padding:0; }
+.november-card { display:grid; grid-template-columns:88px minmax(0,1fr); gap:var(--space-md); align-items:start; border-top:var(--rule-hair) solid var(--color-rule-strong); padding-top:var(--space-lg); min-width:0; }
+.november-cover { display:block; width:100%; border:0; padding:0; background:none; white-space:normal; }
+.november-cover .cover-frame { display:flex; align-items:end; padding:0; background:none; }
+.november-cover .cover-hint { display:block; font-size:var(--text-xs); }
+.november-copy { min-width:0; }
+.november-genre { color:var(--color-accent); font-size:var(--text-xs); }
+.november-copy h3 { margin-top:var(--space-2xs); font-family:var(--font-display); font-size:var(--text-lg); }
+.november-author { margin-block:var(--space-2xs) var(--space-sm); font-size:var(--text-xs); color:var(--color-muted); }
+.november-copy>p:not(.november-genre):not(.november-author) { font-size:var(--text-sm); }
+.november-question { border-top:var(--rule-hair) solid var(--color-rule); margin-top:var(--space-md); padding-top:var(--space-sm); }
+.november-question span { display:block; color:var(--color-muted); font-size:var(--text-xs); margin-bottom:var(--space-2xs); }
+.november-candidates>.source-note { margin-top:var(--space-xl); }
+@media(min-width:40rem) { .november-card { grid-template-columns:128px minmax(0,1fr); gap:var(--space-lg); } }
+@media(min-width:60rem) {
+  .november-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-xl); }
+  .november-card { display:block; }
+  .november-cover { width:160px; margin-bottom:var(--space-lg); }
+  .november-cover .cover-frame { height:250px; }
+  .november-cover .cover-img { max-height:250px; width:auto; max-width:100%; }
+}
