@@ -29,11 +29,11 @@
       "coverKey": "november-kokoro",
       "candidateProfile": {
         "genre": "고전 · 심리소설",
-        "edition": "",
+        "edition": "에디터스 컬렉션 · 오유리 옮김",
         "summary": "청년인 나와 세상에서 거리를 두고 사는 선생님의 만남으로 시작합니다. 한 사람의 고백을 따라 신뢰와 이기심, 죄책감을 들여다봅니다.",
         "question": "솔직한 고백은 누구를 위한 행동일까?",
         "reason": "인물의 선택을 이해하는 시선과 비판하는 시선을 비교하며 깊게 이야기하기 좋습니다.",
-        "note": "초반 전개는 느리고 분위기는 무겁습니다. 표지는 문학동네 유은경 번역 대표 판본이며, 함께 읽을 판본을 지정한 것은 아닙니다."
+        "note": "초반 전개는 느리고 분위기는 무겁습니다. 문예출판사 에디터스 컬렉션의 오유리 번역판으로 소개합니다."
       }
     },
     {
@@ -79,12 +79,15 @@
     "november-kokoro": {
       "title": "마음",
       "creator": "나쓰메 소세키",
-      "page": "https://www.yes24.com/product/goods/32614607",
-      "local": "./assets/covers/candidates/november-kokoro.webp",
-      "width": 270,
-      "height": 400,
-      "label": "책 표지 · 문학동네 · 유은경 번역 · 대표 판본",
-      "isbn": "9788954642484"
+      "page": "https://www.yes24.com/product/goods/78520772",
+      "local": "./assets/covers/candidates/november-kokoro.webp?v=oh-yuri-2019",
+      "width": 543,
+      "height": 850,
+      "label": "책 표지 · 문예출판사 · 에디터스 컬렉션 · 오유리 옮김",
+      "isbn": "9788931020106",
+      "printIsbn": "9788931019605",
+      "publisher": "문예출판사",
+      "translator": "오유리"
     },
     "november-cocktail": {
       "title": "칵테일, 러브, 좀비",
