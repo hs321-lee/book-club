@@ -141,6 +141,11 @@
   }
   document.addEventListener('error', event => {
     if (event.target.matches?.('img.cover-img')) handleCoverError(event.target);
+    if (event.target.matches?.('.discovery-thumb img')) {
+      event.target.hidden = true;
+      const fallback = event.target.parentElement.querySelector('.discovery-image-fallback');
+      if (fallback) fallback.hidden = false;
+    }
   }, true);
   document.querySelectorAll('img.cover-img').forEach(image => {
     if (image.complete && image.naturalWidth === 0) handleCoverError(image);
@@ -176,13 +181,21 @@
     if (fromImage) morphCover(fromImage, () => renderBookDetail(work, opener, isIntro, true), () => coverImageIn(detailPanel.querySelector('.book-detail-cover'), false));
     else renderBookDetail(work, opener, isIntro, false);
   }
+  function discoveryMarkup(source) {
+    if (!source) return '';
+    const imageHref = source.imageAction === 'video' ? source.url : source.image;
+    const action = source.imageAction === 'video' ? '영상 보기' : '이미지 확대';
+    const imageClass = source.imageAction === 'crop' ? ' discovery-thumb--crop' : '';
+    const link = source.url ? `<a class="discovery-link" href="${escapeHTML(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(source.linkLabel)} ↗</a>` : '';
+    return `<section class="discovery-source" aria-label="고른 계기와 출처"><a class="discovery-thumb${imageClass}" href="${escapeHTML(imageHref)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHTML(source.label + ' · ' + action + ', 새 창')}"><img src="${escapeHTML(source.image)}" alt="${escapeHTML(source.imageAlt)}" loading="lazy"><span class="discovery-image-fallback" hidden>이미지를 불러오지 못했습니다.</span></a><div class="discovery-copy"><p><strong>고른 계기</strong></p><p>${escapeHTML(source.text)}</p><p class="discovery-caption">${escapeHTML(source.label)} · ${action} ↗</p>${link}</div></section>`;
+  }
   function renderBookDetail(work, opener, isIntro, morphing) {
     closeBookDetail(false);
     const mentions = isIntro ? [] : workMentions(work);
     document.querySelector('#book-detail-title').textContent = work.title;
     const septemberTopics = data.records['2026-09'].topics;
     const profile = work.candidateProfile;
-    const candidateContext = profile ? `<div class="work-context"><p>${escapeHTML(profile.summary)}</p><p><strong>추천 이유</strong><br>${escapeHTML(profile.reason)}</p><p><strong>미리 생각할 질문</strong><br>${escapeHTML(profile.question)}</p><p class="muted">${escapeHTML(profile.note)}</p><a class="text-link" href="#november-candidates" data-meeting-link>11월 후보 세 권 보기 →</a></div>` : '';
+    const candidateContext = profile ? `<div class="work-context"><p>${escapeHTML(profile.summary)}</p>${discoveryMarkup(profile.discovery)}<p><strong>추천 이유</strong><br>${escapeHTML(profile.reason)}</p><p><strong>미리 생각할 질문</strong><br>${escapeHTML(profile.question)}</p><p class="muted">${escapeHTML(profile.note)}</p><a class="text-link" href="#november-candidates" data-meeting-link>11월 후보 세 권 보기 →</a></div>` : '';
     const contexts = profile ? candidateContext : isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(septemberTopics[0].summary)}</p><p>${escapeHTML(septemberTopics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
     const badges = profile ? '<span class="work-badge">11월 후보</span><span class="work-badge">마리오님 추천</span>' : isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
     const discussionLink = work.discussionHref ? `<p class="archive-discussion-link"><a class="text-link" href="${escapeHTML(work.discussionHref)}">토론 기록 읽기 →</a></p>` : '';
@@ -349,7 +362,7 @@
     shelf.innerHTML = meeting.workIds.map(id => {
       const work = data.works.find(item => item.id === id);
       const profile = work.candidateProfile;
-      return `<li class="november-card" data-reveal><button class="november-cover cover-trigger" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<span class="cover-hint">자세히 보기 →</span></button><div class="november-copy"><p class="november-genre">${escapeHTML(profile.genre)}</p><h3>${escapeHTML(work.title)}</h3><p class="november-author">${escapeHTML(work.creator)}${profile.edition ? ' · ' + escapeHTML(profile.edition) : ''}</p><p>${escapeHTML(profile.summary)}</p><p class="november-question"><span>미리 생각할 질문</span>${escapeHTML(profile.question)}</p></div></li>`;
+      return `<li class="november-card" data-reveal><button class="november-cover cover-trigger" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<span class="cover-hint">자세히 보기 →</span></button><div class="november-copy"><p class="november-genre">${escapeHTML(profile.genre)}</p><h3>${escapeHTML(work.title)}</h3><p class="november-author">${escapeHTML(work.creator)}${profile.edition ? ' · ' + escapeHTML(profile.edition) : ''}</p><p>${escapeHTML(profile.summary)}</p>${profile.discovery ? `<p class="november-origin"><span>고른 계기</span>${escapeHTML(profile.discovery.short)}</p>` : ''}<p class="november-question"><span>미리 생각할 질문</span>${escapeHTML(profile.question)}</p></div></li>`;
     }).join('');
   });
   const archivedMeetings = data.candidateMeetings.filter(meeting => meeting.state !== 'choosing-book').reverse();

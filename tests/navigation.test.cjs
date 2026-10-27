@@ -161,5 +161,16 @@ for (const [id, title, question] of [
     assert.ok(app.elements.get('#book-detail-body').innerHTML.includes(question));
     assert.match(app.elements.get('#book-detail-body').innerHTML, /추천 이유/);
     assert.match(app.elements.get('#book-detail-body').innerHTML, /마리오님 추천/);
+    const detail = app.elements.get('#book-detail-body').innerHTML;
+    assert.match(detail, /고른 계기/);
+    assert.match(detail, /class="discovery-thumb/);
+    assert.match(detail, /target="_blank" rel="noopener noreferrer"/);
+    if (id === 'cities-book') assert.ok(detail.includes('https://youtu.be/nxWYjFlzRbM'));
+    if (id === 'kokoro-book') {
+      assert.ok(detail.includes('discovery-thumb--crop'));
+      assert.ok(detail.includes('assets/sources/november-kokoro-millie.jpeg'));
+      assert.ok(!detail.includes('millie.co.kr'), 'unconfirmed Millie content URL is not invented');
+    }
+    if (id === 'cocktail-book') assert.ok(detail.includes('https://event.kyobobook.co.kr/make/247513'));
   });
 }
