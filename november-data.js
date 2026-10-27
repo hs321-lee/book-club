@@ -48,9 +48,13 @@
           "short": "송희구 작가에게 영감을 준 책을 소개하는 밀리 콘텐츠에서 첫 추천 도서로 만나 골랐습니다.",
           "text": "밀리의 서재에서 송희구 작가에게 영감을 준 책들을 소개하는 콘텐츠를 봤습니다. 첫 번째 추천 도서인 『마음』이 궁금해 후보로 골랐습니다.",
           "label": "밀리의 서재 · 송희구 작가 추천 콘텐츠",
-          "image": "./assets/sources/november-kokoro-millie.jpeg",
+          "image": "./assets/sources/november-kokoro-millie-1.jpg",
           "imageAlt": "밀리의 서재 송희구 작가 추천 콘텐츠의 대표 추천 도서 마음",
-          "imageAction": "crop"
+          "imageAction": "crop",
+          "gallery": [
+            { "image": "./assets/sources/november-kokoro-millie-1.jpg", "alt": "밀리의 서재 마음 추천 도서와 소개 전반", "width": 979, "height": 1536 },
+            { "image": "./assets/sources/november-kokoro-millie-2.jpg", "alt": "밀리의 서재 마음 소개 후반", "width": 1171, "height": 1536 }
+          ]
         }
       }
     },

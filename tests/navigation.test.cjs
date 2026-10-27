@@ -168,8 +168,13 @@ for (const [id, title, question] of [
     if (id === 'cities-book') assert.ok(detail.includes('https://youtu.be/nxWYjFlzRbM'));
     if (id === 'kokoro-book') {
       assert.ok(detail.includes('discovery-thumb--crop'));
-      assert.ok(detail.includes('assets/sources/november-kokoro-millie.jpeg'));
+      assert.ok(detail.includes('assets/sources/november-kokoro-millie-1.jpg'));
       assert.ok(!detail.includes('millie.co.kr'), 'unconfirmed Millie content URL is not invented');
+      assert.ok(detail.includes('출처 자세히 보기 · 사진 2장'));
+      const firstPhoto = detail.indexOf('november-kokoro-millie-1.jpg', detail.indexOf('discovery-gallery-images'));
+      const secondPhoto = detail.indexOf('november-kokoro-millie-2.jpg', firstPhoto);
+      assert.ok(firstPhoto >= 0 && secondPhoto > firstPhoto, 'original source photos appear in order');
+      assert.ok(!detail.includes('november-kokoro-millie.jpeg'), 'old low-resolution source is not referenced');
     }
     if (id === 'cocktail-book') assert.ok(detail.includes('https://event.kyobobook.co.kr/make/247513'));
   });
