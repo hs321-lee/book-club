@@ -62,7 +62,8 @@ async function loadApp(hash = '#home', candidateLoadFails = false) {
     if (candidateLoadFails) { script.onerror(); return; }
     const additions = JSON.parse(candidateScript.match(/const additions = ([\s\S]*?);\n  for/)[1]);
     const data = window.BOOK_CLUB;
-    for (const key of ['works', 'candidateMeetings']) data[key].push(...additions[key]);
+    for (const key of ['works', 'candidateMeetings', 'selections', 'selectionHistory']) data[key].push(...additions[key]);
+    data.reading = additions.reading;
     Object.assign(data.covers, additions.covers);
     Object.assign(data.meetings, additions.meetings);
     script.onload();
@@ -128,16 +129,17 @@ for (const hash of ['#october-discussion', '#october-people', '#candidates']) {
   });
 }
 
-for (const hash of ['#november', '#november-candidates']) {
-  test(`${hash} opens November candidates without marking a book as selected`, async () => {
+for (const hash of ['#november', '#november-reading', '#november-candidates']) {
+  test(`${hash} opens the November reading page with 마음 as the chosen book`, async () => {
     const app = await loadApp(hash);
     assert.equal(app.elements.get('#meetings').hidden, false);
     assert.equal(app.elements.get('#november').hidden, false);
     assert.equal(app.elements.get('#october').hidden, true);
     assert.equal(app.elements.get('#month-november').getAttribute('aria-selected'), 'true');
-    assert.match(app.elements.get('#now-reading-label').textContent, /최근에 함께 읽은 책 · 10월 · 15번째/);
+    assert.match(app.elements.get('#now-reading-label').textContent, /지금 읽는 책 · 11월 · 16번째/);
     assert.doesNotMatch(app.elements.get('#archive-meeting-list').innerHTML, /2026년 11월/);
     assert.doesNotMatch(app.elements.get('#work-list').innerHTML, /cities-book|kokoro-book|cocktail-book/);
+    assert.match(app.elements.get('#history-list').innerHTML, /<h2>마음<\/h2>[\s\S]*마리오님 추천/);
   });
 }
 
@@ -161,6 +163,7 @@ for (const [id, title, question] of [
     assert.ok(app.elements.get('#book-detail-body').innerHTML.includes(question));
     assert.match(app.elements.get('#book-detail-body').innerHTML, /추천 이유/);
     assert.match(app.elements.get('#book-detail-body').innerHTML, /마리오님 추천/);
+    assert.match(app.elements.get('#book-detail-body').innerHTML, id === 'kokoro-book' ? /11월 선정작[\s\S]*#november-reading/ : /11월 후보[\s\S]*#november-candidates/);
     const detail = app.elements.get('#book-detail-body').innerHTML;
     assert.match(detail, /고른 계기/);
     assert.match(detail, /class="discovery-thumb/);

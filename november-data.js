@@ -1,4 +1,4 @@
-/* Public book information and approved display labels for November candidates. */
+/* November: candidates, the chosen book (마음) and its four-week reading plan. */
 (() => {
   const data = window.BOOK_CLUB;
   if (!data || data.meetings['2026-11']) return;
@@ -94,9 +94,47 @@
         "kokoro-book",
         "cocktail-book"
       ],
-      "state": "choosing-book"
+      "selectedWorkId": "kokoro-book",
+      "state": "before-meeting"
     }
   ],
+  "selections": [
+    {
+      "workId": "kokoro-book",
+      "meetingId": "2026-11",
+      "status": "selected"
+    }
+  ],
+  "selectionHistory": [
+    {
+      "id": "kokoro",
+      "month": "2026-11",
+      "title": "마음",
+      "recommenderId": "hs",
+      "coverKey": "november-kokoro"
+    }
+  ],
+  "reading": {
+    "2026-11": {
+      "workId": "kokoro-book",
+      "basis": "번역본마다 쪽수가 달라 장 번호로 나눴습니다. 상 36장 · 중 18장 · 하 56장, 모두 110장입니다.",
+      "weeks": [
+        { "label": "1주", "dates": "10월 29일 – 11월 4일", "range": "상 1–27장", "part": "상 · 선생님과 나", "focus": "'나'가 선생님을 처음 만나 조금씩 가까워집니다. 잔잔하게 흘러가니 이번 주에 넉넉히 읽어 두면 좋습니다." },
+        { "label": "2주", "dates": "11월 5일 – 11월 11일", "range": "상 28–36장 · 중 1–18장", "part": "상 끝 · 중 · 부모님과 나", "focus": "상편을 마무리하고, 고향에 내려간 '나'와 가족의 이야기로 넘어갑니다." },
+        { "label": "3주", "dates": "11월 12일 – 11월 18일", "range": "하 1–28장", "part": "하 · 선생님과 유서", "focus": "선생님이 남긴 긴 글이 시작됩니다. 이야기의 목소리가 바뀌는 지점입니다." },
+        { "label": "4주", "dates": "11월 19일 – 11월 24일", "range": "하 29–56장", "part": "하 · 선생님과 유서", "focus": "끝까지 읽고, 모임에서 나누고 싶은 장면이나 문장을 하나씩 골라 둡니다." }
+      ],
+      "questions": [
+        "솔직한 고백은 누구를 위한 행동일까?",
+        "선생님은 왜 세상과 거리를 두고 살까? 읽는 동안 내 짐작은 어떻게 바뀌었나?",
+        "'나'에게 선생님과 아버지는 각각 어떤 어른일까?"
+      ],
+      "tips": [
+        "다른 번역본으로 읽어도 장 번호는 같습니다.",
+        "초반 전개는 느리고 분위기는 무겁습니다. 뒤로 갈수록 앞의 장면이 다시 읽힙니다."
+      ]
+    }
+  },
   "covers": {
     "november-cities": {
       "title": "도시는 무엇으로 사는가",
@@ -135,43 +173,65 @@
     "2026-11": {
       "label": "11월",
       "tab": "november",
-      "section": "november-candidates",
       "candidateSection": "november-candidates",
-      "state": "choosing-book",
-      "linkLabel": "11월 후보 세 권 보기"
+      "section": "november-reading",
+      "state": "before-meeting",
+      "linkLabel": "11월 읽기 안내 보기"
     }
   }
 };
-  for (const key of ['works', 'candidateMeetings']) data[key].push(...additions[key]);
+  for (const key of ['works', 'candidateMeetings', 'selections', 'selectionHistory']) data[key].push(...additions[key]);
+  data.reading = additions.reading;
   Object.assign(data.covers, additions.covers);
   Object.assign(data.meetings, additions.meetings);
   const monthTabs = document.querySelector('.month-tabs');
   monthTabs.querySelectorAll('[role="tab"]').forEach(tab => { tab.setAttribute('aria-selected', 'false'); tab.tabIndex = -1; });
-  monthTabs.insertAdjacentHTML('afterbegin', '<button id="month-november" role="tab" aria-selected="true" aria-controls="november" data-month="november">2026년 11월 · 후보</button>');
+  monthTabs.insertAdjacentHTML('afterbegin', '<button id="month-november" role="tab" aria-selected="true" aria-controls="november" data-month="november">2026년 11월 · 읽는 중</button>');
   monthTabs.insertAdjacentHTML('afterend', `    <section id="november" role="tabpanel" aria-labelledby="month-november">
-      <div class="november-intro" data-reveal>
-        <p class="meeting-meta"><time datetime="2026-11">2026년 11월</time><span>후보 3권</span><span>마리오님 추천</span></p>
-        <h1>11월에는 어떤 질문을 만날까요?</h1>
-        <p class="hero-lede">도시를 보는 시선, 인간의 마음, 낯선 상상.<br>서로 다른 세 권 중 함께 읽을 책을 고릅니다.</p>
-        <p class="muted">다음 모임 · 2026년 11월 25일 수요일 예정 · 도서 선정 전</p>
+      <div class="meeting-hero" data-reveal-group>
+        <div class="hero-copy" data-reveal>
+          <p class="meeting-meta"><time datetime="2026-11">2026년 11월</time><span>읽는 중</span><span>마리오님 추천</span></p>
+          <h1 id="november-title">한 사람의 고백을 따라,<br>마음 속으로.</h1>
+          <p class="hero-lede">후보 세 권 중 나쓰메 소세키의 『마음』을 함께 읽습니다.<br>11월 25일 수요일에 만나 이야기합니다.</p>
+          <a class="text-link" href="#november-reading">4주 읽기 안내 <span aria-hidden="true">↓</span></a>
+        </div>
+        <figure class="featured-book" data-reveal><button class="cover-trigger hero-book-button" type="button" data-work-open="kokoro-book" aria-label="마음 소개 보기" aria-expanded="false" aria-controls="book-detail"><span class="cover-frame hero-cover"><img class="cover-img" src="./assets/covers/candidates/november-kokoro.webp?v=oh-yuri-2019" width="543" height="850" alt="마음 책 표지 · 문예출판사 · 에디터스 컬렉션 · 오유리 옮김"><span class="cover-fallback" hidden>마음<br>표지를 불러오지 못했어요.</span></span><span class="cover-hint">책을 펼쳐 보기 →</span></button><figcaption><strong>11월에 함께 읽는 책</strong><span>마음 · 나쓰메 소세키 · 오유리 옮김</span><a class="cover-source" href="https://www.yes24.com/product/goods/78520772" target="_blank" rel="noopener noreferrer">표지 출처 ↗</a></figcaption></figure>
       </div>
-      <section id="november-candidates" class="section november-candidates" tabindex="-1" aria-labelledby="november-candidates-title">
-        <div class="section-heading" data-reveal><h2 id="november-candidates-title">11월 후보 세 권</h2><p>표지를 누르면 소개와 추천 이유를 볼 수 있습니다.</p></div>
-        <ul class="november-grid" data-reveal-group data-upcoming-candidates="2026-11"></ul>
-        <p class="source-note">소개와 질문은 도서 선정을 위한 모임 전 자료입니다. 실제 토론이나 멤버의 독후 감상은 아닙니다.</p>
+      <section id="november-reading" class="section" tabindex="-1" aria-labelledby="november-reading-title">
+        <div class="section-heading" data-reveal><h2 id="november-reading-title">4주 읽기 안내</h2><p data-reading-basis="2026-11"></p></div>
+        <ol class="reading-plan" data-reveal-group data-reading-plan="2026-11"></ol>
       </section>
+      <section id="november-before" class="section" aria-labelledby="november-before-title">
+        <div class="section-heading" data-reveal><h2 id="november-before-title">읽기 전에</h2><p>모임에서 함께 꺼내 보고 싶은 질문입니다. 답을 정해 두지 않아도 괜찮습니다.</p></div>
+        <div class="reading-notes" data-reveal data-reading-notes="2026-11"></div>
+      </section>
+      <section id="november-candidates" class="section record-candidates" tabindex="-1" aria-labelledby="november-candidates-title"><div class="section-heading" data-reveal><h2 id="november-candidates-title">함께 검토했던 책</h2><p>2026년 11월 모임의 후보 세 권입니다. <span data-participant="hs"></span>이 소개한 세 권 중 『마음』을 함께 읽기로 정했습니다.</p></div><ul class="record-candidate-shelf" data-reveal-group data-candidate-shelf="2026-11"></ul></section>
     </section>
 `);
   document.getElementById('october').hidden = true;
+  // Home: the chosen book becomes the book being read now.
+  const now = document.querySelector('.now-reading');
+  const nowCover = now.querySelector('.now-reading-cover');
+  nowCover.dataset.workOpen = 'kokoro-book';
+  nowCover.setAttribute('aria-label', '마음 소개 보기');
+  const nowImg = nowCover.querySelector('.cover-img');
+  Object.assign(nowImg, { src: './assets/covers/candidates/november-kokoro.webp?v=oh-yuri-2019', width: 543, height: 850, alt: '마음 책 표지 · 문예출판사 · 에디터스 컬렉션 · 오유리 옮김' });
+  nowCover.querySelector('.cover-fallback').innerHTML = '마음<br>표지를 불러오지 못했어요.';
+  now.querySelector('#now-reading-title').textContent = '마음';
+  now.querySelector('.now-reading-copy .muted').textContent = '나쓰메 소세키 · 마리오님 추천 · 11월 25일 수요일 모임에서 이야기합니다';
+  const nowLink = now.querySelector('[data-go]');
+  nowLink.dataset.go = 'november';
+  nowLink.textContent = '11월 읽기 안내 보기 →';
   const homeRecent = document.querySelector('.home-recent');
-  homeRecent.querySelector('h2').textContent = '11월, 함께 읽을 책을 골라요.';
-  homeRecent.querySelector('p').textContent = '마리오님이 소개하는 세 권입니다. 도시를 보는 시선, 인간의 마음, 낯선 상상 중 다음 독서를 골라 봅니다.';
+  homeRecent.querySelector('h2').textContent = '11월 25일 수요일에 만나요.';
+  homeRecent.querySelector('p').textContent = '『마음』을 4주에 나눠 읽을 수 있게 장 번호로 읽기 안내를 정리했습니다. 함께 검토했던 후보 두 권도 같은 곳에서 볼 수 있습니다.';
   const homeLink = homeRecent.querySelector('[data-go]');
   homeLink.dataset.go = 'november';
-  homeLink.textContent = '11월 후보 세 권 보기 →';
+  homeLink.textContent = '4주 읽기 안내 보기 →';
   const nextMeeting = document.querySelector('#october > .next-meeting:last-child');
-  nextMeeting.querySelector('p').textContent = '11월 25일로 잡았고, 마리오님이 소개하는 세 권 중 함께 읽을 책을 고릅니다.';
+  nextMeeting.querySelector('h2').textContent = '11월에는 『마음』을 읽습니다.';
+  nextMeeting.querySelector('p').textContent = '11월 25일 수요일에 만나, 마리오님이 소개한 나쓰메 소세키의 『마음』을 이야기합니다.';
   const nextLink = nextMeeting.querySelector('[data-go]');
   nextLink.dataset.go = 'november';
-  nextLink.textContent = '11월 후보 세 권 보기 →';
+  nextLink.textContent = '11월 읽기 안내 보기 →';
 })();
