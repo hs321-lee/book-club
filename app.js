@@ -4,7 +4,7 @@
   // A failed enhancement keeps the existing club pages available.
   await new Promise(resolve => {
     const script = document.createElement('script');
-    script.src = new URL('./november-data.js?v=20261026', document.currentScript?.src || location.href).href;
+    script.src = new URL('./november-data.js?v=20261029-kokoro', document.currentScript?.src || location.href).href;
     script.onload = resolve;
     script.onerror = () => { script.remove(); resolve(); };
     document.head.append(script);
@@ -196,9 +196,11 @@
     document.querySelector('#book-detail-title').textContent = work.title;
     const septemberTopics = data.records['2026-09'].topics;
     const profile = work.candidateProfile;
-    const candidateContext = profile ? `<div class="work-context"><p>${escapeHTML(profile.summary)}</p>${discoveryMarkup(profile.discovery)}<p><strong>추천 이유</strong><br>${escapeHTML(profile.reason)}</p><p><strong>미리 생각할 질문</strong><br>${escapeHTML(profile.question)}</p><p class="muted">${escapeHTML(profile.note)}</p><a class="text-link" href="#november-candidates" data-meeting-link>11월 후보 세 권 보기 →</a></div>` : '';
+    const chosen = data.selections.some(selection => selection.workId === work.id && selection.meetingId === '2026-11' && selection.status === 'selected');
+    const candidateLink = chosen ? '<a class="text-link" href="#november-reading" data-meeting-link>11월 읽기 안내 보기 →</a>' : '<a class="text-link" href="#november-candidates" data-meeting-link>11월 함께 검토했던 책 보기 →</a>';
+    const candidateContext = profile ? `<div class="work-context"><p>${escapeHTML(profile.summary)}</p>${discoveryMarkup(profile.discovery)}<p><strong>추천 이유</strong><br>${escapeHTML(profile.reason)}</p><p><strong>미리 생각할 질문</strong><br>${escapeHTML(profile.question)}</p><p class="muted">${escapeHTML(profile.note)}</p>${candidateLink}</div>` : '';
     const contexts = profile ? candidateContext : isIntro ? `<div class="work-context"><p class="context-source">9월 15일 토론 기록</p><p>${escapeHTML(septemberTopics[0].summary)}</p><p>${escapeHTML(septemberTopics[3].summary)}</p><a class="text-link" href="#discussion" data-meeting-link>9월 토론 보기 →</a></div>` : mentions.map(mentionMarkup).join('');
-    const badges = profile ? '<span class="work-badge">11월 후보</span><span class="work-badge">마리오님 추천</span>' : isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
+    const badges = profile ? `<span class="work-badge">${chosen ? '11월 선정작' : '11월 후보'}</span><span class="work-badge">마리오님 추천</span>` : isIntro ? '<span class="work-badge">9월 함께 읽은 책</span>' : badgesFor(work, mentions);
     const discussionLink = work.discussionHref ? `<p class="archive-discussion-link"><a class="text-link" href="${escapeHTML(work.discussionHref)}">토론 기록 읽기 →</a></p>` : '';
     document.querySelector('#book-detail-body').innerHTML = `<div class="book-detail-cover">${coverMarkup(work.title,work.coverKey)}</div><div class="book-detail-copy"><p class="book-detail-media">${escapeHTML(work.mediaLabel + ' · ' + work.creator)}</p><div class="work-badges">${badges}</div>${contexts}${discussionLink}${isIntro ? '' : `<a class="text-link" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${encodeURIComponent(work.search || work.title + ' ' + work.creator)}">작품 검색 <span aria-hidden="true">↗</span></a>`}</div>`;
     detailOpener = opener;
@@ -242,7 +244,7 @@
   const monthTabs = [...document.querySelectorAll('.month-tabs [role="tab"]')];
   // Newest months first; older records open from 지난 기록 and keep that tab selected.
   const monthPanels = [...monthTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls'))), document.getElementById('first-meeting'), document.getElementById('record-2025-02')];
-  const monthTitles = {november:'2026년 11월 후보', october:'2026년 10월 모임', september:'2026년 9월 모임', 'meeting-archive':'지난 기록', 'first-meeting':'2025년 3월 토론 기록', 'record-2025-02':'2025년 2월 토론 기록'};
+  const monthTitles = {november:'2026년 11월 · 마음', october:'2026년 10월 모임', september:'2026년 9월 모임', 'meeting-archive':'지난 기록', 'first-meeting':'2025년 3월 토론 기록', 'record-2025-02':'2025년 2월 토론 기록'};
   const archiveViews = ['first-meeting', 'record-2025-02'];
   let activeMonth = monthTabs[0]?.dataset.month;
   function showMonth(month) {
@@ -302,6 +304,7 @@
     else if (id.startsWith('record-2025-02-')) { showTab('record-2025-02', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['first-voices', 'first-sh', 'first-hs', 'first-hj', 'first-candidates'].includes(id)) { showTab('first-meeting', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['discussion', 'people', 'summary-title'].includes(id)) { showTab('september', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
+    else if (['november-reading', 'november-before'].includes(id)) { showTab('november', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (['candidates', 'october-discussion', 'october-people', 'october-summary-title'].includes(id)) { showTab('october', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else if (data.candidateMeetings.some(meeting => meeting.section === id)) { const candidate = data.candidateMeetings.find(meeting => meeting.section === id); showTab(data.meetings[candidate.meetingId]?.tab || 'meeting-archive', false); document.getElementById(id)?.scrollIntoView({block:'start'}); }
     else showTab('home', false);
@@ -366,7 +369,21 @@
       return `<li class="november-card" data-reveal><button class="november-cover cover-trigger" type="button" data-work-open="${escapeHTML(id)}" aria-label="${escapeHTML(work.title)} 소개 보기" aria-expanded="false" aria-controls="book-detail">${coverFrameMarkup(work.title, work.coverKey, 'span')}<span class="cover-hint">자세히 보기 →</span></button><div class="november-copy"><p class="november-genre">${escapeHTML(profile.genre)}</p><h3>${escapeHTML(work.title)}</h3><p class="november-author">${escapeHTML(work.creator)}${profile.edition ? ' · ' + escapeHTML(profile.edition) : ''}</p><p>${escapeHTML(profile.summary)}</p>${profile.discovery ? `<p class="november-origin"><span>고른 계기</span>${escapeHTML(profile.discovery.short)}</p>` : ''}<p class="november-question"><span>미리 생각할 질문</span>${escapeHTML(profile.question)}</p></div></li>`;
     }).join('');
   });
-  const archivedMeetings = data.candidateMeetings.filter(meeting => meeting.state !== 'choosing-book').reverse();
+  // The reading plan for the month in progress: weeks by chapter, questions, and how the book was found.
+  document.querySelectorAll('[data-reading-plan]').forEach(list => {
+    const plan = data.reading?.[list.dataset.readingPlan];
+    if (!plan) return;
+    document.querySelector(`[data-reading-basis="${list.dataset.readingPlan}"]`).textContent = plan.basis;
+    list.innerHTML = plan.weeks.map(week => `<li class="reading-week" data-reveal><p class="reading-week-meta"><strong>${escapeHTML(week.label)}</strong><span>${escapeHTML(week.dates)}</span></p><h3>${escapeHTML(week.range)}</h3><p class="reading-week-part">${escapeHTML(week.part)}</p><p>${escapeHTML(week.focus)}</p></li>`).join('');
+  });
+  document.querySelectorAll('[data-reading-notes]').forEach(box => {
+    const plan = data.reading?.[box.dataset.readingNotes];
+    if (!plan) return;
+    const work = data.works.find(item => item.id === plan.workId);
+    box.innerHTML = `<ol class="reading-questions">${plan.questions.map(question => `<li>${escapeHTML(question)}</li>`).join('')}</ol><ul class="reading-tips">${plan.tips.map(tip => `<li>${escapeHTML(tip)}</li>`).join('')}</ul>${discoveryMarkup(work?.candidateProfile?.discovery)}`;
+  });
+  // Months still choosing or still reading stay on their own tab, not in 지난 기록.
+  const archivedMeetings = data.candidateMeetings.filter(meeting => !['choosing-book', 'before-meeting'].includes(meeting.state)).reverse();
   document.querySelector('#archive-meeting-nav').innerHTML = archivedMeetings.map(meeting => `<a href="#${escapeHTML(meeting.section)}" data-meeting-link>${escapeHTML(Number(meeting.meetingId.slice(0,4)) + '년 ' + Number(meeting.meetingId.slice(5)) + '월')}</a>`).join('');
   document.querySelector('#archive-meeting-list').innerHTML = archivedMeetings.map(meeting => {
     const selectionOnly = !meeting.workIds.length;
